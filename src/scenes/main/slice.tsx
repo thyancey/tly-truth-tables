@@ -91,21 +91,24 @@ export const selectGridBox = createSelector(
   [getRoundData, getCellMatrix],
   (roundData, cellMatrix) => {
     const gridShape = getGridShape(roundData.attributes?.length);
-    let r = 0;
-    let c = 0;
     let idx = 0;
+    const gridSize = gridShape[0].length;
+
     const boxSize = Math.pow(roundData.valueSize, 2);
     return gridShape?.map((row, rIdx) => {
-      return row.map(cell => {
-        console.log('cell', cell)
-        let boxArr = [];
+      return [...Array(gridSize)].map((_, cIdx) => {
+        let boxArr: CellObj[] = [];
+        if(!gridShape[rIdx][cIdx]){
+          // handles empty cells in larger maps
+          return boxArr;
+        }
+
         for(let i = 0; i < boxSize; i++){
           boxArr.push(
             cellMatrix[idx++]
           )
         }
         return boxArr;
-        // return 'hi'
       })
     })
   }

@@ -1,4 +1,4 @@
-import { AnswerData, GridShapes, RawCell, RenderedAnswer, RenderedBoard, RoundData } from '../../types';
+import { AnswerData, RawCell, RenderedAnswer, RenderedBoard, RoundData } from '../../types';
 
 /**
  * The attributes that defined the thingies this round

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
 import { getColor } from './themes/';
-// import { Route, Link, withRouter, Redirect } from 'react-router-dom';
 import { HashRouter, Route, Routes, Link } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Main } from './scenes/main';
 
 export const GroupContainer = styled.div`
