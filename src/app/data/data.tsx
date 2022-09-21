@@ -5,8 +5,8 @@ import { AnswerData, RawCell, RenderedAnswer, RenderedBoard, RoundData } from '.
  */
 export const SAMPLE_ROUNDDATA: RoundData[] = [
   {
-    title: 'round1',
-    description: 'something about this round',
+    title: '3 attributes, 3 values',
+    description: 'this puzzle has 4 attributes with 3 values each',
     valueSize: 3,
     attributes:[
       {
@@ -30,28 +30,34 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
         values: [ 'firefighter', 'dentist', 'clown' ]
       }
     ]
+  },{
+    title: '3 attributes, 4 values',
+    description: 'this puzzle has 4 attributes with 4 values each',
+    valueSize: 4,
+    attributes:[
+      {
+        id: 'animal',
+        type: 'normal',
+        values:[ 'monkey', 'frog', 'fish', 'crab' ]
+      },
+      {
+        id: 'queue',
+        type: 'order',
+        values: [ 'first', 'second', 'third', 'last' ]
+      },
+      {
+        id: 'emotion',
+        type: 'normal',
+        values: [ 'happy', 'angry', 'sad', 'bored' ]
+      },
+      {
+        id: 'occupation',
+        type: 'normal',
+        values: [ 'firefighter', 'dentist', 'clown', 'lawyer' ]
+      }
+    ]
   }
 ]
-
-// TODO, generate this
-export const renderedBoard: RenderedBoard = {
-  rows: [
-    [ 'animal', 'monkey' ],
-    [ 'animal', 'frog' ],
-    [ 'animal', 'fish' ],
-    [ 'emotion', 'happy' ],
-    [ 'emotion', 'angry' ],
-    [ 'emotion', 'sad' ]
-  ],
-  cols: [
-    [ 'queue', 'first' ],
-    [ 'queue', 'second' ],
-    [ 'queue', 'last' ],
-    [ 'occupation', 'firefighter' ],
-    [ 'occupation', 'dentist' ],
-    [ 'occupation', 'clown' ]
-  ]
-}
 
 type GridShapeDef = {
   [key: string]: RawCell[][]
@@ -77,16 +83,6 @@ export const GRIDSHAPES: GridShapeDef = {
     [[2, 1]]
   ]
 }
-
-// TODO, generate this
-// export const SAMPLE_CELLMATRIX: CellMatrix = [
-//   [0,0,0],[0,1,0],[0,2,0],[0,3,0],[0,4,0],[0,5,0],
-//   [1,0,0],[1,1,0],[1,2,0],[1,3,0],[1,4,0],[1,5,0],
-//   [2,0,0],[2,1,0],[2,2,0],[2,3,0],[2,4,0],[2,5,0],
-//   [3,0,0],[3,1,0],[3,2,0],[3,3,0],[3,4,0],[3,5,0],
-//   [4,0,0],[4,1,0],[4,2,0],[4,3,0],[4,4,0],[4,5,0],
-//   [5,0,0],[5,1,0],[5,2,0],[5,3,0],[5,4,0],[5,5,0]
-// ];
 
 // TODO, generate this
 export const sampleAnswerData: AnswerData = [

@@ -1,9 +1,9 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
 import { CellObj, CellStatus } from '../../types';
-import { rotateCell, selectGridBox, selectGridLabels } from './slice';
+import { rotateCell, selectGridBox, selectGridLabels, selectGridValueSize } from './slice';
 
 const StyledBoard = styled.div`
   position:absolute;
@@ -30,10 +30,21 @@ const StyledLeftLabels = styled.div`
   grid-template-rows: 13rem 13rem 13rem;
 `
 
-const StyledLeftLabel = styled.div`
+type StyledLabelProps = {
+  gridSize: number
+}
+const StyledLeftLabel = styled.div<StyledLabelProps>`
   text-align:right;
-  height:33%;
-  padding-top:1rem;
+  ${p => p.gridSize === 4 ? css`
+    height: 25%;
+  `: css`
+    height: 33%;
+  `}
+  ${p => p.gridSize === 4 ? css`
+    padding-top:0rem;
+  `: css`
+    padding-top:1rem;
+  `}
   padding-right:1rem;
   position:relative;
   >span{
@@ -42,7 +53,6 @@ const StyledLeftLabel = styled.div`
     white-space:nowrap;
   }
 `
-
 const StyledTopLabels = styled.div`
   grid-column: 2 / span 3;
   grid-row: 15rem;
@@ -50,16 +60,24 @@ const StyledTopLabels = styled.div`
   grid-template-columns: 13rem 13rem 13rem;
   grid-template-rows: 15rem;
 `
-const StyledTopLabel = styled.div`
+const StyledTopLabel = styled.div<StyledLabelProps>`
   display:inline-block;
-  width: 33%;
+  ${p => p.gridSize === 4 ? css`
+    width: 25%;
+  `: css`
+    width: 33%;
+  `}
   height: 100%;
   position:relative;
 
   span{
     display:block;
     position: absolute;
-    left: 2rem;
+    ${p => p.gridSize === 4 ? css`
+      left: 1rem;
+    `: css`
+      left: 2rem;
+    `}
     bottom: -1.5rem;
     display: block;
     white-space: nowrap;
@@ -74,17 +92,26 @@ const StyledCells = styled.div`
   grid-template-columns: 13rem 13rem 13rem;
   grid-template-rows: 13rem 13rem 13rem;
 `
-const StyledCellGroup = styled.div`
+const StyledRawCellGroup = styled.div`
   display:grid;
-  grid-template-columns: 30% 30% 30%;
-  grid-template-rows: 30% 30% 30%;
   column-gap: .6rem;
   row-gap: .6rem;
 `
-type CellProps = {
+type StyledCellGroupProps = {
+  gridSize: number,
+  cellRatio: string
+}
+const StyledCellGroup = styled(StyledRawCellGroup)<StyledCellGroupProps>`
+  display:grid;
+  grid-template-columns: repeat(${p => p.gridSize}, ${p => p.cellRatio});
+  grid-template-rows: repeat(${p => p.gridSize}, ${p => p.cellRatio});
+  column-gap: .6rem;
+  row-gap: .6rem;
+`
+type StyledCellProps = {
   status: CellStatus
 }
-const StyledCell = styled.div<CellProps>`
+const StyledCell = styled.div<StyledCellProps>`
   border: 3px solid ${getColor('white')};
   cursor: pointer;
   transition: background-color .1s, box-shadow .2s;
@@ -94,7 +121,7 @@ const StyledCell = styled.div<CellProps>`
   ${p => p.status === 1 && css`background-color:${getColor('green')}`}
   ${p => p.status === 2 && css`background-color:${getColor('red')}`}
 `
-const BlankCellGroup = styled(StyledCellGroup)`
+const BlankCellGroup = styled(StyledRawCellGroup)`
   background-color: ${getColor('white')};
   opacity: .2;
 `
@@ -106,16 +133,27 @@ export function Board({ testo }:BoardProps) {
   const dispatch = useAppDispatch();
   const grid = useAppSelector(selectGridBox);
   const gridLabels = useAppSelector(selectGridLabels);
+  const gridSize = useAppSelector(selectGridValueSize);
 
   const onClickCell = useCallback((cellIdx) => {
     dispatch(rotateCell(cellIdx));
   }, [ dispatch ]);
 
-  const renderCellGroup = (cellGroup: CellObj[], cgKey: string) => {
+  const cellRatio = useMemo(() => {
+    if(gridSize === 3) {
+      return '30%';
+    } else if(gridSize === 4) {
+      return '20%';
+    }
+    return `${Math.round(100 / gridSize)}%`;
+  }, [ gridSize ])
+
+
+  const renderCellGroup = (cellGroup: CellObj[], cgKey: string, gridSize: number, cellRatio: string) => {
     // [0] check here cause this is all janky and the individual cells are undefined on load
     if(cellGroup.length > 0 && cellGroup[0]){
       return (
-        <StyledCellGroup key={cgKey}>
+        <StyledCellGroup key={cgKey} gridSize={gridSize} cellRatio={cellRatio}>
           {cellGroup.map(cell => (
             <StyledCell 
               key={`cell${cell?.idx}`}
@@ -128,24 +166,22 @@ export function Board({ testo }:BoardProps) {
     }
 
     return (
-      <BlankCellGroup key={cgKey}/>
+      <BlankCellGroup key={cgKey} />
     )
   }
-
-  console.log('re-rendering the whole board...');
 
   return (
     <StyledBoard>
       <StyledCells>
         {grid.map(gridRow => (
-          gridRow.map((cellGroup, cgIdx) => renderCellGroup(cellGroup, `cg${cgIdx}`)
+          gridRow.map((cellGroup, cgIdx) => renderCellGroup(cellGroup, `cg${cgIdx}`, gridSize, cellRatio)
         )))}
       </StyledCells>
       <StyledTopLabels>
         {gridLabels[1].map((gl, glIdx) => (
           <div key={`tl${glIdx}`}>
             {gl.values.map((v,vIdx) => (
-              <StyledTopLabel key={`tv${vIdx}`}>
+              <StyledTopLabel key={`tv${vIdx}`} gridSize={gridSize}>
                 <span>{`${gl.id} - ${v}`}</span>
               </StyledTopLabel>
             ))}
@@ -156,7 +192,7 @@ export function Board({ testo }:BoardProps) {
         {gridLabels[0].map((gl, glIdx) => (
           <div key={`ll${glIdx}`}>
             {gl.values.map((v,vIdx) => (
-              <StyledLeftLabel key={`lv${vIdx}`}>
+              <StyledLeftLabel key={`lv${vIdx}`} gridSize={gridSize}>
                 <span>{`${gl.id} - ${v}`}</span>
               </StyledLeftLabel>
             ))}

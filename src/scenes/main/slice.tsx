@@ -114,6 +114,11 @@ export const selectGridBox = createSelector(
   }
 )
 
+export const selectGridValueSize = createSelector(
+  [getRoundData],
+  (roundData) => roundData.valueSize
+);
+
 export const selectGridLabels = createSelector(
   [getRoundData],
   (roundData): [ rows: AttributeDef[], cols: AttributeDef[] ] => {
