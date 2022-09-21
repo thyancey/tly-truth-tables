@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { getColor } from '../../themes';
 import { useAppDispatch } from '../../app/hooks';
-import { resetMatrix } from './slice';
+import { generateSolution, resetMatrix } from './slice';
 import { useEffect } from 'react';
 import { Board } from './board';
+import { Status } from './status';
 
 const StyledContainer = styled.div`
   position:absolute;
@@ -33,57 +34,15 @@ export function Main() {
 
   useEffect(() => {
     dispatch(resetMatrix());
+    dispatch(generateSolution());
   }, [dispatch]);
 
   return (
     <StyledContainer>
       <StyledModal >
-        <Board testo={'hello!!!!'}/>
+        <Status />
+        <Board />
       </StyledModal>
     </StyledContainer>
   );
-/*
-  return (
-    <StyledContainer>
-      <StyledModal >        
-        <StyledGrid>
-          <StyledRowLabels>
-            {gridLabels[0].map((row, idx) => (
-              <StyledRowLabel key={`lr${idx}`}>
-                {row.values.map((rv, rvIdx) => (
-                  <span key={`lrv${rvIdx}`}>{rv}</span>
-                ))}
-              </StyledRowLabel>
-            ))}
-          </StyledRowLabels>
-          <StyledColLabels>
-            {gridLabels[1].map((col, idx) => (
-              <StyledColLabel key={`lc${idx}`}>
-                {col.values.map((cv, cvIdx) => (
-                  <span key={`lcv${cvIdx}`}>{cv}</span>
-                ))}
-              </StyledColLabel>
-            ))}
-          </StyledColLabels>
-          <StyledGridInner>
-            {grid?.map((row, rIdx) => (
-              <StyledGridRow key={`r${rIdx}`}>
-                {row.map((box, cIdx) => (
-                  <StyledGridBox key={`rc${rIdx}${cIdx}`}>
-                    {box.map((cell, cellIdx) => (
-                      <StyledGridCell 
-                        key={cellIdx}
-                        status={cell?.status}
-                        onClick={() => onClickCell(cell.idx)} />
-                    ))}
-                  </StyledGridBox>
-                ))}
-              </StyledGridRow>
-            ))}
-          </StyledGridInner>
-        </StyledGrid>
-      </StyledModal>
-    </StyledContainer>
-  );
-  */
 }

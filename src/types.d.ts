@@ -60,3 +60,7 @@ export type RenderedAnswer = {
 
 
 export type GridShapes = '2' | '3' | '4' | '5';
+
+export type AnswerSet = number[][];
+
+export type AttributeMatrix = RawCell[];
