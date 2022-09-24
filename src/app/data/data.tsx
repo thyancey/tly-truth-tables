@@ -62,26 +62,36 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
 type GridShapeDef = {
   [key: string]: RawCell[][]
 }
-// I'm sure this can be done with math but I can't figure it out right now.
-export const GRIDSHAPES: GridShapeDef = {
-  '2': [
-    [[0, 1]],
-  ],
-  '3': [
-    [[0, 1], [ 0, 2 ]],
-    [[2, 1]],
-  ],
-  '4': [
-    [[0, 1], [ 0, 2 ], [ 0, 3 ]],
-    [[3, 1], [ 3, 2 ]],
-    [[2, 1]]
-  ],
-  '5': [
-    [[0, 1], [ 0, 2 ], [ 0, 3 ], [ 0, 4 ]],
-    [[4, 1], [ 4, 2 ], [ 4, 3 ]],
-    [[3, 1], [ 3, 2 ]],
-    [[2, 1]]
-  ]
+
+
+/*
+  Making this stupid data structure that I wanna get rid of
+  its the row/column of each attribute
+  4 ->  [
+          [[0, 1], [ 0, 2 ], [ 0, 3 ]],
+          [[3, 1], [ 3, 2 ]],
+          [[2, 1]]
+        ],
+*/
+export const generateGridShape = (size: number) => {
+  let gridShape = [];
+  for(let gsRow = 0; gsRow < size - 1; gsRow++){
+    let gridRow = [];
+    let rowIdx = gsRow === 0 ? 0 : size - gsRow;
+    for(let gsCol = 0; gsCol < size - 1 - gsRow; gsCol++){
+      gridRow.push([ rowIdx, gsCol + 1 ])
+    }
+    gridShape.push(gridRow);
+  }
+  return gridShape as RawCell[][];
+}
+
+const generatedGrids: GridShapeDef = {};
+export const getGridShape = (size:number)  => {
+  if(!generatedGrids[size]){
+    generatedGrids[size] = generateGridShape(size);
+  }
+  return generatedGrids[size];
 }
 
 // TODO, generate this

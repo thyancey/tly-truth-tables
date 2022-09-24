@@ -109,7 +109,8 @@ const StyledCellGroup = styled(StyledRawCellGroup)<StyledCellGroupProps>`
   row-gap: .6rem;
 `
 type StyledCellProps = {
-  status: CellStatus
+  status: CellStatus,
+  isSolution?: boolean
 }
 const StyledCell = styled.div<StyledCellProps>`
   border: 3px solid ${getColor('white')};
@@ -118,8 +119,9 @@ const StyledCell = styled.div<StyledCellProps>`
   &:hover{
     box-shadow: 0 0 .2rem .2rem white;
   }
-  ${p => p.status === 1 && css`background-color:${getColor('green')}`}
-  ${p => p.status === 2 && css`background-color:${getColor('red')}`}
+  ${p => p.status === 1 && css`background-color:${getColor('green')}`};
+  ${p => p.status === 2 && css`background-color:${getColor('red')}`};
+  ${p => p.isSolution && css`border-color: ${getColor('green')}`};
 `
 const BlankCellGroup = styled(StyledRawCellGroup)`
   background-color: ${getColor('white')};
@@ -157,6 +159,7 @@ export function Board({}:BoardProps) {
             <StyledCell 
               key={`cell${cell?.idx}`}
               status={cell.status}
+              isSolution={cell.isSolution}
               onClick={() => onClickCell(cell.idx)}
             />
           ))}

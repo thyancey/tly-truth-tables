@@ -1,18 +1,39 @@
 import styled from 'styled-components';
 import { useAppSelector } from '../../app/hooks';
-import { selectAnswerStuff, selectSolution } from './slice';
+import { getColor } from '../../themes';
+import { checkIfSolved, selectRenderedAnswers, selectSolution } from './slice';
 
 const StyledContainer = styled.div`
   height: 20rem;
   margin-left:2rem;
 `
-export function Status() {
-  const answerStuff = useAppSelector(selectAnswerStuff);
-  const renderedSolution = useAppSelector(selectSolution);
 
-  // console.log('solution', solution)
-  // console.log('green cells:', answerStuff)
-  // console.log('renderedSolution', renderedSolution)
+
+const StyledStatus = styled.div`
+  position:absolute;
+  right:0;
+  top:0;
+  padding: .5rem 1rem;
+  border: .5rem solid white;
+  border-radius: 0 0 0 1.5rem;
+
+  font-weight:bold;
+  font-size:3rem;
+`;
+
+const StyledSolvedStatus = styled(StyledStatus)`
+  background-color: ${getColor('green')};  
+`;
+const StyledUnSolvedStatus = styled(StyledStatus)`
+  background-color: ${getColor('red')};  
+`;
+
+export function Status() {
+  // const answerStuff = useAppSelector(selectRenderedAnswers);
+  const renderedSolution = useAppSelector(selectSolution);
+  const solved = useAppSelector(checkIfSolved);
+
+  console.log('solved', solved)
 
   return (
     <StyledContainer>
@@ -23,12 +44,17 @@ export function Status() {
         ))}
       </ul>
       
-      <h3>{'Green cells:'}</h3>
+      {/* <h3>{'Green cells:'}</h3>
       <ul>
         {answerStuff?.map((ans, idx) => (
           <li key={idx}>{`[${ans[0].id}:${ans[0].value}, ${ans[1].id}:${ans[1].value}]`}</li>
         ))}
-      </ul>
+      </ul> */}
+      { solved ? (
+        <StyledSolvedStatus>{'SOLVED'}</StyledSolvedStatus>
+      ): (
+        <StyledUnSolvedStatus>{'UNSOLVED'}</StyledUnSolvedStatus>
+      ) }
     </StyledContainer>
   );
 }

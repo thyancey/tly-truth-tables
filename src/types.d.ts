@@ -16,8 +16,9 @@ export type RawCell = [
 /** Info needed to store cell
   * */
 export type CellObj = {
-  status: CellStatus
-  idx: number
+  idx: number,
+  status: CellStatus,
+  isSolution?: boolean
 }
 /**
  * The entire board
@@ -58,9 +59,7 @@ export type RenderedAnswer = {
   attributes: AttributePair[];
 }
 
-
-export type GridShapes = '2' | '3' | '4' | '5';
-
 export type AnswerSet = number[][];
+export type AnswerSet2 = RawCell[][];
 
 export type AttributeMatrix = RawCell[];

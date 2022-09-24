@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { getColor } from '../../themes';
 import { useAppDispatch } from '../../app/hooks';
-import { generateSolution, resetMatrix } from './slice';
+import { resetMatrix } from './slice';
 import { useEffect } from 'react';
 import { Board } from './board';
 import { Status } from './status';
@@ -34,7 +34,6 @@ export function Main() {
 
   useEffect(() => {
     dispatch(resetMatrix());
-    dispatch(generateSolution());
   }, [dispatch]);
 
   return (
