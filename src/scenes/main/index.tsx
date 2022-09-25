@@ -5,6 +5,8 @@ import { resetMatrix } from './slice';
 import { useEffect } from 'react';
 import { Board } from './board';
 import { Status } from './status';
+import { Footer } from './footer';
+import { Hint } from './hint';
 
 const StyledContainer = styled.div`
   position:absolute;
@@ -14,20 +16,25 @@ const StyledContainer = styled.div`
   right:0;
   background-color: ${getColor('black')};
   color: ${getColor('white')};
-  z-index:-1;
-  padding-top:10rem;
-  z-index:1;
-`
-const StyledModal = styled.div`
-  width:80%;
-  height:80%;
-  position:absolute;
-  left:10%;
-  top:10%;
-  background-color: ${getColor('purple')};
+  overflow: hidden;
 
-  border-radius: 1rem;
-`
+  display:flex;
+  flex-direction:column;
+`;
+
+const StyledHeader = styled.div`
+  flex: 0 0 10rem;
+`;
+
+const StyledBody = styled.div`
+  flex: 1;
+`;
+
+const StyledFooter = styled.div`
+  width:100%;
+  flex: 0 0 10rem;
+  background-color: white;
+`;
 
 export function Main() {
   const dispatch = useAppDispatch();
@@ -38,10 +45,14 @@ export function Main() {
 
   return (
     <StyledContainer>
-      <StyledModal >
+      <Hint />
+      <StyledHeader>
         <Status />
+      </StyledHeader>
+      <StyledBody>
         <Board />
-      </StyledModal>
+      </StyledBody>
+      <Footer />
     </StyledContainer>
   );
 }

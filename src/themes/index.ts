@@ -1,4 +1,13 @@
-import { createGlobalStyle } from "styled-components"
+import { createGlobalStyle, css } from "styled-components"
+
+type FontStyle = 'display' | 'speech';
+export const mixinFontFamily = (style?: FontStyle) => {
+  switch(style){
+    case 'display' : return css`font-family: 'Noto Sans', sans-serif`;
+    case 'speech': return css`font-family: 'VT323', monospace`;
+    default: return css`font-family: 'VT323', monospace`;
+  }
+}
 
 export default createGlobalStyle`
   *{
@@ -11,10 +20,10 @@ export default createGlobalStyle`
     margin:0 auto;
   }
   h1, h2, h3, h4{
-    font-family: 'Bevan', cursive;
+    font-family: 'Noto Sans', sans-serif;
   }
-  a, p, span, h5, h6{
-    font-family: 'Cabin', sans-serif;
+  a, p, button, span, h5, h6{
+    ${mixinFontFamily()};
   }
   h1{
     font-size: 5rem;
@@ -39,24 +48,13 @@ export default createGlobalStyle`
     font-size: 62.5%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: 'Cabin', sans-serif;
+    ${mixinFontFamily()};
     background-color: black;
-  }
-  
-  code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   }
 `
 
-/*
-export const mixinFontFamily = (style) => {
-  switch(style){
-    case 'details' : return css`font-family: 'Roboto', sans-serif`;
-    case 'display': return css`font-family: 'Bevan', cursive`;
-    default: return css`font-family: 'Roboto', sans-serif`;
-  }
-}
-*/
+
+
 export const listColors = () => {
   return Object.keys(store.colors);
 }

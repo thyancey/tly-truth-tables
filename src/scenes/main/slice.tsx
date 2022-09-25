@@ -7,12 +7,16 @@ import { ContactsOutlined } from '@material-ui/icons';
 export interface GridState {
   roundData: RoundData,
   cellMatrix: CellMatrix,
+  hints: string[],
+  activeHint: number,
   solution: AnswerSet | null
 }
 
 const initialState: GridState = {
   roundData: SAMPLE_ROUNDDATA[0],
   cellMatrix: [],
+  hints: [],
+  activeHint: -1,
   solution: null
 };
 
@@ -56,6 +60,11 @@ export const gridSlice = createSlice({
 
           state.solution = solutionSet;
           state.cellMatrix = newMatrix;
+          state.hints = [
+            'The first one in line lives on land',
+            'The clown is one of those creepy... sad clowns',
+            'The dentist showed up after the firefighter'
+          ];
         } else{
           console.error('must have between 2 and 5 attributes');
           state.cellMatrix = [];
@@ -69,6 +78,10 @@ export const gridSlice = createSlice({
         const nextStatus = getNextStatus(state.cellMatrix[action.payload]);
         state.cellMatrix[action.payload].status = nextStatus;
       }
+    },
+    setActiveHint: (state, action: PayloadAction<number>) => {
+      if(!state.hints[action.payload]) console.error(`cannot set invalid hint ${action.payload}`);
+      state.activeHint = action.payload;
     }
   }
 });
@@ -122,11 +135,18 @@ const getNextStatus = (cellObj: CellObj) => {
   return 0;
 }
 
-export const { resetMatrix, rotateCell } = gridSlice.actions;
+export const { resetMatrix, rotateCell, setActiveHint } = gridSlice.actions;
 
 export const getCellMatrix = (state: RootState) => state.board.cellMatrix;
 export const getRoundData = (state: RootState) => state.board.roundData;
 export const getSolution = (state: RootState) => state.board.solution;
+export const getHints = (state: RootState) => state.board.hints;
+export const getActiveHint = (state: RootState) => state.board.activeHint;
+
+export const selectActiveHint = createSelector(
+  [getHints, getActiveHint],
+  (hints, activeHint) => hints[activeHint]
+);
 
 export const selectRoundAttributes = createSelector(
   [getRoundData],

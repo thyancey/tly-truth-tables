@@ -4,7 +4,6 @@ import { getColor } from '../../themes';
 import { checkIfSolved, selectRenderedAnswers, selectSolution } from './slice';
 
 const StyledContainer = styled.div`
-  height: 20rem;
   margin-left:2rem;
 `
 
