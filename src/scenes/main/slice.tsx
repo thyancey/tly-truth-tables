@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { AnswerSet, AttributeDef, AttributeDetail, AttributeMatrix, CalculatedHint, CellMatrix, CellObj, Hint, HintGiver, RawCell, RenderedHint, RoundData } from '../../types';
+import { AnswerSet, AttributeDef, AttributeDetail, AttributeIdxPair, AttributeMatrix, CalculatedHint, CellMatrix, CellObj, Hint, HintGiver, RawCell, RenderedHint, RoundData } from '../../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data';
 import { RandIdx } from '../../utils';
 
@@ -97,7 +97,7 @@ export const isCellSolution = (answerSet: AnswerSet, attrMatrix: AttributeMatrix
   return false;
 }
 
-export const generateHint = (attrDetails: AttributeDetail[][]): CalculatedHint => {
+export const generateHint = (attrDetails: AttributeDetail[][], usedCombos: AttributeIdxPair[]): CalculatedHint | null => {
 
   /*
     - pick random attribute/value A
@@ -122,13 +122,30 @@ export const generateHint = (attrDetails: AttributeDetail[][]): CalculatedHint =
     const groupA = attrDetails[groupA_idx];
     const groupB = attrDetails[groupB_idx];
 
-    const attrA_idx = RandIdx(0, groupA.length);
-    const attrA = groupA[attrA_idx];
+    // const valA_used = usedCombos.filter(used => used[0] === groupA_idx);
 
-    let filtered;
-    filtered = groupB.filter(attrDetail => attrDetail.attributeIdx !== attrA_idx);
+    /*
+    const filteredA = groupA.filter(attrDetail => {
+      // attr already used once
+      if(usedCombos.find(usedCombo => usedCombo[0] === attrDetail.attributeIdx)){
+        return false;
+      }
+      return true;
+      // attrDetail.attributeIdx !== attrA_idx
+    });
+    if (filteredA.length === 0){
+      console.log('ran out of valid hint material');
+      return null;
+    }
+    */
+   const filteredA = groupA;
 
-    const attrB = filtered[RandIdx(0, filtered.length)];
+    const attrA_idx = RandIdx(0, filteredA.length);
+    const attrA = filteredA[attrA_idx];
+
+    const filteredB = groupB.filter(attrDetail => attrDetail.attributeIdx !== attrA_idx);
+    const attrB_idx = RandIdx(0, filteredB.length);
+    const attrB = filteredB[attrB_idx];
 
     const hintText = generateHintText(attrA, attrB, groupA_idx === groupB_idx);
 
@@ -189,13 +206,27 @@ export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], 
   })
 
   console.log('attrDetails', attrDetails);
-
   const hints = [];
+
+  // use this to not have so many hints on the same attributes?
+  let usedCombos: AttributeIdxPair[] = [];
+
   for(let i = 0; i < NUM_HINTS; i++){
+    const generated = generateHint(attrDetails, usedCombos);
+    if(!generated) continue;
+    console.log('used', generated.used);
+    generated.used.forEach(used => {
+      if(usedCombos.find(uC => uC[0] === used[0] && uC[1] === used[1])){
+        // duplicate, skip it
+        return;
+      }
+      usedCombos.push(used);
+    });
+    console.log('usedCombos', usedCombos)
     hints.push({
       hintGiverIdx: Math.floor(Math.random() * hintGivers.length),
-      text: generateHint(attrDetails).text
-    })
+      text: generated.text
+    });
   }
 
   return hints;
