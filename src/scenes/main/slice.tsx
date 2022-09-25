@@ -1,7 +1,8 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, Hint, RawCell, RenderedHint, RoundData } from '../../types';
+import { AnswerSet, AttributeDef, AttributeDetail, AttributeMatrix, CalculatedHint, CellMatrix, CellObj, Hint, HintGiver, RawCell, RenderedHint, RoundData } from '../../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data';
+import { RandIdx } from '../../utils';
 
 export interface GridState {
   roundData: RoundData,
@@ -18,6 +19,8 @@ const initialState: GridState = {
   activeHintIdx: -1,
   solution: null
 };
+
+const NUM_HINTS = 6;
 
 export const gridSlice = createSlice({
   name: 'board',
@@ -59,20 +62,7 @@ export const gridSlice = createSlice({
 
           state.solution = solutionSet;
           state.cellMatrix = newMatrix;
-          state.hints = [
-            {
-              hintGiverIdx: Math.floor(Math.random() * HINT_GIVERS.length),
-              text: 'The first one in line lives on land'
-            },
-            {
-              hintGiverIdx: Math.floor(Math.random() * HINT_GIVERS.length),
-              text: 'Ugh it\'s one of those creepy... sad clowns'
-            },
-            {
-              hintGiverIdx: Math.floor(Math.random() * HINT_GIVERS.length),
-              text: 'The dentist showed up after the firefighter'
-            }
-          ];
+          state.hints = generateHints(solutionSet, state.roundData.attributes, HINT_GIVERS);
         } else{
           console.error('must have between 2 and 5 attributes');
           state.cellMatrix = [];
@@ -105,6 +95,125 @@ export const isCellSolution = (answerSet: AnswerSet, attrMatrix: AttributeMatrix
   }
 
   return false;
+}
+
+export const generateHint = (attrDetails: AttributeDetail[][]): CalculatedHint => {
+
+  /*
+    - pick random attribute/value A
+    - pick random attribute/value B
+
+    - determine conditionals based on attrB and attrA
+      - are they from the same group?
+      - what are the attribute types? (normal, time, order)
+      - how to compare? (is, is not, is [before, after, first, last])
+
+    - "{attrA} {conditional} {attrB}"
+
+    - "The {animal: monkey} is not the {job: doctor}"
+    >>> "The monkey is not the doctor"
+    - "The {animal: monkey} is the {queue: first}"
+    >>> "The monkey is the first one"
+  */
+    let reserved = [];
+    const groupA_idx = RandIdx(0, attrDetails.length);
+    const groupB_idx = RandIdx(0, attrDetails.length);
+    
+    const groupA = attrDetails[groupA_idx];
+    const groupB = attrDetails[groupB_idx];
+
+    const attrA_idx = RandIdx(0, groupA.length);
+    const attrA = groupA[attrA_idx];
+
+    let filtered;
+    filtered = groupB.filter(attrDetail => attrDetail.attributeIdx !== attrA_idx);
+
+    const attrB = filtered[RandIdx(0, filtered.length)];
+
+    const hintText = generateHintText(attrA, attrB, groupA_idx === groupB_idx);
+
+    console.log('text: ', hintText)
+    console.log('---------')
+    return {
+      text: hintText,
+      used: [
+        [ attrA.attributeIdx, attrA.valueIdx ],
+        [ attrB.attributeIdx, attrB.valueIdx ]
+      ]
+    }
+}
+
+export const generateHintText = (attrA: AttributeDetail, attrB: AttributeDetail, fromSameGroup?:boolean) => {
+  // if both are order.. do soemthing special
+  if(attrA.attributeIdx === attrB.attributeIdx && attrA.type === 'order'){
+    // this is a bad comparison
+    return '(bad comparison)';
+  }
+  let prefix = '';
+  let suffix = '';
+
+  switch(attrA.type){
+    case 'modifier': prefix = `The ${attrA.value} one`;
+      break;
+    case 'order': prefix = `The ${attrA.value} one`;
+      break;
+    default: prefix = `The ${attrA.value}`;
+  }
+
+  switch(attrB.type){
+    case 'thing': suffix = `${fromSameGroup ? 'is' : 'is not'} a ${attrB.value}`;
+      break;
+    case 'modifier': suffix = `${fromSameGroup ? 'is' : 'is not'} ${attrB.value}`;
+      break;
+    case 'order': suffix = `${fromSameGroup ? 'is' : 'is not'} the ${attrB.value} one`;
+      break;
+    default: suffix = `${fromSameGroup ? 'is' : 'is not'} a ${attrB.value}`;
+  }
+
+  return `${prefix} ${suffix}`;
+}
+
+export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], hintGivers: HintGiver[]) => {
+  console.log('solutions', solutions);
+  console.log('attributes', attributes.map(a => a));
+
+  const attrDetails: AttributeDetail[][] = [];
+  solutions.forEach(solution => {
+    attrDetails.push(solution.map((vIdx, aIdx) => ({
+      type: attributes[aIdx].type,
+      attribute: attributes[aIdx].id,
+      attributeIdx: aIdx,
+      value: attributes[aIdx].values[vIdx],
+      valueIdx: vIdx
+    })));
+  })
+
+  console.log('attrDetails', attrDetails);
+
+  const hints = [];
+  for(let i = 0; i < NUM_HINTS; i++){
+    hints.push({
+      hintGiverIdx: Math.floor(Math.random() * hintGivers.length),
+      text: generateHint(attrDetails).text
+    })
+  }
+
+  return hints;
+  /*
+  return [
+    {
+      hintGiverIdx: Math.floor(Math.random() * hintGivers.length),
+      text: 'The first one in line lives on land'
+    },
+    {
+      hintGiverIdx: Math.floor(Math.random() * hintGivers.length),
+      text: 'Ugh it\'s one of those creepy... sad clowns'
+    },
+    {
+      hintGiverIdx: Math.floor(Math.random() * hintGivers.length),
+      text: 'The dentist showed up after the firefighter'
+    }
+  ];*/
 }
 
 // make a unique combination of each attribute/value, with no overlaps.
@@ -172,7 +281,7 @@ export const selectActiveHint = createSelector(
   }
 );
 
-export const selectRoundAttributes = createSelector(
+export const selectAttributes = createSelector(
   [getRoundData],
   (roundData) => roundData.attributes
 );
@@ -186,7 +295,7 @@ export const selectGridInfo = createSelector(
 );
 
 export const selectGridLabels = createSelector(
-  [selectRoundAttributes],
+  [selectAttributes],
   (attributes): [ rows: AttributeDef[], cols: AttributeDef[] ] => {
     const gridShape = getGridShape(attributes.length);
     const rowAttributes = gridShape.map(r => r[0][0]);
@@ -226,7 +335,54 @@ export const selectGridBox = createSelector(
   }
 );
 
-const getAttributePairFromIndex = (attrPair: RawCell, attributes: AttributeDef[]) => {
+export const selectSolution = createSelector(
+  [getSolution, selectAttributes],
+  (solution, attributes) => solution?.map(solution => 
+    solution.map((vIdx,sIdx) => 
+      attributes[sIdx].values[vIdx]
+    )
+  )
+);
+
+// if every "solution" cell has a 1 status, and there are not extra answers
+export const checkIfSolved = createSelector(
+  [getCellMatrix],
+  (cellMatrix) => {
+    const numExpected = cellMatrix.filter(cell => cell.isSolution).length;
+    const answeredCells = cellMatrix.filter(cell => cell.status === 1);
+    if(answeredCells.length !== numExpected) return false;
+
+    const expectedCells = cellMatrix.filter(cell => cell.isSolution);
+    for(let i = 0; i < expectedCells.length; i++){
+      if(!answeredCells.find(aC => aC.idx === expectedCells[i].idx)){
+        return false;
+      }
+    }
+    return true;
+  }
+);
+
+
+/* unused stuff below here */
+
+
+export const selectCurrentAnswer = createSelector(
+  [getRoundData, getCellMatrix, getSolution],
+  (roundData, cellMatrix, solution) => ({
+    roundData: roundData,
+    cellMatrix: cellMatrix,
+    solution: solution
+  })
+);
+
+export const selectGreenCells = createSelector(
+  [getCellMatrix],
+  (cellMatrix) => {
+    return cellMatrix.filter(c => c.status === 1);
+  }
+
+);
+export const getAttributePairFromIndex = (attrPair: RawCell, attributes: AttributeDef[]) => {
   const attr = attributes[attrPair[0]];
   return {
     id: attr.id,
@@ -263,31 +419,6 @@ export const getAttributeMatrixForCellIndex = (cellIndex: number, numAttributes:
   return attrMatrix;
 };
 
-export const selectCurrentAnswer = createSelector(
-  [getRoundData, getCellMatrix, getSolution],
-  (roundData, cellMatrix, solution) => ({
-    roundData: roundData,
-    cellMatrix: cellMatrix,
-    solution: solution
-  })
-);
-
-export const selectGreenCells = createSelector(
-  [getCellMatrix],
-  (cellMatrix) => {
-    return cellMatrix.filter(c => c.status === 1);
-  }
-);
-  
-export const selectSolution = createSelector(
-  [getSolution, getRoundData],
-  (solution, roundData) => solution?.map(solution => 
-    solution.map((vIdx,sIdx) => 
-      roundData.attributes[sIdx].values[vIdx]
-    )
-  )
-);
-
 // find solutions, return data.
 export const selectAnswerMatrix = createSelector(
   [selectGridInfo, selectGreenCells],
@@ -295,24 +426,6 @@ export const selectAnswerMatrix = createSelector(
     return greenCells.map(gc =>
       getAttributeMatrixForCellIndex(gc.idx, gridInfo.numAttributes, gridInfo.gridSize)
     );
-  }
-);
-
-// if every "solution" cell has a 1 status, and there are not extra answers
-export const checkIfSolved = createSelector(
-  [getCellMatrix],
-  (cellMatrix) => {
-    const numExpected = cellMatrix.filter(cell => cell.isSolution).length;
-    const answeredCells = cellMatrix.filter(cell => cell.status === 1);
-    if(answeredCells.length !== numExpected) return false;
-
-    const expectedCells = cellMatrix.filter(cell => cell.isSolution);
-    for(let i = 0; i < expectedCells.length; i++){
-      if(!answeredCells.find(aC => aC.idx === expectedCells[i].idx)){
-        return false;
-      }
-    }
-    return true;
   }
 );
 

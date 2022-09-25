@@ -19,31 +19,42 @@ export type CellObj = {
   idx: number,
   status: CellStatus,
   isSolution?: boolean
-}
+};
+
 /**
  * The entire board
  */
 export type CellMatrix = CellObj[];
 
-export type AttributeType = 'normal' | 'order';
+export type AttributeType = 'thing' | 'order' | 'modifier';
 export type AttributeDef = {
   id: string,
   type: AttributeType,
   values: string[]
-}
+};
+
+
+export type AttributeDetail = {
+  type: AttributeType,
+  attribute: string,
+  attributeIdx: number,
+  value: string,
+  valueIdx: number
+};
 
 export type RoundData = {
   title: string,
   description?: string,
   valueSize: number,
   attributes: AttributeDef[]
-}
+};
 
+export type AttributeIdxPair = [ attributeIdx: number, valueIdx: number ]; 
 export type AttributePair = [ attribute: string, value: string ]; 
 export type RenderedBoard = {
   rows: AttributePair[],
   cols: AttributePair[]
-}
+};
 
 /**
  * Index of value the AnswerIdx belongs to
@@ -77,4 +88,9 @@ export type Hint = {
 export type RenderedHint = {
   hintGiver: HintGiver,
   text: string
+};
+
+export type CalculatedHint = {
+  text: string,
+  used: AttributeIdxPair[]
 };

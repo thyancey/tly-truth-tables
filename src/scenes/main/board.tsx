@@ -123,7 +123,7 @@ const StyledCell = styled.div<StyledCellProps>`
   }
   ${p => p.status === 1 && css`background-color:${getColor('green')}`};
   ${p => p.status === 2 && css`background-color:${getColor('red')}`};
-  ${p => p.isSolution && css`border-color: ${getColor('green')}`};
+  /* ${p => p.isSolution && css`border-color: ${getColor('green')}`}; */
 `
 const BlankCellGroup = styled(StyledRawCellGroup)`
   background-color: ${getColor('white')};

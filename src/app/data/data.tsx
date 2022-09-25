@@ -11,7 +11,7 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
     attributes:[
       {
         id: 'animal',
-        type: 'normal',
+        type: 'thing',
         values:[ 'monkey', 'frog', 'fish' ]
       },
       {
@@ -21,12 +21,12 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
       },
       {
         id: 'emotion',
-        type: 'normal',
+        type: 'modifier',
         values: [ 'happy', 'angry', 'sad' ]
       },
       {
         id: 'occupation',
-        type: 'normal',
+        type: 'thing',
         values: [ 'firefighter', 'dentist', 'clown' ]
       }
     ]
@@ -37,7 +37,7 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
     attributes:[
       {
         id: 'animal',
-        type: 'normal',
+        type: 'thing',
         values:[ 'monkey', 'frog', 'fish', 'crab' ]
       },
       {
@@ -47,12 +47,12 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
       },
       {
         id: 'emotion',
-        type: 'normal',
+        type: 'modifier',
         values: [ 'happy', 'angry', 'sad', 'bored' ]
       },
       {
         id: 'occupation',
-        type: 'normal',
+        type: 'thing',
         values: [ 'firefighter', 'dentist', 'clown', 'lawyer' ]
       }
     ]

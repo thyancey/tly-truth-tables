@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { RandBetween } from '../../utils';
 import { selectHints, setActiveHint } from './slice';
 
 const StyledContainer = styled.div`
@@ -19,11 +20,11 @@ const StyledContainer = styled.div`
 
 const StyledLilManContainer = styled.div`
   display:inline-block;
-  width:20rem;
+  min-width: 15rem;
   height:100%;
   vertical-align:top;
-  margin-left: 2rem;
-  margin-right: 2rem;
+  margin-left: -5rem;
+  margin-right: 1rem;
   position: relative;
 `;
 
@@ -52,6 +53,13 @@ const StyledLilMan = styled.div<LilManProps>`
   transition: top .2s ease-out, width .4s;
 `;
 
+const getRandomPlacement = (topRange: number[], widthRange: number[]) => {
+  return {
+    marginTop: `${RandBetween(topRange[0], topRange[1])}rem`,
+    width: `${RandBetween(widthRange[0], widthRange[1])}px`
+  }
+}
+
 export function Footer() {
   const hints = useAppSelector(selectHints);
 
@@ -65,7 +73,7 @@ export function Footer() {
       <h4>{'Hints:'}</h4>
       <ul>
         {hints?.map((hint, idx) => (
-          <StyledLilManContainer key={idx}>
+          <StyledLilManContainer key={idx} style={getRandomPlacement([-2, 4], [150, 250])} >
             <StyledLilMan 
               imageUrl={hint.hintGiver.thumbImage}
               title={hint.text}
