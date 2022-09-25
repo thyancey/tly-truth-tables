@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { getColor } from './themes/';
-import { HashRouter, Route, Routes, Link } from 'react-router-dom';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import { Main } from './scenes/main';
 
@@ -13,11 +11,10 @@ export const ScStage = styled.div`
 `
 
 function App() {
-  const [ collapsed, setCollapsed ] = useState(false);
-  const pages = [
+  const routes = [
     {
       route: '/',
-      text: 'Round1',
+      text: 'Main',
       element: <Main/>
     }
   ]
@@ -26,7 +23,7 @@ function App() {
     <HashRouter>
       <ScStage>
         <Routes>
-          {pages.map((p, i) => (
+          {routes.map((p, i) => (
             <Route key={i} path={p.route} element={p.element} />
           ))}
         </Routes>

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
-import { checkIfSolved, selectRenderedAnswers, selectSolution } from './slice';
+import { checkIfSolved, selectSolution } from './slice';
 
 const StyledContainer = styled.div`
   margin-left:2rem;
@@ -28,7 +28,6 @@ const StyledUnSolvedStatus = styled(StyledStatus)`
 `;
 
 export function Status() {
-  // const answerStuff = useAppSelector(selectRenderedAnswers);
   const renderedSolution = useAppSelector(selectSolution);
   const solved = useAppSelector(checkIfSolved);
 
@@ -43,12 +42,6 @@ export function Status() {
         ))}
       </ul>
       
-      {/* <h3>{'Green cells:'}</h3>
-      <ul>
-        {answerStuff?.map((ans, idx) => (
-          <li key={idx}>{`[${ans[0].id}:${ans[0].value}, ${ans[1].id}:${ans[1].value}]`}</li>
-        ))}
-      </ul> */}
       { solved ? (
         <StyledSolvedStatus>{'SOLVED'}</StyledSolvedStatus>
       ): (

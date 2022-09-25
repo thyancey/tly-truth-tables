@@ -30,12 +30,6 @@ const StyledBody = styled.div`
   flex: 1;
 `;
 
-const StyledFooter = styled.div`
-  width:100%;
-  flex: 0 0 10rem;
-  background-color: white;
-`;
-
 export function Main() {
   const dispatch = useAppDispatch();
 

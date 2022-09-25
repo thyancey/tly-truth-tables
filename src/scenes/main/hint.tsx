@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor, mixinFontFamily } from '../../themes';
-import { getHints, selectActiveHint, setActiveHint } from './slice';
+import { selectActiveHint, setActiveHint } from './slice';
 
 
 const StyledContainer = styled.div`
@@ -97,16 +97,16 @@ export function Hint() {
   return (
     <StyledContainer>
       <StyledHintHeader>
-        <p>{'Fred the Fly'}</p>
+        <p>{hint.hintGiver.name}</p>
       </StyledHintHeader>
       <StyledLilManContainer>
         <StyledLilMan 
-          imageUrl={'assets/fly.gif'}
-          title={hint}
+          imageUrl={hint.hintGiver.largeImage}
+          title={hint.hintGiver.name}
         /> 
       </StyledLilManContainer>
       <StyledHintBox>
-        <p>{hint}</p>
+        <p>{hint.text}</p>
       </StyledHintBox>
       <StyledControls>
         <button onClick={() => onCloseHint()}>{'Close'}</button>

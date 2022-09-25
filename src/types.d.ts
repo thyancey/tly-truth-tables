@@ -60,6 +60,21 @@ export type RenderedAnswer = {
 }
 
 export type AnswerSet = number[][];
-export type AnswerSet2 = RawCell[][];
 
 export type AttributeMatrix = RawCell[];
+
+export type HintGiver = {
+  name: string,
+  thumbImage: string,
+  largeImage: string
+};
+
+export type Hint = {
+  hintGiverIdx: number,
+  text: string
+};
+
+export type RenderedHint = {
+  hintGiver: HintGiver,
+  text: string
+};

@@ -7,7 +7,9 @@ import { rotateCell, selectGridBox, selectGridLabels, selectGridInfo } from './s
 
 const StyledBoard = styled.div`
   position:absolute;
-  transform: matrix(2.0,.9,-1.75,1.5,130,-100) scale(.4);
+  transform: matrix(2.0,.9,-1.75,1.5,-300,-50) scale(.4) translate(-50%, -50%);
+  left: 50%;
+  top:50%;
 
   display:grid;
   grid-template-columns: 15rem 13rem 13rem 13rem; 
@@ -128,9 +130,7 @@ const BlankCellGroup = styled(StyledRawCellGroup)`
   opacity: .2;
 `
 
-type BoardProps = {
-}
-export function Board({}:BoardProps) {
+export function Board() {
   const dispatch = useAppDispatch();
   const grid = useAppSelector(selectGridBox);
   const gridLabels = useAppSelector(selectGridLabels);

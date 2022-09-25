@@ -1,4 +1,4 @@
-import { AnswerData, RawCell, RenderedAnswer, RenderedBoard, RoundData } from '../../types';
+import { AnswerData, RawCell, RenderedAnswer, RoundData } from '../../types';
 
 /**
  * The attributes that defined the thingies this round
@@ -56,6 +56,21 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
         values: [ 'firefighter', 'dentist', 'clown', 'lawyer' ]
       }
     ]
+  }
+]
+
+export const HINT_GIVERS = [
+  {
+    id: 'flyman',
+    name: 'fly man',
+    thumbImage: 'assets/fly.gif',
+    largeImage: 'assets/fly.gif'
+  },
+  {
+    id: 'thumbNun',
+    name: 'thumb nun',
+    thumbImage: 'assets/thumb-nun.gif',
+    largeImage: 'assets/thumb-nun.gif'
   }
 ]
 

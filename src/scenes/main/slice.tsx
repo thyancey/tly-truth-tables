@@ -1,14 +1,13 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { AnswerSet, AnswerSet2, AttributeDef, AttributeMatrix, CellMatrix, CellObj, RawCell, RoundData } from '../../types';
-import { getGridShape, SAMPLE_ROUNDDATA } from '../../app/data/data';
-import { ContactsOutlined } from '@material-ui/icons';
+import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, Hint, RawCell, RenderedHint, RoundData } from '../../types';
+import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data';
 
 export interface GridState {
   roundData: RoundData,
   cellMatrix: CellMatrix,
-  hints: string[],
-  activeHint: number,
+  hints: Hint[],
+  activeHintIdx: number,
   solution: AnswerSet | null
 }
 
@@ -16,7 +15,7 @@ const initialState: GridState = {
   roundData: SAMPLE_ROUNDDATA[0],
   cellMatrix: [],
   hints: [],
-  activeHint: -1,
+  activeHintIdx: -1,
   solution: null
 };
 
@@ -61,9 +60,18 @@ export const gridSlice = createSlice({
           state.solution = solutionSet;
           state.cellMatrix = newMatrix;
           state.hints = [
-            'The first one in line lives on land',
-            'The clown is one of those creepy... sad clowns',
-            'The dentist showed up after the firefighter'
+            {
+              hintGiverIdx: Math.floor(Math.random() * HINT_GIVERS.length),
+              text: 'The first one in line lives on land'
+            },
+            {
+              hintGiverIdx: Math.floor(Math.random() * HINT_GIVERS.length),
+              text: 'Ugh it\'s one of those creepy... sad clowns'
+            },
+            {
+              hintGiverIdx: Math.floor(Math.random() * HINT_GIVERS.length),
+              text: 'The dentist showed up after the firefighter'
+            }
           ];
         } else{
           console.error('must have between 2 and 5 attributes');
@@ -80,8 +88,8 @@ export const gridSlice = createSlice({
       }
     },
     setActiveHint: (state, action: PayloadAction<number>) => {
-      if(!state.hints[action.payload]) console.error(`cannot set invalid hint ${action.payload}`);
-      state.activeHint = action.payload;
+      if(action.payload > -1 && !state.hints[action.payload]) console.error(`cannot set invalid hint ${action.payload}`);
+      state.activeHintIdx = action.payload;
     }
   }
 });
@@ -99,8 +107,8 @@ export const isCellSolution = (answerSet: AnswerSet, attrMatrix: AttributeMatrix
   return false;
 }
 
-  // make a unique combination of each attribute/value, with no overlaps.
-  // This is the solution to the current truth table.
+// make a unique combination of each attribute/value, with no overlaps.
+// This is the solution to the current truth table.
 const calcSolution = (numAnswers: number, numAttributes:number): AnswerSet => {
   const availableAttributes = [];
   for(let i = 0; i < numAttributes; i++){
@@ -141,11 +149,27 @@ export const getCellMatrix = (state: RootState) => state.board.cellMatrix;
 export const getRoundData = (state: RootState) => state.board.roundData;
 export const getSolution = (state: RootState) => state.board.solution;
 export const getHints = (state: RootState) => state.board.hints;
-export const getActiveHint = (state: RootState) => state.board.activeHint;
+export const getActiveHintIdx = (state: RootState) => state.board.activeHintIdx;
+
+export const renderHint = (hint: Hint) => ({
+  hintGiver: HINT_GIVERS[hint.hintGiverIdx],
+  text: hint.text
+});
+
+export const selectHints = createSelector(
+  [getHints],
+  (hints): RenderedHint[] => hints.map(h => renderHint(h))
+);
 
 export const selectActiveHint = createSelector(
-  [getHints, getActiveHint],
-  (hints, activeHint) => hints[activeHint]
+  [getHints, getActiveHintIdx],
+  (hints, activeHintIdx): RenderedHint | null => {
+    if(activeHintIdx === -1){
+      return null;
+    }
+
+    return renderHint(hints[activeHintIdx]);
+  }
 );
 
 export const selectRoundAttributes = createSelector(
@@ -274,15 +298,6 @@ export const selectAnswerMatrix = createSelector(
   }
 );
 
-export const selectRenderedAnswers = createSelector(
-  [selectAnswerMatrix, selectRoundAttributes],
-  (answerMatrix, attributes) => {
-    return answerMatrix.map(attrMatrix => {
-      return getRenderedAttributes(attrMatrix, attributes);
-    });
-  }
-);
-
 // if every "solution" cell has a 1 status, and there are not extra answers
 export const checkIfSolved = createSelector(
   [getCellMatrix],
@@ -297,7 +312,6 @@ export const checkIfSolved = createSelector(
         return false;
       }
     }
-
     return true;
   }
 );
