@@ -1,7 +1,8 @@
+import { useCallback } from 'react';
 import styled from 'styled-components';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
-import { checkIfSolved, selectSolution } from './slice';
+import { checkIfSolved, getRoundStatus, selectSolution, submitAnswer } from './slice';
 
 const StyledContainer = styled.div`
   margin-left:2rem;
@@ -76,8 +77,12 @@ const StyledUnSolvedStatus = styled(StyledStatus)`
 export function Status() {
   const renderedSolution = useAppSelector(selectSolution);
   const solved = useAppSelector(checkIfSolved);
+  const roundStatus = useAppSelector(getRoundStatus);
 
-  console.log('solved', solved)
+  const dispatch = useAppDispatch();
+  const onSubmitGame = useCallback((solved) => {
+    dispatch(submitAnswer(solved));
+  }, [ dispatch ]);
 
   return (
     <StyledContainer>
@@ -89,13 +94,15 @@ export function Status() {
           ))}
         </ul>
       </StyledDebug>
+
       
       <StyledStatusContainer>
+        <p>{roundStatus}</p>
         <StyledResetButton>{'RESET'}</StyledResetButton>
         { solved ? (
-          <StyledSolvedStatus>{'SUBMIT'}</StyledSolvedStatus>
+          <StyledSolvedStatus onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedStatus>
         ): (
-          <StyledUnSolvedStatus>{'SUBMIT'}</StyledUnSolvedStatus>
+          <StyledUnSolvedStatus onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledUnSolvedStatus>
         ) }
       </StyledStatusContainer>
     </StyledContainer>

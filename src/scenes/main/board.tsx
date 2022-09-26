@@ -9,7 +9,7 @@ const StyledBoard = styled.div`
   position:absolute;
   /* more perspectivey */
   /* transform: matrix(2.0,.9,-1.75,1.5,-300,-50) scale(.4) translate(-50%, -50%); */
-  transform: matrix(1.5,1.5,-1.5,1.5,-300,-0) scale(.4) translate(-50%, -50%);
+  transform: matrix(2.5,1.25,-2.5,1.25,-300,-0) scale(.4) translate(-50%, -50%);
   left: 50%;
   top:50%;
 
@@ -18,7 +18,7 @@ const StyledBoard = styled.div`
   grid-template-rows: 15rem 13rem 13rem 13rem; 
   column-gap: 2rem;
   row-gap: 2rem;
-  color: ${getColor('brown_dark')};
+  color: ${getColor('brown')};
 
   >div{
     display:grid;
@@ -128,7 +128,7 @@ const StyledCell = styled.div<StyledCellProps>`
   border-radius: 1rem;
   border: .4rem solid ${getColor('brown')};
   cursor: pointer;
-  transition: background-color .1s, box-shadow .15s, transform .15s, border-color .2s;
+  transition: background-color .1s, border-color .2s, box-shadow .15s, transform .15s;
 
   ${p => p.status === 0 && css`
     background-color:${getColor('brown')};
@@ -148,15 +148,12 @@ const StyledCell = styled.div<StyledCellProps>`
 
   &:hover{
     ${p => p.status === 0 && css`
-      background-color: ${getColor('pink_dark')};
       border-color: ${getColor('pink')};
     `};
     ${p => p.status === 1 && css`
-      background-color: ${getColor('brown')};
       border-color: ${getColor('white')};
     `};
     ${p => p.status === 2 && css`
-      background-color: ${getColor('green_dark')};
       border-color: ${getColor('green')};
     `};
   }

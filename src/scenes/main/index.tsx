@@ -30,6 +30,27 @@ const StyledBody = styled.div`
   flex: 1;
 `;
 
+const StyledTitle = styled.div`
+  position:absolute;
+  left:0;
+  right:0;
+  text-align:center;
+  color: ${getColor('pink')};
+  font-size: 15rem;
+  letter-spacing: -.5rem;
+  line-height: 10rem;
+  opacity: .1;
+
+  /* white-space: pre-wrap; */
+  word-wrap: break-word;
+`
+
+const TITLE_TEXT = 'TOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLES' +
+  'TOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLES' +
+  'TOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLES' +
+  'TOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLES' +
+  'TOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLES'
+
 export function Main() {
   const dispatch = useAppDispatch();
 
@@ -40,6 +61,7 @@ export function Main() {
   return (
     <StyledContainer>
       <Hint />
+      <StyledTitle>{TITLE_TEXT}</StyledTitle>
       <StyledHeader>
         <Status />
       </StyledHeader>

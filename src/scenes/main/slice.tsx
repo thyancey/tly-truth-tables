@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { AnswerSet, AttributeDef, AttributeDetail, AttributeIdxPair, AttributeMatrix, CalculatedHint, CellMatrix, CellObj, Hint, HintGiver, RawCell, RenderedHint, RoundData } from '../../types';
+import { AnswerSet, AttributeDef, AttributeDetail, AttributeIdxPair, AttributeMatrix, CalculatedHint, CellMatrix, CellObj, Hint, HintGiver, RawCell, RenderedHint, RoundData, RoundStatus } from '../../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data';
 import { RandIdx } from '../../utils';
 
@@ -13,7 +13,8 @@ export interface GridState {
   cellMatrix: CellMatrix,
   hints: Hint[],
   activeHintIdx: number,
-  solution: AnswerSet | null
+  solution: AnswerSet | null,
+  roundStatus: RoundStatus
 }
 
 const initialState: GridState = {
@@ -21,7 +22,8 @@ const initialState: GridState = {
   cellMatrix: [],
   hints: [],
   activeHintIdx: -1,
-  solution: null
+  solution: null,
+  roundStatus: 'idle'
 };
 
 
@@ -83,10 +85,19 @@ export const gridSlice = createSlice({
     setActiveHint: (state, action: PayloadAction<number>) => {
       if(action.payload > -1 && !state.hints[action.payload]) console.error(`cannot set invalid hint ${action.payload}`);
       state.activeHintIdx = action.payload;
+    },
+    submitAnswer: (state, action: PayloadAction<boolean>) => {
+      console.log('submitAnswer', action.payload);
+      if(action.payload === true){
+        state.roundStatus = 'correct';
+      }else{
+        state.roundStatus = 'incorrect';
+      }
     }
-  }
+  } 
 });
 
+export const { resetMatrix, rotateCell, setActiveHint, submitAnswer } = gridSlice.actions;
 
 // answer set is the raw attributes (in order) and their values
 /// [1, 1, 1] would mean a valueIdx of 1 for attributes 0, 1, and 2
@@ -152,8 +163,8 @@ export const generateHint = (attrDetails: AttributeDetail[][], usedCombos: Attri
 
     const hintText = generateHintText(attrA, attrB, groupA_idx === groupB_idx);
 
-    console.log('text: ', hintText)
-    console.log('---------')
+    // console.log('text: ', hintText)
+    // console.log('---------')
     return {
       text: hintText,
       used: [
@@ -217,7 +228,7 @@ export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], 
   for(let i = 0; i < NUM_HINTS; i++){
     const generated = generateHint(attrDetails, usedCombos);
     if(!generated) continue;
-    console.log('used', generated.used);
+    // console.log('used', generated.used);
     generated.used.forEach(used => {
       if(usedCombos.find(uC => uC[0] === used[0] && uC[1] === used[1])){
         // duplicate, skip it
@@ -225,7 +236,7 @@ export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], 
       }
       usedCombos.push(used);
     });
-    console.log('usedCombos', usedCombos)
+    // console.log('usedCombos', usedCombos);
     hints.push({
       hintGiverIdx: Math.floor(Math.random() * hintGivers.length),
       text: generated.text
@@ -286,13 +297,13 @@ const getNextStatus = (cellObj: CellObj) => {
   return 0;
 }
 
-export const { resetMatrix, rotateCell, setActiveHint } = gridSlice.actions;
 
 export const getCellMatrix = (state: RootState) => state.board.cellMatrix;
 export const getRoundData = (state: RootState) => state.board.roundData;
 export const getSolution = (state: RootState) => state.board.solution;
 export const getHints = (state: RootState) => state.board.hints;
 export const getActiveHintIdx = (state: RootState) => state.board.activeHintIdx;
+export const getRoundStatus = (state: RootState) => state.board.roundStatus;
 
 export const renderHint = (hint: Hint) => ({
   hintGiver: HINT_GIVERS[hint.hintGiverIdx],

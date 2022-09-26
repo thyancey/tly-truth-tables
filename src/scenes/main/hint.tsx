@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor, mixinFontFamily } from '../../themes';
+import { HintText } from './hinttext';
 import { selectActiveHint, setActiveHint } from './slice';
 
 const StyledContainer = styled.div`
@@ -76,7 +77,6 @@ const StyledControls = styled.div`
   }
 `;
 
-
 const LovelyFeud = styled.div`
   position:fixed;
   left:0;
@@ -114,7 +114,7 @@ const StyledLilMan = styled.div<LilManProps>`
   background: url(${p => p.imageUrl}) no-repeat center;
   background-position:center;
   background-size:contain;
-  filter: drop-shadow(0 0 7rem ${getColor('grey_light')});
+  filter: drop-shadow(0 0 7rem ${getColor('brown')});
 `;
 
 export function Hint() {
@@ -139,7 +139,7 @@ export function Hint() {
         /> 
       </StyledLilManContainer>
       <StyledHintBox>
-        <p>{hint.text}</p>
+        <HintText hintText={hint.text} />
       </StyledHintBox>
       <StyledControls>
         <button onClick={() => onCloseHint()}>{'CLOSE'}</button>

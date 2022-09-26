@@ -94,3 +94,5 @@ export type CalculatedHint = {
   text: string,
   used: AttributeIdxPair[]
 };
+
+export type RoundStatus = 'idle' | 'incorrect' | 'correct';
