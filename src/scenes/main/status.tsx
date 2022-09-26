@@ -5,26 +5,72 @@ import { checkIfSolved, selectSolution } from './slice';
 
 const StyledContainer = styled.div`
   margin-left:2rem;
+`;
+
+const StyledDebug = styled.div`
+  font-size:2rem;
+  opacity:.25;
+
+  li{
+    list-style:none;
+  }
 `
 
-
-const StyledStatus = styled.div`
+const StyledStatusContainer = styled.div`
   position:absolute;
   right:0;
   top:0;
-  padding: .5rem 1rem;
-  border: .5rem solid white;
-  border-radius: 0 0 0 1.5rem;
-
-  font-weight:bold;
-  font-size:3rem;
+  color: ${getColor('brown_dark')};
+  text-align:center;
 `;
+
+const StyledStatus = styled.div`
+  border: .3rem solid ${getColor('brown_dark')};
+  box-shadow: 0.0rem 0.4rem 0.1rem 0.1rem ${getColor('brown')};
+  border-radius: 1.5rem;
+  margin: .75rem;
+
+  padding: .5rem 1rem;
+
+  font-weight:500;
+  font-size:2rem;
+
+  cursor: pointer;
+  
+  &:active{
+    color: ${getColor('yellow')};
+    transform: translateY(.5rem);
+    box-shadow: 0.0rem 0.0rem 0.0rem 0.0rem ${getColor('brown')};
+  }
+`;
+
+const StyledResetButton = styled(StyledStatus)`
+  background-color: ${getColor('pink')};  
+  color: ${getColor('brown_dark')};
+  border-color: ${getColor('brown_dark')};
+  box-shadow: 0.0rem 0.4rem 0.1rem 0.1rem ${getColor('brown')};
+  
+  &:hover{
+    color: ${getColor('yellow')};
+  }
+`
 
 const StyledSolvedStatus = styled(StyledStatus)`
   background-color: ${getColor('green')};  
+  
+  &:hover{
+    color: ${getColor('yellow')};
+  }
 `;
 const StyledUnSolvedStatus = styled(StyledStatus)`
-  background-color: ${getColor('red')};  
+  background-color: ${getColor('green')};  
+  color: ${getColor('brown_dark')};
+  border-color: ${getColor('brown_dark')};
+  box-shadow: 0.0rem 0.4rem 0.1rem 0.1rem ${getColor('brown')};
+  
+  &:hover{
+    color: ${getColor('yellow')};
+  }
 `;
 
 export function Status() {
@@ -35,18 +81,23 @@ export function Status() {
 
   return (
     <StyledContainer>
-      <h3>{'Solution:'}</h3>
-      <ul>
-        {renderedSolution?.map((rS, idx) => (
-          <li key={idx}>{rS.join(' | ')}</li>
-        ))}
-      </ul>
+      <StyledDebug>
+        <p>{'DEBUG SOLUTION'}</p>
+        <ul>
+          {renderedSolution?.map((rS, idx) => (
+            <li key={idx}>{`[ ${rS.join(' | ')} ]`}</li>
+          ))}
+        </ul>
+      </StyledDebug>
       
-      { solved ? (
-        <StyledSolvedStatus>{'SOLVED'}</StyledSolvedStatus>
-      ): (
-        <StyledUnSolvedStatus>{'UNSOLVED'}</StyledUnSolvedStatus>
-      ) }
+      <StyledStatusContainer>
+        <StyledResetButton>{'RESET'}</StyledResetButton>
+        { solved ? (
+          <StyledSolvedStatus>{'SUBMIT'}</StyledSolvedStatus>
+        ): (
+          <StyledUnSolvedStatus>{'SUBMIT'}</StyledUnSolvedStatus>
+        ) }
+      </StyledStatusContainer>
     </StyledContainer>
   );
 }

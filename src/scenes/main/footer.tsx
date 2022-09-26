@@ -1,30 +1,29 @@
 import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { getColor } from '../../themes';
 import { RandBetween } from '../../utils';
 import { selectHints, setActiveHint } from './slice';
 
 const StyledContainer = styled.div`
-  margin-left:2rem;
-  height:2rem;
-  border-top: .25rem solid white;
+  /* margin-left:2rem; */
+  height:5rem;
+  padding-left:2rem;
 
   h4{
-    margin-top:-4rem;
+    padding-top:1rem;
   }
   ul{
-    padding-left:10rem;
+    padding-left:15rem;
     height:100%;
   }
 `;
 
 const StyledLilManContainer = styled.div`
   display:inline-block;
-  min-width: 15rem;
+  min-width: 20rem;
   height:100%;
   vertical-align:top;
-  margin-left: -5rem;
-  margin-right: 1rem;
   position: relative;
 `;
 
@@ -37,15 +36,15 @@ const StyledLilMan = styled.div<LilManProps>`
   width:100%;
   left:50%;
   transform: translateX(-50%);
-  height:20rem;
-  top:-12rem;
+  height:30rem;
+  top:-20rem;
   background: url(${p => p.imageUrl}) no-repeat center;
   background-position:top;
   background-size:cover;
   cursor: pointer;
 
   &:hover{
-    top:-16rem;
+    top:-24rem;
     width:130%;
     transition: top .2s ease-out, width .4s;
     filter: drop-shadow(0 0 .5rem #ffffff);
@@ -53,8 +52,9 @@ const StyledLilMan = styled.div<LilManProps>`
   transition: top .2s ease-out, width .4s;
 `;
 
-const getRandomPlacement = (topRange: number[], widthRange: number[]) => {
+const getRandomPlacement = (idx: number, topRange: number[], widthRange: number[], leftRange: number[]) => {
   return {
+    marginLeft: idx === 0 ? `-10rem` : `${RandBetween(leftRange[0], leftRange[1])}rem`,
     marginTop: `${RandBetween(topRange[0], topRange[1])}rem`,
     width: `${RandBetween(widthRange[0], widthRange[1])}px`
   }
@@ -73,7 +73,7 @@ export function Footer() {
       <h4>{'Hints:'}</h4>
       <ul>
         {hints?.map((hint, idx) => (
-          <StyledLilManContainer key={idx} style={getRandomPlacement([-2, 4], [150, 250])} >
+          <StyledLilManContainer key={idx} style={getRandomPlacement(idx, [-1, 3], [120, 170], [-10, -2])} >
             <StyledLilMan 
               imageUrl={hint.hintGiver.thumbImage}
               title={hint.text}

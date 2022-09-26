@@ -1,13 +1,15 @@
 import { useCallback, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { getColor } from '../../themes';
+import { getColor, mixinFontFamily } from '../../themes';
 import { CellObj, CellStatus } from '../../types';
 import { rotateCell, selectGridBox, selectGridLabels, selectGridInfo } from './slice';
 
 const StyledBoard = styled.div`
   position:absolute;
-  transform: matrix(2.0,.9,-1.75,1.5,-300,-50) scale(.4) translate(-50%, -50%);
+  /* more perspectivey */
+  /* transform: matrix(2.0,.9,-1.75,1.5,-300,-50) scale(.4) translate(-50%, -50%); */
+  transform: matrix(1.5,1.5,-1.5,1.5,-300,-0) scale(.4) translate(-50%, -50%);
   left: 50%;
   top:50%;
 
@@ -16,6 +18,7 @@ const StyledBoard = styled.div`
   grid-template-rows: 15rem 13rem 13rem 13rem; 
   column-gap: 2rem;
   row-gap: 2rem;
+  color: ${getColor('brown_dark')};
 
   >div{
     display:grid;
@@ -50,6 +53,9 @@ const StyledLeftLabel = styled.div<StyledLabelProps>`
   padding-right:1rem;
   position:relative;
   >span{
+    font-size: 3.5rem;
+    font-weight: 600;
+
     position:absolute;
     right:0;
     white-space:nowrap;
@@ -75,6 +81,10 @@ const StyledTopLabel = styled.div<StyledLabelProps>`
   span{
     display:block;
     position: absolute;
+
+    font-size: 3.5rem;
+    font-weight: 600;
+
     ${p => p.gridSize === 4 ? css`
       left: 1rem;
     `: css`
@@ -115,15 +125,61 @@ type StyledCellProps = {
   isSolution?: boolean
 }
 const StyledCell = styled.div<StyledCellProps>`
-  border: 3px solid ${getColor('white')};
+  border-radius: 1rem;
+  border: .4rem solid ${getColor('brown')};
   cursor: pointer;
-  transition: background-color .1s, box-shadow .2s;
+  transition: background-color .1s, box-shadow .15s, transform .15s, border-color .2s;
+
+  ${p => p.status === 0 && css`
+    background-color:${getColor('brown')};
+    border-color: ${getColor('white')};
+    box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('white')};
+  `};
+  ${p => p.status === 1 && css`
+    background-color:${getColor('green_dark')};
+    border-color: ${getColor('green')};
+    box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('green')};
+  `};
+  ${p => p.status === 2 && css`
+    background-color:${getColor('pink_dark')};
+    border-color: ${getColor('pink')};
+    box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('pink')};
+  `};
+
   &:hover{
-    box-shadow: 0 0 .2rem .2rem white;
+    ${p => p.status === 0 && css`
+      background-color: ${getColor('pink_dark')};
+      border-color: ${getColor('pink')};
+    `};
+    ${p => p.status === 1 && css`
+      background-color: ${getColor('brown')};
+      border-color: ${getColor('white')};
+    `};
+    ${p => p.status === 2 && css`
+      background-color: ${getColor('green_dark')};
+      border-color: ${getColor('green')};
+    `};
   }
-  ${p => p.status === 1 && css`background-color:${getColor('green')}`};
-  ${p => p.status === 2 && css`background-color:${getColor('red')}`};
-  /* ${p => p.isSolution && css`border-color: ${getColor('green')}`}; */
+  
+  &:active{
+    transform: translate(.35rem, .35rem);
+
+    ${p => p.status === 0 && css`
+      background-color: ${getColor('pink_dark')};
+      border-color: ${getColor('pink')};
+      box-shadow: 0.1rem 0.1rem 0 0.1rem ${getColor('pink')};
+    `};
+    ${p => p.status === 1 && css`
+      background-color: ${getColor('brown')};
+      border-color: ${getColor('white')};
+      box-shadow: 0.1rem 0.1rem 0 0.1rem ${getColor('white')};
+    `};
+    ${p => p.status === 2 && css`
+      background-color: ${getColor('green_dark')};
+      border-color: ${getColor('green')};
+      box-shadow: 0.1rem 0.1rem 0 0.1rem ${getColor('green')};
+    `};
+  }
 `
 const BlankCellGroup = styled(StyledRawCellGroup)`
   background-color: ${getColor('white')};
@@ -184,7 +240,8 @@ export function Board() {
           <div key={`tl${glIdx}`}>
             {gl.values.map((v,vIdx) => (
               <StyledTopLabel key={`tv${vIdx}`} gridSize={gridInfo.gridSize}>
-                <span>{`${gl.id} - ${v}`}</span>
+                <span>{v.toUpperCase()}</span>
+                {/* <span>{`${v} (${gl.id})`}</span> */}
               </StyledTopLabel>
             ))}
           </div>
@@ -195,7 +252,8 @@ export function Board() {
           <div key={`ll${glIdx}`}>
             {gl.values.map((v,vIdx) => (
               <StyledLeftLabel key={`lv${vIdx}`} gridSize={gridInfo.gridSize}>
-                <span>{`${gl.id} - ${v}`}</span>
+                <span>{v.toUpperCase()}</span>
+                {/* <span>{`${v} (${gl.id})`}</span> */}
               </StyledLeftLabel>
             ))}
           </div>

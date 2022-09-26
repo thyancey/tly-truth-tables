@@ -4,6 +4,10 @@ import { AnswerSet, AttributeDef, AttributeDetail, AttributeIdxPair, AttributeMa
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data';
 import { RandIdx } from '../../utils';
 
+const NUM_HINTS = 6;
+const ROUND_IDX = 0;
+
+
 export interface GridState {
   roundData: RoundData,
   cellMatrix: CellMatrix,
@@ -13,14 +17,13 @@ export interface GridState {
 }
 
 const initialState: GridState = {
-  roundData: SAMPLE_ROUNDDATA[0],
+  roundData: SAMPLE_ROUNDDATA[ROUND_IDX],
   cellMatrix: [],
   hints: [],
   activeHintIdx: -1,
   solution: null
 };
 
-const NUM_HINTS = 6;
 
 export const gridSlice = createSlice({
   name: 'board',
@@ -187,7 +190,7 @@ export const generateHintText = (attrA: AttributeDetail, attrB: AttributeDetail,
     default: suffix = `${fromSameGroup ? 'is' : 'is not'} a ${attrB.value}`;
   }
 
-  return `${prefix} ${suffix}`;
+  return `${prefix} ${suffix}.`;
 }
 
 export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], hintGivers: HintGiver[]) => {
@@ -272,9 +275,9 @@ const calcSolution = (numAnswers: number, numAttributes:number): AnswerSet => {
 const getNextStatus = (cellObj: CellObj) => {
   try{
     switch(cellObj.status){
-      case 0: return 1;
-      case 1: return 2;
-      case 2: return 0;
+      case 0: return 2;
+      case 2: return 1;
+      case 1: return 0;
     }
   } catch(e){
     console.error('unexpected lookup for cellObj', cellObj)

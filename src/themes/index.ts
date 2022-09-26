@@ -80,17 +80,27 @@ const shadows = {
   z2: '-0.1rem 0.1rem .25rem .1rem rgba(0,0,0,0.36)',
   z3: '-.2rem .5rem 1rem .2rem rgba(0,0,0,.36)'
 }
-type tColor = 'black' | 'grey' | 'grey_light' | 'white' | 'blue' | 'green' | 'yellow' | 'red' | 'purple';
+type tColor = 'brown_dark' | 'brown' | 'brown_light' | 'black' | 'grey' | 'grey_light' | 'white' | 'pink_dark' | 'pink' | 'pink_light' | 'red' | 'blue_dark' | 'blue' | 'blue_light' | 'green_dark' | 'green' | 'green_light' | 'yellow' | 'purple';
 const colors = {
-  black: '#000000',
-  grey: '#373737',
-  grey_light: '#A39F8E',
-  white: '#fef8dd',
-  blue: '#1fb9f3',
-  green: '#51f249',
+  brown_dark: '#35120e',
+  brown: '#6b2b15',
+  brown_light: '#d48e55',
+  black: '#1a1932',
+  grey: '#424c6e',
+  grey_light: '#92a1b9',
+  white: '#e8c8a9',
+  pink_dark: '#bd1e7d',
+  pink: '#ff4785',
+  pink_light: '#ff8095',
+  red: '#b3102b',
+  green_dark: '#1e6f50',
+  green: '#5ac54f',
+  green_light: '#99e65f',
+  blue_dark: '#2a2f4e',
+  blue: '#0069aa',
+  blue_light: '#0098dc',
   yellow: '#fff249',
-  red: '#F55658',
-  purple: '#6b1ff3'
+  purple: '#660e49',
 }
 
 type tBreakpoint = 'mobile_tiny' | 'mobile_medium' | 'mobile_large' | 'tablet' | 'desktop';

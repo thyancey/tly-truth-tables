@@ -14,8 +14,8 @@ const StyledContainer = styled.div`
   top:0;
   bottom:0;
   right:0;
-  background-color: ${getColor('black')};
-  color: ${getColor('white')};
+  background-image: linear-gradient(to bottom, ${getColor('white')}, ${getColor('brown')});
+  color: ${getColor('black')};
   overflow: hidden;
 
   display:flex;

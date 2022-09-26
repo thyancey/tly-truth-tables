@@ -61,16 +61,22 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
 
 export const HINT_GIVERS = [
   {
-    id: 'flyman',
-    name: 'fly man',
-    thumbImage: 'assets/fly.gif',
-    largeImage: 'assets/fly.gif'
+    id: 'fiveflys',
+    name: 'Fly Cook',
+    thumbImage: 'assets/hinters/fiveflys-static.gif',
+    largeImage: 'assets/hinters/fiveflys.gif'
   },
   {
-    id: 'thumbNun',
-    name: 'thumb nun',
-    thumbImage: 'assets/thumb-nun.gif',
-    largeImage: 'assets/thumb-nun.gif'
+    id: 'eyetower',
+    name: 'Eye Tower',
+    thumbImage: 'assets/hinters/eyetower-static.gif',
+    largeImage: 'assets/hinters/eyetower.gif'
+  },
+  {
+    id: 'businessbobcat',
+    name: 'Business Bobcat',
+    thumbImage: 'assets/hinters/businesscat-static.gif',
+    largeImage: 'assets/hinters/businesscat.gif'
   }
 ]
 
