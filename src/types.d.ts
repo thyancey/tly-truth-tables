@@ -29,17 +29,21 @@ export type CellMatrix = CellObj[];
 export type AttributeType = 'thing' | 'order' | 'modifier';
 export type AttributeDef = {
   id: string,
+  display?: string,
   type: AttributeType,
   values: string[]
 };
 
 
 export type AttributeDetail = {
+  id: string, // combo of solution, attribute, and value ids, for easy identification ('1-1-1')
   type: AttributeType,
   attribute: string,
+  attributeDisplay: string,
   attributeIdx: number,
   value: string,
-  valueIdx: number
+  valueIdx: number,
+  solutionIdx: number
 };
 
 export type RoundData = {
@@ -92,7 +96,12 @@ export type RenderedHint = {
 
 export type CalculatedHint = {
   text: string,
-  used: AttributeIdxPair[]
+  used: AttributeDetail[]
 };
 
 export type RoundStatus = 'idle' | 'incorrect' | 'correct';
+export type InfluenceType = null | 'same' | 'different';
+export type InfluenceRatio = [
+  yesCount: number,
+  noCount: number
+];
