@@ -1,13 +1,12 @@
 import { AnswerSet, AttributeDef, AttributeDetail, AttributeIdxPair, AttributeMatrix, CalculatedHint, HintGiver } from '../types';
 import { RandIdx } from './index';
 
-const NUM_HINTS = 6;
-
-export const generateHintText = (attrA: AttributeDetail, attrB: AttributeDetail, fromSameGroup?:boolean) => {
+export const generateHintText = (attrA: AttributeDetail, attrB: AttributeDetail) => {
+  const fromSameGroup = attrA.solutionIdx === attrB.solutionIdx;
   // if both are order.. do soemthing special
   if(attrA.attributeIdx === attrB.attributeIdx && attrA.type === 'order'){
     // this is a bad comparison
-    return '(bad comparison)';
+    return '(TODO: ignore order vs order comparisons)';
   }
   let prefix = '';
   let suffix = '';
@@ -33,8 +32,33 @@ export const generateHintText = (attrA: AttributeDetail, attrB: AttributeDetail,
   return `${prefix} ${suffix}.`;
 }
 
-export const generateHint = (attrDetails: AttributeDetail[][], usedCombos: AttributeIdxPair[]): CalculatedHint | null => {
+export const filterUsedHints = (attrGroup: AttributeDetail[], usedCombos: AttributeDetail[]) => {
+  return attrGroup.filter(attrDetail => {
+    if(usedCombos.find(usedCombo => 
+      usedCombo.attributeIdx === attrDetail.attributeIdx &&
+      usedCombo.valueIdx === attrDetail.valueIdx &&
+      usedCombo.solutionIdx === attrDetail.solutionIdx
+    )){
+      return false;
+    }
+    return true;
+  });
+}
 
+export const chooseAttribute = (attrDetails: AttributeDetail[][], usedCombos: AttributeDetail[]) => {
+  const group_idx = RandIdx(0, attrDetails.length);
+  const group = attrDetails[group_idx];
+  const filteredAttributes = filterUsedHints(group, usedCombos);
+  if (filteredAttributes.length === 0){
+    console.log('ran out of valid hint material for group');
+    return null;
+  }
+  
+  return filteredAttributes[RandIdx(0, filteredAttributes.length)];
+} 
+
+export const generateSingleHint = (attrDetails: AttributeDetail[][], usedCombos: AttributeDetail[]): CalculatedHint | null => {
+  console.log('usedCombos', usedCombos)
   /*
     - pick random attribute/value A
     - pick random attribute/value B
@@ -51,84 +75,54 @@ export const generateHint = (attrDetails: AttributeDetail[][], usedCombos: Attri
     - "The {animal: monkey} is the {queue: first}"
     >>> "The monkey is the first one"
   */
-    let reserved = [];
-    const groupA_idx = RandIdx(0, attrDetails.length);
-    const groupB_idx = RandIdx(0, attrDetails.length);
-    
-    const groupA = attrDetails[groupA_idx];
-    const groupB = attrDetails[groupB_idx];
+    let newUsed = [...usedCombos];
 
-    // const valA_used = usedCombos.filter(used => used[0] === groupA_idx);
+    const attrA = chooseAttribute(attrDetails, newUsed);
+    if(!attrA) return null;
+    newUsed.push(attrA);
 
-    /*
-    const filteredA = groupA.filter(attrDetail => {
-      // attr already used once
-      if(usedCombos.find(usedCombo => usedCombo[0] === attrDetail.attributeIdx)){
-        return false;
-      }
-      return true;
-      // attrDetail.attributeIdx !== attrA_idx
-    });
-    if (filteredA.length === 0){
-      console.log('ran out of valid hint material');
-      return null;
-    }
-    */
-   const filteredA = groupA;
+    const attrB = chooseAttribute(attrDetails, newUsed);
+    if(!attrB) return null;
+    newUsed.push(attrB);
 
-    const attrA_idx = RandIdx(0, filteredA.length);
-    const attrA = filteredA[attrA_idx];
+    const hintText = generateHintText(attrA, attrB);
 
-    const filteredB = groupB.filter(attrDetail => attrDetail.attributeIdx !== attrA_idx);
-    const attrB_idx = RandIdx(0, filteredB.length);
-    const attrB = filteredB[attrB_idx];
-
-    const hintText = generateHintText(attrA, attrB, groupA_idx === groupB_idx);
-
-    // console.log('text: ', hintText)
-    // console.log('---------')
     return {
       text: hintText,
-      used: [
-        [ attrA.attributeIdx, attrA.valueIdx ],
-        [ attrB.attributeIdx, attrB.valueIdx ]
-      ]
+      used: newUsed
     }
+}
+
+export const convertSolutionsToAttributeDetails = (solutions: AnswerSet, attributes: AttributeDef[]) => {
+  return solutions.map((solution, sIdx) => 
+    solution.map((vIdx, aIdx) => ({
+      type: attributes[aIdx].type,
+      attribute: attributes[aIdx].id,
+      attributeIdx: aIdx,
+      value: attributes[aIdx].values[vIdx],
+      valueIdx: vIdx,
+      solutionIdx: sIdx 
+    }))
+  );
 }
 
 export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], hintGivers: HintGiver[], maxHints: number = 0) => {
   console.log('solutions', solutions);
   console.log('attributes', attributes.map(a => a));
 
-  const attrDetails: AttributeDetail[][] = [];
-  solutions.forEach(solution => {
-    attrDetails.push(solution.map((vIdx, aIdx) => ({
-      type: attributes[aIdx].type,
-      attribute: attributes[aIdx].id,
-      attributeIdx: aIdx,
-      value: attributes[aIdx].values[vIdx],
-      valueIdx: vIdx
-    })));
-  })
-
+  const attrDetails = convertSolutionsToAttributeDetails(solutions, attributes);
   console.log('attrDetails', attrDetails);
   const hints = [];
 
   // use this to not have so many hints on the same attributes?
-  let usedCombos: AttributeIdxPair[] = [];
+  let usedCombos: AttributeDetail[] = [];
 
   for(let i = 0; i < maxHints; i++){
-    const generated = generateHint(attrDetails, usedCombos);
+    const generated = generateSingleHint(attrDetails, usedCombos);
     if(!generated) continue;
-    // console.log('used', generated.used);
-    generated.used.forEach(used => {
-      if(usedCombos.find(uC => uC[0] === used[0] && uC[1] === used[1])){
-        // duplicate, skip it
-        return;
-      }
-      usedCombos.push(used);
-    });
-    // console.log('usedCombos', usedCombos);
+    usedCombos = generated.used;
+    console.log('after generation, usedCombos is ', usedCombos.length);
+
     hints.push({
       hintGiverIdx: Math.floor(Math.random() * hintGivers.length),
       text: generated.text

@@ -39,7 +39,8 @@ export type AttributeDetail = {
   attribute: string,
   attributeIdx: number,
   value: string,
-  valueIdx: number
+  valueIdx: number,
+  solutionIdx: number
 };
 
 export type RoundData = {
@@ -92,7 +93,7 @@ export type RenderedHint = {
 
 export type CalculatedHint = {
   text: string,
-  used: AttributeIdxPair[]
+  used: AttributeDetail[]
 };
 
 export type RoundStatus = 'idle' | 'incorrect' | 'correct';

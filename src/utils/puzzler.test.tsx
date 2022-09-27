@@ -1,102 +1,9 @@
-import { generateHint, generateHintText } from './puzzler';
+import { filterUsedHints, generateSingleHint, generateHintText } from './puzzler';
 import { AttributeDetail } from '../types';
 
 
 describe('puzzler utils', () => {
-  describe('#generateHint', () => {
-    const sampleAttributes: AttributeDetail[][] = [
-      [
-        {
-          "type": "thing",
-          "attribute": "animal",
-          "attributeIdx": 0,
-          "value": "monkey",
-          "valueIdx": 0
-        },
-        {
-          "type": "order",
-          "attribute": "queue",
-          "attributeIdx": 1,
-          "value": "second",
-          "valueIdx": 1
-        },
-        {
-          "type": "modifier",
-          "attribute": "emotion",
-          "attributeIdx": 2,
-          "value": "happy",
-          "valueIdx": 0
-        },
-        {
-          "type": "thing",
-          "attribute": "occupation",
-          "attributeIdx": 3,
-          "value": "dentist",
-          "valueIdx": 1
-        }
-      ],
-      [
-        {
-          "type": "thing",
-          "attribute": "animal",
-          "attributeIdx": 0,
-          "value": "frog",
-          "valueIdx": 1
-        },
-        {
-          "type": "order",
-          "attribute": "queue",
-          "attributeIdx": 1,
-          "value": "first",
-          "valueIdx": 0
-        },
-        {
-          "type": "modifier",
-          "attribute": "emotion",
-          "attributeIdx": 2,
-          "value": "angry",
-          "valueIdx": 1
-        },
-        {
-          "type": "thing",
-          "attribute": "occupation",
-          "attributeIdx": 3,
-          "value": "firefighter",
-          "valueIdx": 0
-        }
-      ],
-      [
-        {
-          "type": "thing",
-          "attribute": "animal",
-          "attributeIdx": 0,
-          "value": "fish",
-          "valueIdx": 2
-        },
-        {
-          "type": "order",
-          "attribute": "queue",
-          "attributeIdx": 1,
-          "value": "last",
-          "valueIdx": 2
-        },
-        {
-          "type": "modifier",
-          "attribute": "emotion",
-          "attributeIdx": 2,
-          "value": "sad",
-          "valueIdx": 2
-        },
-        {
-          "type": "thing",
-          "attribute": "occupation",
-          "attributeIdx": 3,
-          "value": "clown",
-          "valueIdx": 2
-        }
-      ]
-    ];
-
+  describe('#generateSingleHint', () => {
     it('should describe match for attribute in same group', () => {
       const result = generateHintText(
         {
@@ -104,16 +11,17 @@ describe('puzzler utils', () => {
           "attribute": "animal",
           "attributeIdx": 0,
           "value": "monkey",
-          "valueIdx": 0
+          "valueIdx": 0,
+          "solutionIdx": 0
         },
         {
           "type": "order",
           "attribute": "queue",
           "attributeIdx": 1,
           "value": "second",
-          "valueIdx": 1
-        },
-        true
+          "valueIdx": 1,
+          "solutionIdx": 0
+        }
       );
       expect(result).toEqual('The monkey is the second one.');
     });
@@ -125,40 +33,98 @@ describe('puzzler utils', () => {
           "attribute": "animal",
           "attributeIdx": 0,
           "value": "monkey",
-          "valueIdx": 0
+          "valueIdx": 0,
+          "solutionIdx": 0
         },
         {
           "type": "order",
           "attribute": "queue",
           "attributeIdx": 1,
           "value": "second",
-          "valueIdx": 1
-        },
-        false
+          "valueIdx": 1,
+          "solutionIdx": 1
+        }
       );
       expect(result).toEqual('The monkey is not the second one.');
     });
 
-    it('should handle proper', () => {
+    it('should handle syntax for comparing things from the same group', () => {
       const result = generateHintText(
         {
           "type": "thing",
           "attribute": "animal",
           "attributeIdx": 0,
           "value": "monkey",
-          "valueIdx": 0
+          "valueIdx": 0,
+          "solutionIdx": 0
         },
         {
           "type": "thing",
           "attribute": "occupation",
           "attributeIdx": 1,
           "value": "doctor",
-          "valueIdx": 1
-        },
-        true
+          "valueIdx": 1,
+          "solutionIdx": 0
+        }
       );
       expect(result).toEqual('The monkey is a doctor.');
     });
     
+  });
+  describe('#filterUsedHints', () => {
+    it('should filter out previously selected attribute/value', () => {
+      const result = filterUsedHints(
+        [
+          {
+            "type": "thing",
+            "attribute": "animal",
+            "attributeIdx": 0,
+            "value": "monkey",
+            "valueIdx": 0,
+            "solutionIdx": 0
+          },
+          {
+            "type": "thing",
+            "attribute": "occupation",
+            "attributeIdx": 1,
+            "value": "doctor",
+            "valueIdx": 1,
+            "solutionIdx": 0
+          }
+        ],
+        [
+          {
+            "attributeIdx":0, "valueIdx": 0, "solutionIdx": 0
+          } as AttributeDetail
+        ]
+      );
+  
+      expect(result.length).toEqual(1);
+    });
+    it('should not filter at all if used is empty', () => {
+      const result = filterUsedHints(
+        [
+          {
+            "type": "thing",
+            "attribute": "animal",
+            "attributeIdx": 0,
+            "value": "monkey",
+            "valueIdx": 0,
+            "solutionIdx": 0
+          },
+          {
+            "type": "thing",
+            "attribute": "occupation",
+            "attributeIdx": 1,
+            "value": "doctor",
+            "valueIdx": 1,
+            "solutionIdx": 0
+          }
+        ],
+        []
+      );
+  
+      expect(result.length).toEqual(2);
+    });
   });
 });
