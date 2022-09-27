@@ -35,6 +35,7 @@ export type AttributeDef = {
 
 
 export type AttributeDetail = {
+  id: string, // combo of solution, attribute, and value ids, for easy identification ('1-1-1')
   type: AttributeType,
   attribute: string,
   attributeIdx: number,

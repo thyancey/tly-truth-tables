@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { getColor, mixinFontFamily } from '../../themes';
+import { getColor } from '../../themes';
 import { CellObj, CellStatus } from '../../types';
 import { rotateCell, selectGridBox, selectGridLabels, selectGridInfo } from './slice';
 

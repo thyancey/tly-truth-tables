@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { To } from 'react-router-dom';
 
 type HintTextProps = {
   hintText: string
