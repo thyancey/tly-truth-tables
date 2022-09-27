@@ -16,6 +16,7 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
       },
       {
         id: 'queue',
+        display: 'in line',
         type: 'order',
         values: [ 'first', 'second', 'last' ]
       },

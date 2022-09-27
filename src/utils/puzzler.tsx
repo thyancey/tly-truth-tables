@@ -1,9 +1,11 @@
-import { AnswerSet, AttributeDef, AttributeDetail, CalculatedHint, HintGiver } from '../types';
+import { AnswerSet, AttributeDef, AttributeDetail, CalculatedHint, HintGiver, InfluenceRatio, InfluenceType } from '../types';
 import { RandIdx } from './index';
+
+// what % of the time the same/different hint ratio is checked and attempted to be balanced;
+const INFLUENCE_CALC = .75; // desired that 75% of the hints are for "this IS that" comparisons
 
 export const generateHintText = (attrA: AttributeDetail, attrB: AttributeDetail) => {
   const fromSameGroup = attrA.solutionIdx === attrB.solutionIdx;
-
 
   let prefix = '';
   let suffix = '';
@@ -11,7 +13,7 @@ export const generateHintText = (attrA: AttributeDetail, attrB: AttributeDetail)
   switch(attrA.type){
     case 'modifier': prefix = `The ${attrA.value} one`;
       break;
-    case 'order': prefix = `The ${attrA.value} one`;
+    case 'order': prefix = `The ${attrA.value} ${attrA.attributeDisplay}`;
       break;
     default: prefix = `The ${attrA.value}`;
   }
@@ -21,7 +23,7 @@ export const generateHintText = (attrA: AttributeDetail, attrB: AttributeDetail)
       break;
     case 'modifier': suffix = `${fromSameGroup ? 'is' : 'is not'} ${attrB.value}`;
       break;
-    case 'order': suffix = `${fromSameGroup ? 'is' : 'is not'} the ${attrB.value} one`;
+    case 'order': suffix = `${fromSameGroup ? 'is' : 'is not'} the ${attrB.value} ${attrB.attributeDisplay}`;
       break;
     default: suffix = `${fromSameGroup ? 'is' : 'is not'} a ${attrB.value}`;
   }
@@ -45,25 +47,52 @@ export const filterUsedHints = (attrGroup: AttributeDetail[], reservedAttr?: Att
   });
 }
 
-export const chooseAttribute = (attrDetails: AttributeDetail[][], reservedAttr?: AttributeDetail) => {
-  const group_idx = RandIdx(0, attrDetails.length);
-  const group = attrDetails[group_idx];
+// this needs a refactor, but it more or less can try to get more hints with an "IS" comparison vs "IS NOT"
+export const influenceGroupIdx = (groupAttrs: AttributeDetail[][], reservedAttr?: AttributeDetail, influenceType?: InfluenceType) => {
+  if(!reservedAttr || !influenceType) return null;
 
-  // just in case this is groupB, you dont want to match on the same attr/value that groupA had
-  const filteredAttributes = filterUsedHints(group, reservedAttr);
-  if (filteredAttributes.length === 0){
-    console.log('ran out of valid hint material for group');
-    return null;
+  const sameGroup = groupAttrs.find(attrDetails => 
+    !!attrDetails.find(attrDetail => {
+      if(influenceType === 'same') return attrDetail.solutionIdx === reservedAttr.solutionIdx
+      return attrDetail.solutionIdx !== reservedAttr.solutionIdx // only other influenceType at this point is 'different'
+    })
+  );
+
+  if(sameGroup){
+    const filteredAttributes = filterUsedHints(sameGroup, reservedAttr);
+    if(filteredAttributes.length > 0){
+      return filteredAttributes;
+    }
+  }
+
+  return null;
+}
+
+export const chooseAttribute = (attrDetails: AttributeDetail[][], reservedAttr?: AttributeDetail, influenceType?: InfluenceType) => {
+  // get an influence attribute if needed
+  let filteredAttributes = influenceGroupIdx(attrDetails, reservedAttr, influenceType);
+  // otherwise, go the normal route
+  if(!filteredAttributes){
+    const group_idx = RandIdx(0, attrDetails.length);
+  
+    const group = attrDetails[group_idx];
+  
+    // just in case this is groupB, you dont want to match on the same attr/value that groupA had
+    filteredAttributes = filterUsedHints(group, reservedAttr);
+    if (!filteredAttributes || filteredAttributes.length === 0){
+      console.log('ran out of valid hint material for group');
+      return null;
+    }
   }
   
   return filteredAttributes[RandIdx(0, filteredAttributes.length)];
 } 
 
-export const generateSingleHint = (attrDetails: AttributeDetail[][]): CalculatedHint | null => {
+export const generateSingleHint = (attrDetails: AttributeDetail[][], influenceType?: InfluenceType): CalculatedHint | null => {
   const attrA = chooseAttribute(attrDetails);
   if(!attrA) return null;
 
-  const attrB = chooseAttribute(attrDetails, attrA);
+  const attrB = chooseAttribute(attrDetails, attrA, influenceType);
   if(!attrB) return null;
 
   const hintText = generateHintText(attrA, attrB);
@@ -79,6 +108,7 @@ export const convertSolutionsToAttributeDetails = (solutions: AnswerSet, attribu
     solution.map((vIdx, aIdx) => ({
       type: attributes[aIdx].type,
       attribute: attributes[aIdx].id,
+      attributeDisplay: attributes[aIdx].display || attributes[aIdx].id,
       attributeIdx: aIdx,
       value: attributes[aIdx].values[vIdx],
       valueIdx: vIdx,
@@ -99,22 +129,43 @@ export const filterFromWorkingAttrs = (solutionDetails: AttributeDetail[][], use
   ).filter(solution => solution.length > 0);
 }
 
-export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], hintGivers: HintGiver[], maxHints: number = 0) => {
-  // console.log('solutions', solutions);
-  // console.log('attributes', attributes.map(a => a));
+export const getInfluenceType = (curRatio: InfluenceRatio, influenceCalc: number): InfluenceType => {
+  // why compare if you know the answer
+  if(influenceCalc === 1) return 'same';
+  if(influenceCalc === 0) return 'different';
 
+  const ratioTotal = curRatio[0] + curRatio[1];
+  const calcRatio = ratioTotal === 0 ? .5 : curRatio[0] / (ratioTotal); // avoid divide by zero
+  return influenceCalc >= calcRatio ? 'same' : 'different';
+}
+
+export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], hintGivers: HintGiver[], maxHints: number = 0) => {
   const attrDetails = convertSolutionsToAttributeDetails(solutions, attributes);
-  // console.log('attrDetails', attrDetails);
   const hints = [];
 
   let workingAttrs = [...attrDetails];
 
   // prevents attribute/value pairs (as in "the monkey") from getting used more than once across the hints
   let usedAttributes: AttributeDetail[] = [];
+  let yesNoRatio: InfluenceRatio = [0,0];
 
-  for(let i = 0; i < maxHints && workingAttrs.length > 0; i++){
-    const generated = generateSingleHint(workingAttrs);
+  let i = 0;
+  while(hints.length < maxHints && workingAttrs.length > 0){
+    if(i > 20){
+      console.error('overflow in hint generation');
+      break;
+    }
+    i++;
+    
+    const influenceType = getInfluenceType(yesNoRatio, INFLUENCE_CALC);
+    const generated = generateSingleHint(workingAttrs, influenceType);
     if(!generated) continue;
+
+    if(generated.used[0].solutionIdx === generated.used[1].solutionIdx){
+      yesNoRatio[0]++;
+    }else{
+      yesNoRatio[1]++;
+    }
 
     usedAttributes = usedAttributes.concat(generated.used);
     workingAttrs = filterFromWorkingAttrs(workingAttrs, usedAttributes);
@@ -123,7 +174,10 @@ export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], 
       hintGiverIdx: Math.floor(Math.random() * hintGivers.length),
       text: generated.text
     });
+
   }
+
+  console.log('yesNoRatio is', yesNoRatio);
 
   return hints;
 }

@@ -1,14 +1,15 @@
-import { filterUsedHints, generateHintText } from './puzzler';
+import { filterUsedHints, generateHintText, getInfluenceType } from './puzzler';
 import { AttributeDetail } from '../types';
 
 
 describe('puzzler utils', () => {
   describe('#generateSingleHint', () => {
-    it('should describe match for attribute in same group', () => {
+    it('should describe match for attribute in same group, use display for order', () => {
       const result = generateHintText(
         {
           "type": "thing",
           "attribute": "animal",
+          "attributeDisplay": "animal",
           "attributeIdx": 0,
           "value": "monkey",
           "valueIdx": 0,
@@ -18,6 +19,7 @@ describe('puzzler utils', () => {
         {
           "type": "order",
           "attribute": "queue",
+          "attributeDisplay": "in line",
           "attributeIdx": 1,
           "value": "second",
           "valueIdx": 1,
@@ -25,7 +27,7 @@ describe('puzzler utils', () => {
           "id": "0-1-1"
         }
       );
-      expect(result).toEqual('The monkey is the second one.');
+      expect(result).toEqual('The monkey is the second in line.');
     });
 
     it('should describe mismatch for attribute in other group', () => {
@@ -33,6 +35,7 @@ describe('puzzler utils', () => {
         {
           "type": "thing",
           "attribute": "animal",
+          "attributeDisplay": "animal",
           "attributeIdx": 0,
           "value": "monkey",
           "valueIdx": 0,
@@ -42,6 +45,7 @@ describe('puzzler utils', () => {
         {
           "type": "order",
           "attribute": "queue",
+          "attributeDisplay": "in line",
           "attributeIdx": 1,
           "value": "second",
           "valueIdx": 1,
@@ -49,7 +53,7 @@ describe('puzzler utils', () => {
           "id": "1-1-1"
         }
       );
-      expect(result).toEqual('The monkey is not the second one.');
+      expect(result).toEqual('The monkey is not the second in line.');
     });
 
     it('should handle syntax for comparing things from the same group', () => {
@@ -57,6 +61,7 @@ describe('puzzler utils', () => {
         {
           "type": "thing",
           "attribute": "animal",
+          "attributeDisplay": "animal",
           "attributeIdx": 0,
           "value": "monkey",
           "valueIdx": 0,
@@ -66,6 +71,7 @@ describe('puzzler utils', () => {
         {
           "type": "thing",
           "attribute": "occupation",
+          "attributeDisplay": "occupation",
           "attributeIdx": 1,
           "value": "doctor",
           "valueIdx": 1,
@@ -85,6 +91,7 @@ describe('puzzler utils', () => {
           {
             "type": "thing",
             "attribute": "animal",
+            "attributeDisplay": "animal",
             "attributeIdx": 0,
             "value": "monkey",
             "valueIdx": 0,
@@ -94,6 +101,7 @@ describe('puzzler utils', () => {
           {
             "type": "thing",
             "attribute": "occupation",
+            "attributeDisplay": "occupation",
             "attributeIdx": 1,
             "value": "doctor",
             "valueIdx": 1,
@@ -118,6 +126,7 @@ describe('puzzler utils', () => {
           {
             "type": "thing",
             "attribute": "animal",
+            "attributeDisplay": "animal",
             "attributeIdx": 0,
             "value": "monkey",
             "valueIdx": 0,
@@ -127,6 +136,7 @@ describe('puzzler utils', () => {
           { // this one has same attribute, and is also of type "order", FILTER IT OUT!
             "type": "order",
             "attribute": "queue",
+            "attributeDisplay": "in line",
             "attributeIdx": 1,
             "value": "first",
             "valueIdx": 1,
@@ -136,6 +146,7 @@ describe('puzzler utils', () => {
           { // this one has a different attribute, so it shouldnt be filtered
             "type": "order",
             "attribute": "birthday",
+            "attributeDisplay": "birthday",
             "attributeIdx": 2,
             "value": "first",
             "valueIdx": 1,
@@ -162,6 +173,7 @@ describe('puzzler utils', () => {
           {
             "type": "thing",
             "attribute": "animal",
+            "attributeDisplay": "animal",
             "attributeIdx": 0,
             "value": "monkey",
             "valueIdx": 0,
@@ -171,6 +183,7 @@ describe('puzzler utils', () => {
           {
             "type": "thing",
             "attribute": "occupation",
+            "attributeDisplay": "occupation",
             "attributeIdx": 1,
             "value": "doctor",
             "valueIdx": 1,
@@ -183,4 +196,25 @@ describe('puzzler utils', () => {
       expect(result.length).toEqual(2);
     });
   });
+  describe('#getInfluenceType', () => {
+    it('should influence "same" when yeses below threshold', () => {
+      expect(getInfluenceType([3, 1], .9)).toEqual('same');
+    });
+    it('should influence "different" when yeses above threshold', () => {
+      expect(getInfluenceType([3, 1], .5)).toEqual('different');
+    });
+
+    it('should influence "different" when nos below threshold', () => {
+      expect(getInfluenceType([1, 1], .3)).toEqual('different');
+    });
+    it('should influence "same" when nos above threshold', () => {
+      expect(getInfluenceType([1, 4], .3)).toEqual('same');
+    });
+    it('should influence "same" when influence is 1', () => {
+      expect(getInfluenceType([1, 2], 1)).toEqual('same');
+    });
+    it('should influence "different" when influence is 0', () => {
+      expect(getInfluenceType([1, 2], 0)).toEqual('different');
+    });
+  })
 });
