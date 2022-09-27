@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
-import { checkIfSolved, getRoundStatus, selectSolution, submitAnswer } from './slice';
+import { checkIfSolved, getRoundStatus, resetMatrix, selectSolution, submitAnswer } from './slice';
 
 const StyledContainer = styled.div`
   margin-left:2rem;
@@ -98,7 +98,7 @@ export function Status() {
       
       <StyledStatusContainer>
         <p>{roundStatus}</p>
-        <StyledResetButton>{'RESET'}</StyledResetButton>
+        <StyledResetButton onClick={() => dispatch(resetMatrix())}>{'RESET'}</StyledResetButton>
         { solved ? (
           <StyledSolvedStatus onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedStatus>
         ): (
