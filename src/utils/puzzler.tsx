@@ -150,6 +150,8 @@ export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], 
   let yesNoRatio: InfluenceRatio = [0,0];
 
   let i = 0;
+  let hgIdx = Math.floor(Math.random() * hintGivers.length);
+
   while(hints.length < maxHints && workingAttrs.length > 0){
     if(i > 20){
       console.error('overflow in hint generation');
@@ -159,6 +161,8 @@ export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], 
     
     const influenceType = getInfluenceType(yesNoRatio, INFLUENCE_CALC);
     const generated = generateSingleHint(workingAttrs, influenceType);
+    // sometimes when an attribute group is all used up, the loop ends early.
+    // This is actually kinda nice for helping randomize the yes/no count and hint giver a bit
     if(!generated) continue;
 
     if(generated.used[0].solutionIdx === generated.used[1].solutionIdx){
@@ -171,7 +175,7 @@ export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], 
     workingAttrs = filterFromWorkingAttrs(workingAttrs, usedAttributes);
 
     hints.push({
-      hintGiverIdx: Math.floor(Math.random() * hintGivers.length),
+      hintGiverIdx: (hgIdx + i) % hintGivers.length,
       text: generated.text
     });
 

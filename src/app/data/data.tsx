@@ -78,6 +78,18 @@ export const HINT_GIVERS = [
     name: 'Business Bobcat',
     thumbImage: 'assets/hinters/businesscat-static.gif',
     largeImage: 'assets/hinters/businesscat.gif'
+  },
+  {
+    id: 'fridgey',
+    name: 'Fridgey',
+    thumbImage: 'assets/hinters/fridgey-static.gif',
+    largeImage: 'assets/hinters/fridgey.gif'
+  },
+  {
+    id: 'mothman',
+    name: 'Mothman',
+    thumbImage: 'assets/hinters/mothman-static.gif',
+    largeImage: 'assets/hinters/mothman.gif'
   }
 ]
 
