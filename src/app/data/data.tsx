@@ -12,23 +12,91 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
       {
         id: 'animal',
         type: 'thing',
-        values:[ 'monkey', 'frog', 'fish' ]
+        values: [
+          {
+            id: 'monkey',
+            aliases: [ 'swinging rat' ], // ALIASES HAVE TO BE DISTINCT
+            descriptors: [ 'has legs', 'rhymes with "funky"' ] // DESCRIPTORS CAN BE SHARED FOR AN ATTRIBUTE
+          },
+          {
+            id: 'frog',
+            aliases: [ 'croaky boi' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          },
+          {
+            id: 'fish',
+            aliases: [ 'one with gills' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          }
+        ]
       },
       {
         id: 'queue',
-        display: 'in line',
         type: 'order',
-        values: [ 'first', 'second', 'last' ]
+        orderDescriptions: [ 'is earlier in line than', 'is later in line than' ],
+        values: [
+          {
+            id: 'first',
+            aliases: [ 'first to arrive' ],
+            descriptors: [ 'first to arrive' ]
+          },
+          {
+            id: 'second',
+            aliases: [ 'second in line' ],
+            descriptors: [ 'second in line' ]
+          },
+          {
+            id: 'last',
+            aliases: [ 'last to show up' ],
+            descriptors: [ 'last to show up' ]
+          }
+        ]
       },
       {
         id: 'emotion',
         type: 'modifier',
-        values: [ 'happy', 'angry', 'sad' ]
+        values: [
+          {
+            id: 'happy',
+            // the $ one
+            aliases: [],
+            // [is, is not] $
+            descriptors: []
+          },
+          {
+            id: 'angry',
+            aliases: [ 'FUMING' ],
+            descriptors: [ 'really angry', 'having a bad time', 'screaming at everyone' ]
+          },
+          {
+            id: 'sad',
+            aliases: [ 'mopey' ],
+            descriptors: [ 'having a bad time' ]
+          }
+        ]
       },
       {
         id: 'occupation',
         type: 'thing',
-        values: [ 'firefighter', 'dentist', 'clown' ]
+        values: [
+          {
+            id: 'firefighter',
+            // the $
+            aliases: [],
+            // $ (only IS comparison) 
+            descriptors: [ 'uses a trampoline' ]
+          },
+          {
+            id: 'dentist',
+            aliases: [],
+            descriptors: []
+          },
+          {
+            id: 'clown',
+            aliases: [],
+            descriptors: [ 'uses a trampoline' ]
+          }
+        ]
       }
     ]
   },{
@@ -39,22 +107,114 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
       {
         id: 'animal',
         type: 'thing',
-        values:[ 'monkey', 'frog', 'fish', 'crab' ]
+        values: [
+          {
+            id: 'monkey',
+            // the $
+            aliases: [ 'swinging rat' ],
+            // $ (only IS comparison) 
+            descriptors: [ 'has legs', 'rhymes with "funky"' ]
+          },
+          {
+            id: 'frog',
+            aliases: [ 'croaky boi' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          },
+          {
+            id: 'fish',
+            aliases: [ 'one with gills' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          },
+          {
+            id: 'crab',
+            aliases: [ 'pinchy boi' ],
+            descriptors: [ 'loves the water' ]
+          }
+        ]
       },
       {
         id: 'queue',
         type: 'order',
-        values: [ 'first', 'second', 'third', 'last' ]
+        values: [
+          {
+            id: 'first',
+            // the $
+            aliases: [ 'first to arrive' ],
+            // [is, is not] the $
+            descriptors: [ 'first to arrive' ]
+          },
+          {
+            id: 'second',
+            aliases: [],
+            descriptors: [ 'in the middle of the line' ]
+          },
+          {
+            id: 'third',
+            aliases: [],
+            descriptors: [ 'in the middle of the line' ]
+          },
+          {
+            id: 'last',
+            aliases: [ 'last to show up' ],
+            descriptors: [ 'last to show up' ]
+          }
+        ]
       },
       {
         id: 'emotion',
         type: 'modifier',
-        values: [ 'happy', 'angry', 'sad', 'bored' ]
+        values: [
+          {
+            id: 'happy',
+            // the $ one
+            aliases: [],
+            // [is, is not] $
+            descriptors: []
+          },
+          {
+            id: 'angry',
+            aliases: [ 'FUMING' ],
+            descriptors: [ 'having a bad time', 'screaming at everyone' ]
+          },
+          {
+            id: 'sad',
+            aliases: [ 'mopey', 'pretty blue' ],
+            descriptors: [ 'having a bad time' ]
+          },
+          {
+            id: 'bored',
+            aliases: [],
+            descriptors: [ 'having a bad time', 'twiddling their thumbs' ]
+          }
+        ]
       },
       {
         id: 'occupation',
         type: 'thing',
-        values: [ 'firefighter', 'dentist', 'clown', 'lawyer' ]
+        values: [
+          {
+            id: 'firefighter',
+            // the $
+            aliases: [],
+            // $ (only IS comparison) 
+            descriptors: [ 'uses a trampoline' ]
+          },
+          {
+            id: 'dentist',
+            aliases: [],
+            descriptors: [ 'makes a lot of money' ]
+          },
+          {
+            id: 'clown',
+            aliases: [],
+            descriptors: [ 'uses a trampoline' ]
+          },
+          {
+            id: 'lawyer',
+            aliases: [],
+            descriptors: [ 'makes a lot of money' ]
+          }
+        ]
       }
     ]
   }

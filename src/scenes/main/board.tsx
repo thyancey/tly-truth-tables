@@ -145,16 +145,24 @@ const StyledCell = styled.div<StyledCellProps>`
     border-color: ${getColor('pink')};
     box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('pink')};
   `};
+  ${p => p.status === 3 && css`
+    background-color:${getColor('brown_light')};
+    border-color: ${getColor('yellow')};
+    box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('yellow')};
+  `};
 
   &:hover{
     ${p => p.status === 0 && css`
       border-color: ${getColor('pink')};
     `};
     ${p => p.status === 1 && css`
-      border-color: ${getColor('white')};
+      border-color: ${getColor('yellow')};
     `};
     ${p => p.status === 2 && css`
       border-color: ${getColor('green')};
+    `};
+    ${p => p.status === 3 && css`
+      border-color: ${getColor('white')};
     `};
   }
   
@@ -237,7 +245,7 @@ export function Board() {
           <div key={`tl${glIdx}`}>
             {gl.values.map((v,vIdx) => (
               <StyledTopLabel key={`tv${vIdx}`} gridSize={gridInfo.gridSize}>
-                <span>{v.toUpperCase()}</span>
+                <span>{v.id.toUpperCase()}</span>
                 {/* <span>{`${v} (${gl.id})`}</span> */}
               </StyledTopLabel>
             ))}
@@ -249,7 +257,7 @@ export function Board() {
           <div key={`ll${glIdx}`}>
             {gl.values.map((v,vIdx) => (
               <StyledLeftLabel key={`lv${vIdx}`} gridSize={gridInfo.gridSize}>
-                <span>{v.toUpperCase()}</span>
+                <span>{v.id.toUpperCase()}</span>
                 {/* <span>{`${v} (${gl.id})`}</span> */}
               </StyledLeftLabel>
             ))}

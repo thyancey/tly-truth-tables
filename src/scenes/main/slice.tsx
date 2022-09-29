@@ -133,12 +133,14 @@ const calcSolution = (numAnswers: number, numAttributes:number): AnswerSet => {
   return generatedAnswer;
 }
 
+// blank > no > yes > maybe > blank
 const getNextStatus = (cellObj: CellObj) => {
   try{
     switch(cellObj.status){
       case 0: return 2;
       case 2: return 1;
-      case 1: return 0;
+      case 1: return 3;
+      case 3: return 0;
     }
   } catch(e){
     console.error('unexpected lookup for cellObj', cellObj)
@@ -234,7 +236,7 @@ export const selectSolution = createSelector(
   [getSolution, selectAttributes],
   (solution, attributes) => solution?.map(solution => 
     solution.map((vIdx,sIdx) => 
-      attributes[sIdx].values[vIdx]
+      attributes[sIdx].values[vIdx].id
     )
   )
 );
@@ -281,7 +283,7 @@ export const getAttributePairFromIndex = (attrPair: RawCell, attributes: Attribu
   const attr = attributes[attrPair[0]];
   return {
     id: attr.id,
-    value: attr.values[attrPair[1]]
+    value: attr.values[attrPair[1]].id
   }
 };
 
