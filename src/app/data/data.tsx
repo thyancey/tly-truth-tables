@@ -90,6 +90,12 @@ export const HINT_GIVERS = [
     name: 'Mothman',
     thumbImage: 'assets/hinters/mothman-static.gif',
     largeImage: 'assets/hinters/mothman.gif'
+  },
+  {
+    id: 'raincat',
+    name: 'Rain Cat',
+    thumbImage: 'assets/hinters/raincat-static.gif',
+    largeImage: 'assets/hinters/raincat.gif'
   }
 ]
 
