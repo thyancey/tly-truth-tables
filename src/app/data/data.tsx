@@ -1,4 +1,4 @@
-import { AnswerData, RawCell, RenderedAnswer, RoundData } from '../../types';
+import { AnswerData, HintGiver, RawCell, RenderedAnswer, RoundData } from '../../types';
 
 /**
  * The attributes that defined the thingies this round
@@ -220,7 +220,7 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
   }
 ]
 
-export const HINT_GIVERS = [
+export const HINT_GIVERS: HintGiver[] = [
   {
     id: 'fiveflys',
     name: 'Fly Cook',
@@ -256,6 +256,13 @@ export const HINT_GIVERS = [
     name: 'Rain Cat',
     thumbImage: 'assets/hinters/raincat-static.gif',
     largeImage: 'assets/hinters/raincat.gif'
+  },
+  {
+    id: 'raccoon',
+    name: 'Raccoon',
+    imageType: 'spritesheet',
+    thumbImage: 'assets/hinters/sprites/raccoon.png',
+    largeImage: 'assets/hinters/sprites/raccoon.png'
   }
 ]
 

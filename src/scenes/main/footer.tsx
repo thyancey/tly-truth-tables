@@ -1,8 +1,10 @@
 import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { HintGiver } from '../../types';
 import { RandBetween } from '../../utils';
 import { selectHints, setActiveHint } from './slice';
+import Spritesheet from 'react-responsive-spritesheet';
 
 const StyledContainer = styled.div`
   height:5rem;
@@ -59,6 +61,63 @@ const getRandomPlacement = (idx: number, topRange: number[], widthRange: number[
   }
 }
 
+const StyledSpritesheet = styled.div`
+  width:100%;
+  height:100%;
+  cursor:pointer;
+
+  >*{
+    position: absolute;
+    bottom:-4rem;
+    width:100%;
+
+    transform-origin:center;
+    transition: bottom .2s ease-out, transform .4s  ease-out;
+  }
+
+  &:hover {
+    >*{
+      transform-origin:center;
+      transform: scale(1.2);
+      bottom:0rem;
+      transition: bottom .2s ease-out, transform .4s  ease-out;
+      filter: drop-shadow(0 0 .5rem #ffffff);
+    }
+  }
+`;
+
+const renderLilMan = (hintGiver: HintGiver, hintText: string, onClickHint: Function) => {
+  if(hintGiver.imageType === 'spritesheet'){
+   return (
+      <StyledSpritesheet>
+        <Spritesheet
+          image={hintGiver.largeImage}
+          widthFrame={56}
+          heightFrame={56}
+          startAt={15}
+          endAt={16}
+          steps={20}
+          fps={5}
+          direction={'forward'}
+          isResponsive={true}
+          loop={true}
+          onClick={() => onClickHint()}
+          backgroundPosition={'center bottom'}
+        />
+     </StyledSpritesheet>
+   )
+ } else{
+     return (
+      <StyledLilMan 
+        imageUrl={hintGiver.thumbImage}
+        title={hintText}
+        onClick={() => onClickHint()}
+      /> 
+     );
+   }
+ }
+ 
+
 export function Footer() {
   const hints = useAppSelector(selectHints);
 
@@ -72,11 +131,7 @@ export function Footer() {
       <ul>
         {hints?.map((hint, idx) => (
           <StyledLilManContainer key={idx} style={getRandomPlacement(idx, [-1, 3], [120, 170], [-7, -2])} >
-            <StyledLilMan 
-              imageUrl={hint.hintGiver.thumbImage}
-              title={hint.text}
-              onClick={() => onClickHint(idx)}
-            /> 
+            { renderLilMan(hint.hintGiver, hint.text, () => onClickHint(idx))}
           </StyledLilManContainer>
         ))}
       </ul>
