@@ -97,13 +97,33 @@ export type AnswerSet = number[][];
 
 export type AttributeMatrix = RawCell[];
 
+export type SpritesheetData = {
+  image: string,
+  widthFrame: number,
+  heightFrame: number,
+  startAt: number,
+  endAt: number,
+  steps: number,
+  fps: number
+};
+
+export type SpritesheetOverride = {
+  startAt: number,
+  endAt: number,
+  fps?: number
+}
 export type ImageType = 'spritesheet' | 'gif';
 export type HintGiver = {
   id: string,
   name: string,
   thumbImage: string,
   largeImage: string,
-  imageType?: ImageType
+  bottomBoost?: number,
+  imageType?: ImageType,
+  spritesheetData?: SpritesheetData
+  ssData?: {
+    [key: string]: SpritesheetOverride
+  }
 };
 
 export type Hint = {

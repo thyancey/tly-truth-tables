@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { RandBetween } from '../../utils';
 import { selectHints, setActiveHint } from './slice';
-import { LilMan, StyledLilMan } from '../../components/lilman';
+import { LilMan, StyledLilManGif, StyledLilManSpritesheet } from '../../components/lilman';
 
 const StyledContainer = styled.div`
   height:5rem;
@@ -25,16 +25,26 @@ const StyledLilManContainer = styled.div`
   vertical-align:top;
   position: relative;
 
-  ${StyledLilMan}{
+  >${StyledLilManGif}{
     height: 30rem;
-    top:-20rem;
     left:50%;
     transform: translateX(-50%);
-    background-position:top;
+    background-position:bottom;
     background-size:cover;
     cursor: pointer;
     &:hover{
-      top:-24rem;
+      bottom:0rem;
+      width:130%;
+      transition: bottom .2s ease-out, width .4s;
+      filter: drop-shadow(0 0 .5rem #ffffff);
+    }
+  }
+  >${StyledLilManSpritesheet}{
+    position:absolute;
+    width:100%;
+    top:-12rem;
+    &:hover{
+      top:-18rem;
       width:130%;
       transition: top .2s ease-out, width .4s;
       filter: drop-shadow(0 0 .5rem #ffffff);
@@ -66,8 +76,7 @@ export function Footer() {
       <ul>
         {hints?.map((hint, idx) => (
           <StyledLilManContainer key={idx} style={getRandomPlacement(idx, [-1, 3], [120, 170], [-7, -2])} >
-            {/* { renderLilMan(hint.hintGiver, hint.text, () => onClickHint(idx))}*/}
-            <LilMan hintGiver={hint.hintGiver} onClick={() => onClickHint(idx)}/> 
+            <LilMan hintGiver={hint.hintGiver} ssOverride={hint.hintGiver.ssData?.footer} onClick={() => onClickHint(idx)}/> 
           </StyledLilManContainer>
         ))}
       </ul>

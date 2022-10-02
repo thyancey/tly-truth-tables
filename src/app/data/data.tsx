@@ -236,8 +236,30 @@ export const HINT_GIVERS: HintGiver[] = [
   {
     id: 'businessbobcat',
     name: 'Business Bobcat',
+    imageType: 'spritesheet',
     thumbImage: 'assets/hinters/businesscat-static.gif',
-    largeImage: 'assets/hinters/businesscat.gif'
+    largeImage: 'assets/hinters/businesscat.gif',
+    ssData:{
+      footer:{
+        startAt: 2,
+        endAt: 3,
+        fps: 1,
+      },
+      hint:{
+        startAt: 0,
+        endAt: 2,
+        fps: 5,
+      }
+    },
+    spritesheetData: {
+      image: 'assets/hinters/sprites/bobcat.png',
+      widthFrame: 400,
+      heightFrame: 600,
+      startAt: 0,
+      endAt: 1,
+      steps: 1,
+      fps: 5
+    }
   },
   {
     id: 'fridgey',
@@ -255,14 +277,34 @@ export const HINT_GIVERS: HintGiver[] = [
     id: 'raincat',
     name: 'Rain Cat',
     thumbImage: 'assets/hinters/raincat-static.gif',
-    largeImage: 'assets/hinters/raincat.gif'
+    largeImage: 'assets/hinters/raincat.gif',
+    bottomBoost: 10,
   },
   {
     id: 'raccoon',
     name: 'Raccoon',
     imageType: 'spritesheet',
     thumbImage: 'assets/hinters/sprites/raccoon.png',
-    largeImage: 'assets/hinters/sprites/raccoon.png'
+    largeImage: 'assets/hinters/sprites/raccoon.png',
+    ssData:{
+      footer:{
+        startAt: 13,
+        endAt: 14,
+      },
+      hint:{
+        startAt: 15,
+        endAt: 16,
+      }
+    },
+    spritesheetData: {
+      image: 'assets/hinters/sprites/raccoon.png',
+      widthFrame: 56,
+      heightFrame: 56,
+      startAt: 15,
+      endAt: 16,
+      steps: 20,
+      fps: 5
+    }
   }
 ]
 

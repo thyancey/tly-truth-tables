@@ -62,6 +62,7 @@ const StyledControls = styled.div`
   grid-column: 1 / span 3;
   grid-row: 4 / span 1;
   padding: 0rem;
+  z-index: 1;
 
   button{
     border-radius: 1rem;
@@ -122,7 +123,7 @@ export function Hint() {
         <p>{hint.hintGiver.name}</p>
       </StyledHintHeader>
       <StyledLilManContainer title={hint.text}>
-        <LilMan hintGiver={hint.hintGiver} />
+        <LilMan hintGiver={hint.hintGiver} ssOverride={hint.hintGiver.ssData?.hint}/>
       </StyledLilManContainer>
       <StyledHintBox>
         <HintText hintText={hint.text} />
