@@ -2097,6 +2097,14 @@
     hoist-non-react-statics "^3.3.0"
     redux "^4.0.0"
 
+"@types/react-responsive-spritesheet@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-responsive-spritesheet/-/react-responsive-spritesheet-1.0.0.tgz#e140ec65d262961d31a00b99840bd0549d177350"
+  integrity sha512-PoV4fAypylL+/0dP0zlp/T7K0S2pGC4KDOgAC7TIwAXzOY8Ltnx40ikkBKeaM4S97iva6f4EkrxCmEipD1yzlw==
+  dependencies:
+    "@types/react" "*"
+    csstype "^3.0.10"
+
 "@types/react-transition-group@^4.2.0":
   version "4.4.4"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.4.tgz#acd4cceaa2be6b757db61ed7b432e103242d163e"
@@ -4261,6 +4269,11 @@ csstype@^2.5.2:
   version "2.6.19"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.19.tgz#feeb5aae89020bb389e1f63669a5ed490e391caa"
   integrity sha512-ZVxXaNy28/k3kJg0Fou5MiYpp88j7H9hLZp8PDC3jV0WFjfH5E9xHb56L0W59cPbKbcHXeP4qyT8PrHp8t6LcQ==
+
+csstype@^3.0.10:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.1.tgz#841b532c45c758ee546a11d5bd7b7b473c8c30b9"
+  integrity sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==
 
 csstype@^3.0.2:
   version "3.0.10"
@@ -9647,6 +9660,11 @@ react-refresh@^0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
+
+react-responsive-spritesheet@^2.3.9:
+  version "2.3.9"
+  resolved "https://registry.yarnpkg.com/react-responsive-spritesheet/-/react-responsive-spritesheet-2.3.9.tgz#58822bd7532a46de8d564042c40d90e1d2aaafc5"
+  integrity sha512-7x1co8f6mg01wy5a8KsRDGOQ6a1inxhakdc/z2gXVhOBgRPQznUipWdGYZXHw7ecI5kPdXC1uXvFIXmWip3vnA==
 
 react-router-dom@^6.0.2:
   version "6.0.2"

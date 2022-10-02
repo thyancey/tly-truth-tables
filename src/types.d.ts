@@ -97,10 +97,13 @@ export type AnswerSet = number[][];
 
 export type AttributeMatrix = RawCell[];
 
+export type ImageType = 'spritesheet' | 'gif';
 export type HintGiver = {
+  id: string,
   name: string,
   thumbImage: string,
-  largeImage: string
+  largeImage: string,
+  imageType?: ImageType
 };
 
 export type Hint = {
@@ -117,6 +120,8 @@ export type CalculatedHint = {
   text: string,
   used: AttributeDetail[]
 };
+
+
 
 export type RoundStatus = 'idle' | 'incorrect' | 'correct';
 export type InfluenceType = null | 'same' | 'different';
