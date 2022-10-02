@@ -8,6 +8,7 @@ import { HintText } from './hinttext';
 import { selectActiveHint, setActiveHint } from './slice';
 import { HintGiver } from '../../types';
 import { produceWithPatches } from 'immer';
+import { LilMan } from '../../components/lilman';
 
 const StyledContainer = styled.div`
   position:fixed;
@@ -105,49 +106,6 @@ const StyledBg = styled.div`
   border: .5rem solid ${getColor('brown_dark')};
 `;
 
-type LilManProps = {
-  imageUrl: string
-};
-
-
-const StyledLilMan = styled.div<LilManProps>`
-  position:absolute;
-  width:100%;
-  height:100%;
-  top:0rem;
-  background: url(${p => p.imageUrl}) no-repeat center;
-  background-position:center;
-  background-size:contain;
-  filter: drop-shadow(0 0 7rem ${getColor('brown')});
-`;
-
-
-const renderLilMan = (hintGiver: HintGiver) => {
- if(hintGiver.imageType === 'spritesheet'){
-  return (
-    <Spritesheet
-      image={hintGiver.largeImage}
-      widthFrame={56}
-      heightFrame={56}
-      startAt={13}
-      endAt={14}
-      steps={20}
-      fps={5}
-      direction={'forward'}
-      loop={true}
-      backgroundPosition={'center bottom'}
-    />
-  )
-} else{
-    return (
-      <StyledLilMan
-        imageUrl={hintGiver.largeImage}
-        title={hintGiver.name}
-      />
-    );
-  }
-}
-
 export function Hint() {
   const hint = useAppSelector(selectActiveHint);
 
@@ -163,8 +121,8 @@ export function Hint() {
       <StyledHintHeader>
         <p>{hint.hintGiver.name}</p>
       </StyledHintHeader>
-      <StyledLilManContainer>
-        { renderLilMan(hint.hintGiver) }
+      <StyledLilManContainer title={hint.text}>
+        <LilMan hintGiver={hint.hintGiver} />
       </StyledLilManContainer>
       <StyledHintBox>
         <HintText hintText={hint.text} />

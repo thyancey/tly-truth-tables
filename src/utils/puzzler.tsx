@@ -4,6 +4,7 @@ import { RandFromArray, RandIdx, RandIdxFromArray } from './index';
 // what % of the time the same/different hint ratio is checked and attempted to be balanced;
 const INFLUENCE_CALC = .75; // desired that 75% of the hints are for "this IS that" comparisons
 const DESCRIPTOR_CHANCE = .4;
+const PRUNE_RATE = .5; // what % of the time a used attribute is added to a block list
 
   /*
     when prefix, for alias "swinging rat"
@@ -311,8 +312,10 @@ export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], 
       yesNoRatio[1]++;
     }
 
-    usedAttributes = usedAttributes.concat(generated.used);
-    workingAttrs = filterFromWorkingAttrs(workingAttrs, usedAttributes);
+    if(Math.random() < PRUNE_RATE){
+      usedAttributes = usedAttributes.concat(generated.used);
+      workingAttrs = filterFromWorkingAttrs(workingAttrs, usedAttributes);
+    }
 
     hints.push({
       hintGiverIdx: (hgIdx + i) % hintGivers.length,
