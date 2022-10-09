@@ -147,6 +147,7 @@ export function Hint() {
       </StyledHintHeader>
       <StyledLilManContainer title={hint.text}>
         <LilMan
+          isTalking={true}
           hintGiver={hint.hintGiver}
           ssOverride={hint.hintGiver.ssData?.hint}
         />

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { MouseEventHandler } from 'hoist-non-react-statics/node_modules/@types/react';
 import { HintGiver, SpritesheetData, SpritesheetOverride } from '../types';
 import Spritesheet from 'react-responsive-spritesheet';
 import { getColor } from '../themes';
@@ -32,10 +31,11 @@ export const StyledLilManSpritesheet = styled.div`
 interface LilManProps {
   hintGiver: HintGiver,
   onClick?: Function,
-  ssOverride?: SpritesheetOverride
+  ssOverride?: SpritesheetOverride,
+  isTalking?: boolean,
 }
 
-export function LilMan({hintGiver, onClick, ssOverride = {} as SpritesheetData}: LilManProps) {
+export function LilMan({hintGiver, onClick, isTalking = false, ssOverride = {} as SpritesheetData}: LilManProps) {
   if(hintGiver.imageType === 'spritesheet'){
     if(!hintGiver || !hintGiver.spritesheetData) return null;
 
@@ -59,7 +59,7 @@ export function LilMan({hintGiver, onClick, ssOverride = {} as SpritesheetData}:
   } else{
     return (
       <StyledLilManGif
-        imageUrl={hintGiver.largeImage}
+        imageUrl={isTalking ? hintGiver.largeImage : hintGiver.thumbImage}
         onClick={(e) => onClick && onClick(e)}
       />
     );

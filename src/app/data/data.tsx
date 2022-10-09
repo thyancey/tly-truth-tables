@@ -295,6 +295,7 @@ export const HINT_GIVERS: HintGiver[] = [
       footer:{
         startAt: 13,
         endAt: 14,
+        fps: 2,
       },
       hint:{
         startAt: 15,

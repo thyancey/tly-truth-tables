@@ -76,7 +76,12 @@ export function Footer() {
       <ul>
         {hints?.map((hint, idx) => (
           <StyledLilManContainer key={idx} style={getRandomPlacement(idx, [-1, 3], [120, 170], [-7, -2])} >
-            <LilMan hintGiver={hint.hintGiver} ssOverride={hint.hintGiver.ssData?.footer} onClick={() => onClickHint(idx)}/> 
+            <LilMan
+              isTalking={false}
+              hintGiver={hint.hintGiver}
+              ssOverride={hint.hintGiver.ssData?.footer}
+              onClick={() => onClickHint(idx)}
+            /> 
           </StyledLilManContainer>
         ))}
       </ul>
