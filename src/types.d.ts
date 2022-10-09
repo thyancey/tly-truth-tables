@@ -118,6 +118,7 @@ export type HintGiver = {
   name: string,
   thumbImage: string,
   largeImage: string,
+  bgImage?: string,
   bottomBoost?: number,
   imageType?: ImageType,
   spritesheetData?: SpritesheetData

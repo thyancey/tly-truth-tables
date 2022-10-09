@@ -1,26 +1,27 @@
-import { useCallback } from 'react';
-import styled from 'styled-components';
-import Spritesheet from 'react-responsive-spritesheet';
+import { useCallback } from "react";
+import styled from "styled-components";
+import Spritesheet from "react-responsive-spritesheet";
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { getColor, mixinFontFamily } from '../../themes';
-import { HintText } from './hinttext';
-import { selectActiveHint, setActiveHint } from './slice';
-import { HintGiver } from '../../types';
-import { produceWithPatches } from 'immer';
-import { LilMan } from '../../components/lilman';
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { getColor, mixinFontFamily } from "../../themes";
+import { HintText } from "./hinttext";
+import { selectActiveHint, setActiveHint } from "./slice";
+import { HintGiver } from "../../types";
+import { produceWithPatches } from "immer";
+import { LilMan } from "../../components/lilman";
+import { url } from "inspector";
 
 const StyledContainer = styled.div`
-  position:fixed;
-  z-index:1;
-  left:10%;
-  right:10%;
-  height:50%;
-  min-height:40rem;
-  top:20%;
+  position: fixed;
+  z-index: 1;
+  left: 10%;
+  right: 10%;
+  height: 50%;
+  min-height: 40rem;
+  top: 20%;
   padding: 2rem;
 
-  display:grid;
+  display: grid;
   grid-template-columns: 25% 75%;
   grid-template-rows: 3rem 2rem auto 10rem;
 `;
@@ -28,7 +29,7 @@ const StyledContainer = styled.div`
 const StyledLilManContainer = styled.div`
   grid-column: 1 / span 1;
   grid-row: 2 / span 2;
-  position:relative;
+  position: relative;
 `;
 
 const StyledHintBox = styled.div`
@@ -36,9 +37,9 @@ const StyledHintBox = styled.div`
   grid-row: 3 / span 1;
   padding: 2rem;
 
-  p{
-    ${mixinFontFamily('speech')};
-    font-size:5rem;
+  p {
+    ${mixinFontFamily("speech")};
+    font-size: 5rem;
   }
 `;
 
@@ -46,17 +47,16 @@ const StyledHintHeader = styled.div`
   grid-column: 1 / span 2;
   grid-row: 1 / span 2;
 
-  text-align:left;
+  text-align: left;
   font-size: 3rem;
   margin-top: -2rem;
-  
-  >*{
+
+  > * {
     font-size: 8rem;
-    color: ${getColor('black')};
-    opacity: .5;
+    color: ${getColor("black")};
+    opacity: 0.5;
   }
 `;
-
 
 const StyledControls = styled.div`
   grid-column: 1 / span 3;
@@ -64,47 +64,70 @@ const StyledControls = styled.div`
   padding: 0rem;
   z-index: 1;
 
-  button{
+  button {
     border-radius: 1rem;
     width: 100%;
     height: 100%;
-    background-color: ${getColor('brown_light')};
-    color: ${getColor('brown_dark')};
-    border: .5rem solid ${getColor('brown_dark')};
-    
+    background-color: ${getColor("brown_light")};
+    color: ${getColor("brown_dark")};
+    border: 0.5rem solid ${getColor("brown_dark")};
+
     font-size: 5rem;
 
     cursor: pointer;
 
-    &:hover{
-      color: ${getColor('brown')};
-      border-color: ${getColor('brown')};
+    &:hover {
+      color: ${getColor("brown")};
+      border-color: ${getColor("brown")};
     }
   }
 `;
 
 const LovelyFeud = styled.div`
-  position:fixed;
-  left:0;
-  right:0;
-  top:0;
-  bottom:0;
-  z-index:-2;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -2;
 
-  background-image: linear-gradient(to bottom, rgba(255,0,0,0), rgba(0,0,0,1));
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 0, 0, 0),
+    rgba(0, 0, 0, 1)
+  );
 `;
 
 const StyledBg = styled.div`
-  position:absolute;
-  left:0;
-  right:0;
-  top:0;
-  bottom:0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   z-index: -1;
 
   border-radius: 1rem;
-  background-color: ${getColor('white')};
-  border: .5rem solid ${getColor('brown_dark')};
+  background-color: ${getColor("white")};
+  border: 0.5rem solid ${getColor("brown_dark")};
+`;
+
+const StyledImageBg = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+
+  background-size: 200px;
+
+  /* border-radius: 1rem;
+  border: 0.5rem solid ${getColor("brown_dark")};
+  filter: blur(15px); */
+
+  border-radius: 15rem;
+  border: 1.5rem solid ${getColor("white")};
+  filter: blur(5px);
 `;
 
 export function Hint() {
@@ -113,9 +136,9 @@ export function Hint() {
   const dispatch = useAppDispatch();
   const onCloseHint = useCallback(() => {
     dispatch(setActiveHint(-1));
-  }, [ dispatch ]);
+  }, [dispatch]);
 
-  if(!hint) return null;
+  if (!hint) return null;
 
   return (
     <StyledContainer>
@@ -123,15 +146,22 @@ export function Hint() {
         <p>{hint.hintGiver.name}</p>
       </StyledHintHeader>
       <StyledLilManContainer title={hint.text}>
-        <LilMan hintGiver={hint.hintGiver} ssOverride={hint.hintGiver.ssData?.hint}/>
+        <LilMan
+          hintGiver={hint.hintGiver}
+          ssOverride={hint.hintGiver.ssData?.hint}
+        />
       </StyledLilManContainer>
       <StyledHintBox>
         <HintText hintText={hint.text} />
       </StyledHintBox>
       <StyledControls>
-        <button onClick={() => onCloseHint()}>{'CLOSE'}</button>
+        <button onClick={() => onCloseHint()}>{"CLOSE"}</button>
       </StyledControls>
-      <StyledBg />
+      {hint.hintGiver.bgImage ? (
+        <StyledImageBg style={{ backgroundImage: `url(${hint.hintGiver.bgImage})` }} />
+      ) : (
+        <StyledBg />
+      )}
       <LovelyFeud />
     </StyledContainer>
   );
