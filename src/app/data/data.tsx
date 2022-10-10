@@ -245,21 +245,21 @@ export const HINT_GIVERS: HintGiver[] = [
     ssData:{
       footer:{
         startAt: 2,
-        endAt: 3,
+        endAt: 4,
         fps: 1,
       },
       hint:{
-        startAt: 0,
+        startAt: 1,
         endAt: 2,
-        fps: 5,
+        fps: 1,
       }
     },
     spritesheetData: {
       image: 'assets/hinters/sprites/bobcat.png',
       widthFrame: 400,
       heightFrame: 600,
-      startAt: 0,
-      endAt: 1,
+      startAt: 1,
+      endAt: 2,
       steps: 1,
       fps: 5
     }
