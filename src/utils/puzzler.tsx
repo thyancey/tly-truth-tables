@@ -1,4 +1,4 @@
-import { AnswerSet, AttributeDef, AttributeDetail, CalculatedHint, HintGiver, InfluenceRatio, InfluenceType, OrderDescription, SortComparison } from '../types';
+import { AnswerSet, AttributeDef, AttributeDetail, CalculatedHint, HintGiver, InfluenceRatio, InfluenceType, OrderDescription, RawRoundData, RoundData, SortComparison } from '../types';
 import { RandFromArray, RandIdx, RandIdxFromArray } from './index';
 
 // what % of the time the same/different hint ratio is checked and attempted to be balanced;
@@ -215,7 +215,7 @@ export const generateSingleHint = (groupAttrDetails: AttributeDetail[][], influe
   }
 }
 
-export const getSortComparisons = (solutions: AnswerSet, attributes: AttributeDef[]) => {
+export const getSortComparisons = (attributes: AttributeDef[]) => {
   const sortComparisons: SortComparison[] = [];
   attributes.forEach((attr, idx) => {
     if(attr.type === 'order'){
@@ -239,7 +239,7 @@ export const getSortComparisons = (solutions: AnswerSet, attributes: AttributeDe
 }
 
 export const convertSolutionsToAttributeDetails = (solutions: AnswerSet, attributes: AttributeDef[]) => {
-  const rawSortComparisons = getSortComparisons(solutions, attributes);
+  const rawSortComparisons = getSortComparisons(attributes);
 
   return solutions.map((solution, sIdx) => {
     const sortComparisons = rawSortComparisons.map(sC => ({...sC, value: solution[sC.attributeIdx]}));
@@ -327,4 +327,8 @@ export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], 
   console.log('yesNoRatio is', yesNoRatio);
 
   return hints;
+}
+
+export const parseRoundData = (rawRoundData: RawRoundData): RoundData => {
+  return rawRoundData as RoundData;
 }

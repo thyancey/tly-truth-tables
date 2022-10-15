@@ -65,6 +65,14 @@ export type AttributeDetail = {
   sortComparisons: SortComparison[]
 };
 
+//placeholder for later abstraction
+export type RawRoundData = {
+  title: string,
+  description?: string,
+  valueSize: number,
+  attributes: AttributeDef[]
+};
+
 export type RoundData = {
   title: string,
   description?: string,

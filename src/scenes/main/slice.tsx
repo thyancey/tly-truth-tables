@@ -2,7 +2,7 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, Hint, RawCell, RenderedHint, RoundData, RoundStatus } from '../../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data';
-import { generateHints } from '../../utils/puzzler';
+import { generateHints, parseRoundData } from '../../utils/puzzler';
 
 const MAX_HINTS = 8;
 const ROUND_IDX = 0;
@@ -18,7 +18,7 @@ export interface GridState {
 }
 
 const initialState: GridState = {
-  roundData: SAMPLE_ROUNDDATA[ROUND_IDX],
+  roundData: parseRoundData(SAMPLE_ROUNDDATA[ROUND_IDX]),
   cellMatrix: [],
   hints: [],
   activeHintIdx: -1,

@@ -110,9 +110,7 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
         values: [
           {
             id: 'monkey',
-            // the $
             aliases: [ 'swinging rat' ],
-            // $ (only IS comparison) 
             descriptors: [ 'has legs', 'rhymes with "funky"' ]
           },
           {
@@ -135,6 +133,7 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
       {
         id: 'queue',
         type: 'order',
+        orderDescriptions: [ 'is earlier in line than', 'is later in line than' ],
         values: [
           {
             id: 'first',
