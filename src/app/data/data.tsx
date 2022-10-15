@@ -4,10 +4,279 @@ import { AnswerData, HintGiver, RawCell, RenderedAnswer, RoundData } from '../..
  * The attributes that defined the thingies this round
  */
 export const SAMPLE_ROUNDDATA: RoundData[] = [
+  // 2x3
+  {
+    title: '2 attributes, 3 values',
+    description: 'this puzzle has 2 attributes with 3 values each',
+    attributes:[
+      {
+        id: 'animal',
+        type: 'thing',
+        values: [
+          {
+            id: 'monkey',
+            aliases: [ 'swinging rat' ],
+            descriptors: [ 'has legs', 'rhymes with "funky"' ]
+          },
+          {
+            id: 'frog',
+            aliases: [ 'croaky boi' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          },
+          {
+            id: 'fish',
+            aliases: [ 'one with gills' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          }
+        ]
+      },
+      {
+        id: 'occupation',
+        type: 'thing',
+        values: [
+          {
+            id: 'firefighter',
+            aliases: [],
+            descriptors: [ 'uses a trampoline' ]
+          },
+          {
+            id: 'dentist',
+            aliases: [],
+            descriptors: []
+          },
+          {
+            id: 'clown',
+            aliases: [],
+            descriptors: [ 'uses a trampoline' ]
+          }
+        ]
+      }
+    ]
+  },
+  // 2x4
+  {
+    title: '2 attributes, 4 values',
+    description: 'this puzzle has 2 attributes with 4 values each',
+    attributes:[
+      {
+        id: 'person',
+        type: 'thing',
+        values: [
+          {
+            id: 'charlie',
+            aliases: [],
+            descriptors: []
+          },
+          {
+            id: 'mac',
+            aliases: [],
+            descriptors: []
+          },
+          {
+            id: 'dennis',
+            aliases: [],
+            descriptors: []
+          },
+          {
+            id: 'dee',
+            aliases: [],
+            descriptors: []
+          }
+        ]
+      },
+      {
+        id: 'drink',
+        type: 'modifier',
+        values: [
+          {
+            id: 'Monkey Booze',
+            aliases: [],
+            descriptors: []
+          },
+          {
+            id: 'Fight Milk',
+            aliases: [],
+            descriptors: []
+          },
+          {
+            id: 'Poison',
+            aliases: [],
+            descriptors: []
+          },
+          {
+            id: 'White Paint',
+            aliases: [],
+            descriptors: []
+          }
+        ]
+      }
+    ]
+  },
+  // 3x3
   {
     title: '3 attributes, 3 values',
+    description: 'this puzzle has 3 attributes with 3 values each',
+    attributes:[
+      {
+        id: 'animal',
+        type: 'thing',
+        values: [
+          {
+            id: 'monkey',
+            aliases: [ 'swinging rat' ], // ALIASES HAVE TO BE DISTINCT
+            descriptors: [ 'has legs', 'rhymes with "funky"' ] // DESCRIPTORS CAN BE SHARED FOR AN ATTRIBUTE
+          },
+          {
+            id: 'frog',
+            aliases: [ 'croaky boi' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          },
+          {
+            id: 'fish',
+            aliases: [ 'one with gills' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          }
+        ]
+      },
+      {
+        id: 'queue',
+        type: 'order',
+        orderDescriptions: [ 'is earlier in line than', 'is later in line than' ],
+        values: [
+          {
+            id: 'first',
+            aliases: [ 'first to arrive' ],
+            descriptors: [ 'first to arrive' ]
+          },
+          {
+            id: 'second',
+            aliases: [ 'second in line' ],
+            descriptors: [ 'second in line' ]
+          },
+          {
+            id: 'last',
+            aliases: [ 'last to show up' ],
+            descriptors: [ 'last to show up' ]
+          }
+        ]
+      },
+      {
+        id: 'occupation',
+        type: 'thing',
+        values: [
+          {
+            id: 'firefighter',
+            aliases: [],
+            descriptors: [ 'uses a trampoline' ]
+          },
+          {
+            id: 'dentist',
+            aliases: [],
+            descriptors: []
+          },
+          {
+            id: 'clown',
+            aliases: [],
+            descriptors: [ 'uses a trampoline' ]
+          }
+        ]
+      }
+    ]
+  },
+  // 3x4
+  {
+    title: '3 attributes, 4 values',
+    description: 'this puzzle has 3 attributes with 4 values each',
+    attributes:[
+      {
+        id: 'animal',
+        type: 'thing',
+        values: [
+          {
+            id: 'monkey',
+            aliases: [ 'swinging rat' ],
+            descriptors: [ 'has legs', 'rhymes with "funky"' ]
+          },
+          {
+            id: 'frog',
+            aliases: [ 'croaky boi' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          },
+          {
+            id: 'fish',
+            aliases: [ 'one with gills' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          },
+          {
+            id: 'crab',
+            aliases: [ 'pinchy boi' ],
+            descriptors: [ 'loves the water' ]
+          }
+        ]
+      },
+      {
+        id: 'queue',
+        type: 'order',
+        orderDescriptions: [ 'is earlier in line than', 'is later in line than' ],
+        values: [
+          {
+            id: 'first',
+            // the $
+            aliases: [ 'first to arrive' ],
+            // [is, is not] the $
+            descriptors: [ 'first to arrive' ]
+          },
+          {
+            id: 'second',
+            aliases: [],
+            descriptors: [ 'in the middle of the line' ]
+          },
+          {
+            id: 'third',
+            aliases: [],
+            descriptors: [ 'in the middle of the line' ]
+          },
+          {
+            id: 'last',
+            aliases: [ 'last to show up' ],
+            descriptors: [ 'last to show up' ]
+          }
+        ]
+      },
+      {
+        id: 'occupation',
+        type: 'thing',
+        values: [
+          {
+            id: 'firefighter',
+            // the $
+            aliases: [],
+            // $ (only IS comparison) 
+            descriptors: [ 'uses a trampoline' ]
+          },
+          {
+            id: 'dentist',
+            aliases: [],
+            descriptors: [ 'makes a lot of money' ]
+          },
+          {
+            id: 'clown',
+            aliases: [],
+            descriptors: [ 'uses a trampoline' ]
+          },
+          {
+            id: 'lawyer',
+            aliases: [],
+            descriptors: [ 'makes a lot of money' ]
+          }
+        ]
+      }
+    ]
+  },
+  // 4x3
+  {
+    title: '4 attributes, 3 values',
     description: 'this puzzle has 4 attributes with 3 values each',
-    valueSize: 3,
     attributes:[
       {
         id: 'animal',
@@ -99,10 +368,11 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
         ]
       }
     ]
-  },{
-    title: '3 attributes, 4 values',
+  },
+  // 4x4
+  {
+    title: '4 attributes, 4 values',
     description: 'this puzzle has 4 attributes with 4 values each',
-    valueSize: 4,
     attributes:[
       {
         id: 'animal',

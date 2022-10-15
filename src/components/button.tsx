@@ -3,12 +3,12 @@ import { MouseEventHandler } from 'hoist-non-react-statics/node_modules/@types/r
 import { getColor } from '../themes';
 
 export const ScButton = styled.div`
-  display: inline-block;
+  /* display: inline-block; */
   cursor: pointer;
 
   >div{
     padding: 0.5rem 1rem;
-    display: inline-block;
+    /* display: inline-block; */
     border-radius: .5rem;
     color: .5rem solid ${getColor('brown_dark')};
     border: .5rem solid ${getColor('brown_dark')};

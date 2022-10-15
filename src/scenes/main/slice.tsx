@@ -5,29 +5,30 @@ import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data
 import { generateHints, parseRoundData } from '../../utils/puzzler';
 
 const MAX_HINTS = 8;
-const ROUND_IDX = 0;
-
 
 export interface GridState {
-  roundData: RoundData,
+  roundData: RoundData | null,
   cellMatrix: CellMatrix,
   hints: Hint[],
   activeHintIdx: number,
   solution: AnswerSet | null,
   roundStatus: RoundStatus,
   gameStatus: GameStatus,
-  roundIdx: number
+  roundIdx: number,
+  gameReady: boolean
 }
 
 const initialState: GridState = {
-  roundData: parseRoundData(SAMPLE_ROUNDDATA[ROUND_IDX]),
+  // roundData: parseRoundData(SAMPLE_ROUNDDATA[ROUND_IDX]),
+  roundData: null,
   cellMatrix: [],
   hints: [],
   activeHintIdx: -1,
   solution: null,
   roundStatus: 'idle',
   gameStatus: 'start',
-  roundIdx: -1
+  roundIdx: -1,
+  gameReady: false
 };
 
 
@@ -35,10 +36,11 @@ export const gridSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-    resetMatrix: (state: GridState) => {
-      if(state.roundData.attributes?.length > 0){
-        const numAttributes = state.roundData.attributes?.length || 0;
-        const numValues = state.roundData.valueSize;
+    resetMatrix: (state: GridState, action: PayloadAction<RoundData>) => {
+      const roundData = action.payload;
+      if(roundData.attributes?.length > 0){
+        const numAttributes = roundData.attributes.length || 0;
+        const numValues = roundData.attributes[0].values.length;
         const boxSize = Math.pow(numValues, 2);
 
         if(numAttributes > 1 && numAttributes < 6){
@@ -71,7 +73,8 @@ export const gridSlice = createSlice({
 
           state.solution = solutionSet;
           state.cellMatrix = newMatrix;
-          state.hints = generateHints(solutionSet, state.roundData.attributes, HINT_GIVERS, MAX_HINTS);
+          state.gameReady = true;
+          state.hints = generateHints(solutionSet, roundData.attributes, HINT_GIVERS, MAX_HINTS);
         } else{
           console.error('must have between 2 and 5 attributes');
           state.cellMatrix = [];
@@ -95,7 +98,6 @@ export const gridSlice = createSlice({
       if(action.payload === true){
         state.roundStatus = 'correct';
         state.gameStatus = 'roundWin';
-        state.roundIdx++;
       }else{
         state.roundStatus = 'incorrect';
       }
@@ -103,15 +105,22 @@ export const gridSlice = createSlice({
     setGameStatus: (state, action: PayloadAction<GameStatus>) => {
       state.gameStatus = action.payload;
     },
-    startNextRound: (state) => {
-      console.log('startNextRound!');
+    startRound: (state, action: PayloadAction<number>) => {
+      state.gameReady = false;
+      state.roundIdx = getNextRoundIdx(action.payload - 1);
       state.gameStatus = 'playing';
-      state.roundIdx++;
+    },
+    startNextRound: (state) => {
+      state.gameReady = false;
+      state.roundIdx = getNextRoundIdx(state.roundIdx);
+      state.gameStatus = 'playing';
     },
   } 
 });
 
-export const { resetMatrix, rotateCell, setActiveHint, submitAnswer, startNextRound, setGameStatus } = gridSlice.actions;
+export const { resetMatrix, rotateCell, setActiveHint, submitAnswer, startRound, startNextRound, setGameStatus } = gridSlice.actions;
+
+
 
 // answer set is the raw attributes (in order) and their values
 /// [1, 1, 1] would mean a valueIdx of 1 for attributes 0, 1, and 2
@@ -171,11 +180,29 @@ export const getHints = (state: RootState) => state.board.hints;
 export const getActiveHintIdx = (state: RootState) => state.board.activeHintIdx;
 export const getRoundStatus = (state: RootState) => state.board.roundStatus;
 export const getGameStatus = (state: RootState) => state.board.gameStatus;
+export const getRoundIdx = (state: RootState) => state.board.roundIdx;
+export const getGameReady = (state: RootState) => state.board.gameReady;
 
 export const renderHint = (hint: Hint) => ({
   hintGiver: HINT_GIVERS[hint.hintGiverIdx],
   text: hint.text
 });
+
+export const getNextRoundIdx = (curIdx: number) => {
+  if(curIdx + 1 < SAMPLE_ROUNDDATA.length){
+    return curIdx + 1;
+  }
+
+  // for now, just start over!
+  return 0;
+}
+
+export const selectRoundData = createSelector(
+  [getRoundIdx],
+  (roundIdx): RoundData => {
+    return parseRoundData(SAMPLE_ROUNDDATA[roundIdx])
+  }
+)
 
 export const selectHints = createSelector(
   [getHints],
@@ -194,15 +221,15 @@ export const selectActiveHint = createSelector(
 );
 
 export const selectAttributes = createSelector(
-  [getRoundData],
+  [selectRoundData],
   (roundData) => roundData.attributes
 );
 
 export const selectGridInfo = createSelector(
-  [getRoundData],
+  [selectRoundData],
   (roundData) => ({
     numAttributes: roundData.attributes.length,
-    gridSize: roundData.valueSize
+    gridSize: roundData.attributes[0].values.length
   })
 );
 
@@ -221,13 +248,14 @@ export const selectGridLabels = createSelector(
 );
 
 export const selectGridBox = createSelector(
-  [getRoundData, getCellMatrix],
+  [selectRoundData, getCellMatrix],
   (roundData, cellMatrix) => {
-    const gridShape = getGridShape(roundData.attributes?.length);
+    const gridShape = getGridShape(roundData.attributes.length);
+    const numValues = roundData.attributes[0].values.length;
     let idx = 0;
     const gridSize = gridShape[0].length;
 
-    const boxSize = Math.pow(roundData.valueSize, 2);
+    const boxSize = Math.pow(numValues, 2);
     return gridShape?.map((row, rIdx) => {
       return [...Array(gridSize)].map((_, cIdx) => {
         let boxArr: CellObj[] = [];
@@ -276,10 +304,8 @@ export const checkIfSolved = createSelector(
 
 
 /* unused stuff below here */
-
-
 export const selectCurrentAnswer = createSelector(
-  [getRoundData, getCellMatrix, getSolution],
+  [selectRoundData, getCellMatrix, getSolution],
   (roundData, cellMatrix, solution) => ({
     roundData: roundData,
     cellMatrix: cellMatrix,

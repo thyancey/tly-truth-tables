@@ -2,20 +2,11 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
-import { checkIfSolved, getRoundStatus, resetMatrix, selectSolution, setGameStatus, submitAnswer } from './slice';
+import { checkIfSolved, getRoundIdx, getRoundStatus, setGameStatus, submitAnswer } from './slice';
 
 const StyledContainer = styled.div`
   margin-left:2rem;
 `;
-
-const StyledDebug = styled.div`
-  font-size:2rem;
-  opacity:.25;
-
-  li{
-    list-style:none;
-  }
-`
 
 const StyledStatusContainer = styled.div`
   position:absolute;
@@ -76,9 +67,9 @@ const StyledHelpButton = styled(StyledStatus)`
 `;
 
 export function Status() {
-  const renderedSolution = useAppSelector(selectSolution);
   const solved = useAppSelector(checkIfSolved);
   const roundStatus = useAppSelector(getRoundStatus);
+  const roundIdx = useAppSelector(getRoundIdx);
 
   const dispatch = useAppDispatch();
   const onSubmitGame = useCallback((solved:boolean, forceWin?: boolean) => {
@@ -87,19 +78,10 @@ export function Status() {
 
   return (
     <StyledContainer>
-      <StyledDebug>
-        <p>{'DEBUG SOLUTION'}</p>
-        <ul>
-          {renderedSolution?.map((rS, idx) => (
-            <li key={idx}>{`[ ${rS.join(' | ')} ]`}</li>
-          ))}
-        </ul>
-      </StyledDebug>
-
-      
       <StyledStatusContainer>
+        <p>{`Level ${roundIdx + 1}`}</p>
         <p>{roundStatus}</p>
-        <StyledResetButton onClick={() => dispatch(resetMatrix())}>{'RESET'}</StyledResetButton>
+        {/* <StyledResetButton onClick={() => dispatch(resetMatrix())}>{'RESET'}</StyledResetButton> */}
         <StyledSolvedStatus onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedStatus>
         <StyledSolvedStatus onClick={() => onSubmitGame(solved, true)}>{'CHEAT!'}</StyledSolvedStatus>
         <StyledHelpButton onClick={() => dispatch(setGameStatus('help'))}>{'HELP?'}</StyledHelpButton>

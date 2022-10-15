@@ -29,8 +29,9 @@ export type CellMatrix = CellObj[];
 
 export type ValueDef = {
   id: string,
-  aliases: string[],
-  descriptors: string[]
+  aliases: string[], // ALIASES HAVE TO BE DISTINCT
+  descriptors: string[]  // DESCRIPTORS CAN BE SHARED FOR AN ATTRIBUTE
+  // when type is "thing", descriptors only can have an IS comparison
 }
 export type OrderDescription = [
   lessThan: string,
@@ -69,14 +70,12 @@ export type AttributeDetail = {
 export type RawRoundData = {
   title: string,
   description?: string,
-  valueSize: number,
   attributes: AttributeDef[]
 };
 
 export type RoundData = {
   title: string,
   description?: string,
-  valueSize: number,
   attributes: AttributeDef[]
 };
 

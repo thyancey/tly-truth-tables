@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
-import { CellObj, CellStatus } from '../../types';
+import { CellObj, CellStatus, RawCell } from '../../types';
 import { rotateCell, selectGridBox, selectGridLabels, selectGridInfo } from './slice';
 
 const StyledBoard = styled.div`
@@ -41,15 +41,13 @@ type StyledLabelProps = {
 const StyledLeftLabel = styled.div<StyledLabelProps>`
   text-align:right;
   ${p => p.gridSize === 4 ? css`
+    padding-top:0rem;
     height: 25%;
   `: css`
+    padding-top:1rem;
     height: 33%;
   `}
-  ${p => p.gridSize === 4 ? css`
-    padding-top:0rem;
-  `: css`
-    padding-top:1rem;
-  `}
+
   padding-right:1rem;
   position:relative;
   >span{
@@ -119,6 +117,11 @@ const StyledCellGroup = styled(StyledRawCellGroup)<StyledCellGroupProps>`
   grid-template-rows: repeat(${p => p.gridSize}, ${p => p.cellRatio});
   column-gap: .6rem;
   row-gap: .6rem;
+
+  /* 
+    grid-column: 1 i[ix]
+    grid-row: 2 i
+  */
 `
 type StyledCellProps = {
   status: CellStatus,
@@ -211,11 +214,16 @@ export function Board() {
   }, [ gridInfo.gridSize ])
 
 
-  const renderCellGroup = (cellGroup: CellObj[], cgKey: string, gridSize: number, cellRatio: string) => {
+  const renderCellGroup = (cellGroup: CellObj[], cgKey: string, gridSize: number, cellRatio: string, boardCell: RawCell) => {
     // [0] check here cause this is all janky and the individual cells are undefined on load
     if(cellGroup.length > 0 && cellGroup[0]){
       return (
-        <StyledCellGroup key={cgKey} gridSize={gridSize} cellRatio={cellRatio}>
+        <StyledCellGroup 
+          key={cgKey}
+          gridSize={gridSize}
+          cellRatio={cellRatio}
+          style={{gridRow: `${boardCell[0] + 1} / span 1`, gridColumn: `${boardCell[1] + 1} / span 1`}}
+        >
           {cellGroup.map(cell => (
             <StyledCell 
               key={`cell${cell?.idx}`}
@@ -229,15 +237,18 @@ export function Board() {
     }
 
     return (
-      <BlankCellGroup key={cgKey} />
+      <BlankCellGroup 
+        key={cgKey} 
+        style={{gridRow: `${boardCell[0] + 1} / span 1`, gridColumn: `${boardCell[1] + 1} / span 1`}}
+      />
     )
   }
 
   return (
     <StyledBoard>
       <StyledCells>
-        {grid.map(gridRow => (
-          gridRow.map((cellGroup, cgIdx) => renderCellGroup(cellGroup, `cg${cgIdx}`, gridInfo.gridSize, cellRatio)
+        {grid.map((gridRow, grIdx) => (
+          gridRow.map((cellGroup, cgIdx) => renderCellGroup(cellGroup, `cg${cgIdx}`, gridInfo.gridSize, cellRatio, [grIdx, cgIdx])
         )))}
       </StyledCells>
       <StyledTopLabels>
@@ -246,7 +257,6 @@ export function Board() {
             {gl.values.map((v,vIdx) => (
               <StyledTopLabel key={`tv${vIdx}`} gridSize={gridInfo.gridSize}>
                 <span>{v.id.toUpperCase()}</span>
-                {/* <span>{`${v} (${gl.id})`}</span> */}
               </StyledTopLabel>
             ))}
           </div>
@@ -258,7 +268,6 @@ export function Board() {
             {gl.values.map((v,vIdx) => (
               <StyledLeftLabel key={`lv${vIdx}`} gridSize={gridInfo.gridSize}>
                 <span>{v.id.toUpperCase()}</span>
-                {/* <span>{`${v} (${gl.id})`}</span> */}
               </StyledLeftLabel>
             ))}
           </div>

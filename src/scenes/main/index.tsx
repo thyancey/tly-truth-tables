@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 import { getColor } from '../../themes';
 import { useAppDispatch } from '../../app/hooks';
-import { resetMatrix } from './slice';
+import { getGameReady, resetMatrix, selectRoundData } from './slice';
 import { useEffect } from 'react';
 import { Board } from './board';
 import { Status } from './status';
 import { Footer } from './footer';
 import { Hint } from './hint';
 import { Modal } from './modal';
+import { useSelector } from 'react-redux';
 
 const StyledContainer = styled.div`
   position:absolute;
@@ -54,10 +55,12 @@ const TITLE_TEXT = 'TOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTH
 
 export function Main() {
   const dispatch = useAppDispatch();
+  const roundData = useSelector(selectRoundData);
+  const gameReady = useSelector(getGameReady);
 
   useEffect(() => {
-    dispatch(resetMatrix());
-  }, [dispatch]);
+    if(roundData) dispatch(resetMatrix(roundData));
+  }, [dispatch, roundData]);
 
   return (
     <StyledContainer>
@@ -65,12 +68,12 @@ export function Main() {
       <Hint />
       <StyledTitle>{TITLE_TEXT}</StyledTitle>
       <StyledHeader>
-        <Status />
+        {gameReady && <Status />}
       </StyledHeader>
       <StyledBody>
-        <Board />
+        {gameReady && <Board />}
       </StyledBody>
-      <Footer />
+      {gameReady && <Footer />}
     </StyledContainer>
   );
 }
