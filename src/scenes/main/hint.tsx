@@ -6,10 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getColor, mixinFontFamily } from "../../themes";
 import { HintText } from "./hinttext";
 import { selectActiveHint, setActiveHint } from "./slice";
-import { HintGiver } from "../../types";
-import { produceWithPatches } from "immer";
 import { LilMan } from "../../components/lilman";
-import { url } from "inspector";
 
 const StyledContainer = styled.div`
   position: fixed;
@@ -111,24 +108,40 @@ const StyledBg = styled.div`
   border: 0.5rem solid ${getColor("brown_dark")};
 `;
 
-const StyledImageBg = styled.div`
+const StyledImageContainer = styled.div`
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  left: -2rem;
+  right: -2rem;
+  top: -2rem;
+  bottom: -2rem;
   z-index: -1;
 
-  background-size: 200px;
+  overflow:hidden;
 
-  /* border-radius: 1rem;
-  border: 0.5rem solid ${getColor("brown_dark")};
-  filter: blur(15px); */
-
-  border-radius: 15rem;
+  border-radius: 3rem;
   border: 1.5rem solid ${getColor("white")};
-  filter: blur(5px);
+
+  >div:nth-child(1){
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    background-size: 200px;
+    filter: blur(5px);
+    opacity:.5;
+  }
+
+  >div:nth-child(2){
+    width:100%;
+    height:100%;
+    background-color:white;
+    z-index: -1;
+  }
 `;
+
+
 
 export function Hint() {
   const hint = useAppSelector(selectActiveHint);
@@ -159,7 +172,10 @@ export function Hint() {
         <button onClick={() => onCloseHint()}>{"CLOSE"}</button>
       </StyledControls>
       {hint.hintGiver.bgImage ? (
-        <StyledImageBg style={{ backgroundImage: `url(${hint.hintGiver.bgImage})` }} />
+        <StyledImageContainer>
+          <div style={{ backgroundImage: `url(${hint.hintGiver.bgImage})` }} />
+          <div></div>
+        </StyledImageContainer>
       ) : (
         <StyledBg />
       )}

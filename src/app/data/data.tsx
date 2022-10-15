@@ -226,14 +226,14 @@ export const HINT_GIVERS: HintGiver[] = [
     name: 'Fly Cook',
     thumbImage: 'assets/hinters/fiveflys-static.gif',
     largeImage: 'assets/hinters/fiveflys.gif',
-    bgImage: 'assets/bg/bg-goobers.gif',
+    // bgImage: 'assets/bg/bg-goobers.gif',
   },
   {
     id: 'eyetower',
     name: 'Eye Tower',
     thumbImage: 'assets/hinters/eyetower-static.gif',
     largeImage: 'assets/hinters/eyetower.gif',
-    bgImage: 'assets/bg/bg-firespiral.gif',
+    // bgImage: 'assets/bg/bg-firespiral.gif',
   },
   {
     id: 'businessbobcat',
@@ -251,7 +251,7 @@ export const HINT_GIVERS: HintGiver[] = [
       hint:{
         startAt: 1,
         endAt: 2,
-        fps: 1,
+        fps: 4,
       }
     },
     spritesheetData: {
@@ -259,8 +259,8 @@ export const HINT_GIVERS: HintGiver[] = [
       widthFrame: 400,
       heightFrame: 600,
       startAt: 1,
-      endAt: 2,
-      steps: 1,
+      endAt: 4,
+      steps: 4,
       fps: 5
     }
   },
@@ -269,14 +269,14 @@ export const HINT_GIVERS: HintGiver[] = [
     name: 'Fridgey',
     thumbImage: 'assets/hinters/fridgey-static.gif',
     largeImage: 'assets/hinters/fridgey.gif',
-    bgImage: 'assets/bg/bg-jt.gif',
+    // bgImage: 'assets/bg/bg-jt.gif',
   },
   {
     id: 'mothman',
     name: 'Mothman',
     thumbImage: 'assets/hinters/mothman-static.gif',
     largeImage: 'assets/hinters/mothman.gif',
-    bgImage: 'assets/bg/bg-splat.gif',
+    // bgImage: 'assets/bg/bg-splat.gif',
   },
   {
     id: 'raincat',

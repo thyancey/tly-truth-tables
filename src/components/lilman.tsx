@@ -39,6 +39,10 @@ export function LilMan({hintGiver, onClick, isTalking = false, ssOverride = {} a
   if(hintGiver.imageType === 'spritesheet'){
     if(!hintGiver || !hintGiver.spritesheetData) return null;
 
+    console.log('LilMan', hintGiver.id);
+    console.log('LilMan', ssOverride.startAt, ssOverride.endAt, ssOverride.fps);
+
+
     return (
       <StyledLilManSpritesheet>
         <Spritesheet
@@ -47,8 +51,8 @@ export function LilMan({hintGiver, onClick, isTalking = false, ssOverride = {} a
           heightFrame={hintGiver.spritesheetData.heightFrame}
           startAt={ssOverride.startAt !== undefined ? ssOverride.startAt : hintGiver.spritesheetData.startAt}
           endAt={ssOverride.endAt !== undefined ? ssOverride.endAt : hintGiver.spritesheetData.endAt}
-          steps={hintGiver.spritesheetData.steps}
           fps={ssOverride.fps !== undefined ? ssOverride.fps : hintGiver.spritesheetData.fps}
+          steps={hintGiver.spritesheetData.steps}
           direction={'forward'}
           loop={true}
           backgroundPosition={'center bottom'}

@@ -30,7 +30,7 @@ const StyledLilManContainer = styled.div`
     left:50%;
     transform: translateX(-50%);
     background-position:bottom;
-    background-size:cover;
+    background-size:contain;
     cursor: pointer;
     &:hover{
       bottom:0rem;
