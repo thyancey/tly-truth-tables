@@ -4,7 +4,7 @@ import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, Hint, Ra
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data';
 import { generateHints } from '../../utils/puzzler';
 
-const MAX_HINTS = 6;
+const MAX_HINTS = 8;
 const ROUND_IDX = 0;
 
 

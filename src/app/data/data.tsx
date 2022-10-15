@@ -225,44 +225,92 @@ export const HINT_GIVERS: HintGiver[] = [
     id: 'fiveflys',
     name: 'Fly Cook',
     thumbImage: 'assets/hinters/fiveflys-static.gif',
-    largeImage: 'assets/hinters/fiveflys.gif'
+    largeImage: 'assets/hinters/fiveflys.gif',
+    // bgImage: 'assets/bg/bg-goobers.gif',
   },
   {
     id: 'eyetower',
     name: 'Eye Tower',
     thumbImage: 'assets/hinters/eyetower-static.gif',
-    largeImage: 'assets/hinters/eyetower.gif'
+    largeImage: 'assets/hinters/eyetower.gif',
+    // bgImage: 'assets/bg/bg-firespiral.gif',
   },
   {
     id: 'businessbobcat',
     name: 'Business Bobcat',
+    imageType: 'spritesheet',
     thumbImage: 'assets/hinters/businesscat-static.gif',
-    largeImage: 'assets/hinters/businesscat.gif'
+    largeImage: 'assets/hinters/businesscat.gif',
+    bgImage: 'assets/bg/bg-cheesewave.gif',
+    ssData:{
+      footer:{
+        startAt: 2,
+        endAt: 4,
+        fps: 1,
+      },
+      hint:{
+        startAt: 1,
+        endAt: 2,
+        fps: 4,
+      }
+    },
+    spritesheetData: {
+      image: 'assets/hinters/sprites/bobcat.png',
+      widthFrame: 400,
+      heightFrame: 600,
+      startAt: 1,
+      endAt: 4,
+      steps: 4,
+      fps: 5
+    }
   },
   {
     id: 'fridgey',
     name: 'Fridgey',
     thumbImage: 'assets/hinters/fridgey-static.gif',
-    largeImage: 'assets/hinters/fridgey.gif'
+    largeImage: 'assets/hinters/fridgey.gif',
+    // bgImage: 'assets/bg/bg-jt.gif',
   },
   {
     id: 'mothman',
     name: 'Mothman',
     thumbImage: 'assets/hinters/mothman-static.gif',
-    largeImage: 'assets/hinters/mothman.gif'
+    largeImage: 'assets/hinters/mothman.gif',
+    // bgImage: 'assets/bg/bg-splat.gif',
   },
   {
     id: 'raincat',
     name: 'Rain Cat',
     thumbImage: 'assets/hinters/raincat-static.gif',
-    largeImage: 'assets/hinters/raincat.gif'
+    largeImage: 'assets/hinters/raincat.gif',
+    bottomBoost: 10,
   },
   {
     id: 'raccoon',
     name: 'Raccoon',
     imageType: 'spritesheet',
     thumbImage: 'assets/hinters/sprites/raccoon.png',
-    largeImage: 'assets/hinters/sprites/raccoon.png'
+    largeImage: 'assets/hinters/sprites/raccoon.png',
+    ssData:{
+      footer:{
+        startAt: 13,
+        endAt: 14,
+        fps: 2,
+      },
+      hint:{
+        startAt: 15,
+        endAt: 16,
+      }
+    },
+    spritesheetData: {
+      image: 'assets/hinters/sprites/raccoon.png',
+      widthFrame: 56,
+      heightFrame: 56,
+      startAt: 15,
+      endAt: 16,
+      steps: 20,
+      fps: 5
+    }
   }
 ]
 
