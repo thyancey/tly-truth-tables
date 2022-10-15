@@ -157,3 +157,9 @@ export type InfluenceRatio = [
   yesCount: number,
   noCount: number
 ];
+
+export type RoundInfo = {
+  title: string,
+  description?: string,
+  level: number
+}

@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, RenderedHint, RoundData } from '../../types';
+import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, RenderedHint, RoundData, RoundInfo } from '../../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data';
 import { generateHints, parseRoundData } from '../../utils/puzzler';
 
@@ -175,7 +175,6 @@ const getNextStatus = (cellObj: CellObj) => {
 
 
 export const getCellMatrix = (state: RootState) => state.board.cellMatrix;
-export const getRoundData = (state: RootState) => state.board.roundData;
 export const getSolution = (state: RootState) => state.board.solution;
 export const getHints = (state: RootState) => state.board.hints;
 export const getActiveHintIdx = (state: RootState) => state.board.activeHintIdx;
@@ -195,14 +194,26 @@ export const getNextRoundIdx = (curIdx: number) => {
 
   // for now, just start over!
   return 0;
-}
+};
 
 export const selectRoundData = createSelector(
   [getRoundIdx],
   (roundIdx): RoundData => {
     return parseRoundData(SAMPLE_ROUNDDATA[roundIdx])
   }
-)
+);
+
+export const selectRoundInfo = createSelector(
+  [selectRoundData, getRoundIdx],
+  (roundData, roundIdx): RoundInfo | null => {
+    if(!roundData) return null;
+    return {
+      title: roundData.title,
+      description: roundData.description,
+      level: roundIdx + 1
+    }
+  }
+);
 
 export const selectHints = createSelector(
   [getHints],

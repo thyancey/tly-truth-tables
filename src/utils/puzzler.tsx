@@ -99,8 +99,8 @@ export const getSuffix = (attr: AttributeDetail, sameGroup: boolean, sortCompari
     case 'order': {
       // order will never have a sortComparison 
       if(descriptor) {
-        // 'THE_PREFIX {is:is not} the {first to arrive}'
-        return `${sameGroup ? 'is' : 'is not'} the ${descriptor}`;
+        // 'THE_PREFIX {is:is not} {near the end of the line}'
+        return `${sameGroup ? 'is' : 'is not'} ${descriptor}`;
       }
       // 'THE_PREFIX {is:is not} the {first}'
       return `${sameGroup ? 'is' : 'is not'} the ${attr.value}`;

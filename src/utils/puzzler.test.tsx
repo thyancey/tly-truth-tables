@@ -9,25 +9,29 @@ describe('puzzler utils', () => {
         {
           "type": "thing",
           "attribute": "animal",
-          "attributeDisplay": "animal",
           "attributeIdx": 0,
           "value": "monkey",
           "valueIdx": 0,
           "solutionIdx": 0,
-          "id": "0-0-0"
+          "id": "0-0-0",
+          "aliases": [],
+          "descriptors": [],
+          "sortComparisons": []
         },
         {
           "type": "order",
           "attribute": "queue",
-          "attributeDisplay": "in line",
           "attributeIdx": 1,
           "value": "second",
           "valueIdx": 1,
           "solutionIdx": 0,
-          "id": "0-1-1"
+          "id": "0-1-1",
+          "aliases": [],
+          "descriptors": [],
+          "sortComparisons": []
         }
       );
-      expect(result).toEqual('The monkey is the second in line.');
+      expect(result).toEqual('The monkey is the second.');
     });
 
     it('should describe mismatch for attribute in other group', () => {
@@ -35,25 +39,29 @@ describe('puzzler utils', () => {
         {
           "type": "thing",
           "attribute": "animal",
-          "attributeDisplay": "animal",
           "attributeIdx": 0,
           "value": "monkey",
           "valueIdx": 0,
           "solutionIdx": 0,
-          "id": "0-0-0"
+          "id": "0-0-0",
+          "aliases": [],
+          "descriptors": [],
+          "sortComparisons": []
         },
         {
           "type": "order",
           "attribute": "queue",
-          "attributeDisplay": "in line",
           "attributeIdx": 1,
           "value": "second",
           "valueIdx": 1,
           "solutionIdx": 1,
-          "id": "1-1-1"
+          "id": "1-1-1",
+          "aliases": [],
+          "descriptors": [],
+          "sortComparisons": []
         }
       );
-      expect(result).toEqual('The monkey is not the second in line.');
+      expect(result).toEqual('The monkey is not the second.');
     });
 
     it('should handle syntax for comparing things from the same group', () => {
@@ -61,22 +69,26 @@ describe('puzzler utils', () => {
         {
           "type": "thing",
           "attribute": "animal",
-          "attributeDisplay": "animal",
           "attributeIdx": 0,
           "value": "monkey",
           "valueIdx": 0,
           "solutionIdx": 0,
-          "id": "0-0-0"
+          "id": "0-0-0",
+          "aliases": [],
+          "descriptors": [],
+          "sortComparisons": []
         },
         {
           "type": "thing",
           "attribute": "occupation",
-          "attributeDisplay": "occupation",
           "attributeIdx": 1,
           "value": "doctor",
           "valueIdx": 1,
           "solutionIdx": 0,
-          "id": "0-1-1"
+          "id": "0-1-1",
+          "aliases": [],
+          "descriptors": [],
+          "sortComparisons": []
         }
       );
       expect(result).toEqual('The monkey is a doctor.');
@@ -91,22 +103,26 @@ describe('puzzler utils', () => {
           {
             "type": "thing",
             "attribute": "animal",
-            "attributeDisplay": "animal",
             "attributeIdx": 0,
             "value": "monkey",
             "valueIdx": 0,
             "solutionIdx": 0,
-            "id": "0-0-0"
+            "id": "0-0-0",
+            "aliases": [],
+            "descriptors": [],
+            "sortComparisons": []
           },
           {
             "type": "thing",
             "attribute": "occupation",
-            "attributeDisplay": "occupation",
             "attributeIdx": 1,
             "value": "doctor",
             "valueIdx": 1,
             "solutionIdx": 0,
-            "id": "0-1-1"
+            "id": "0-1-1",
+            "aliases": [],
+            "descriptors": [],
+            "sortComparisons": []
           }
         ],
         {
@@ -126,32 +142,38 @@ describe('puzzler utils', () => {
           {
             "type": "thing",
             "attribute": "animal",
-            "attributeDisplay": "animal",
             "attributeIdx": 0,
             "value": "monkey",
             "valueIdx": 0,
             "solutionIdx": 0,
-            "id": "0-0-0"
+            "id": "0-0-0",
+            "aliases": [],
+            "descriptors": [],
+            "sortComparisons": []
           },
           { // this one has same attribute, and is also of type "order", FILTER IT OUT!
             "type": "order",
             "attribute": "queue",
-            "attributeDisplay": "in line",
             "attributeIdx": 1,
             "value": "first",
             "valueIdx": 1,
             "solutionIdx": 0,
-            "id": "0-1-1"
+            "id": "0-1-1",
+            "aliases": [],
+            "descriptors": [],
+            "sortComparisons": []
           },
           { // this one has a different attribute, so it shouldnt be filtered
             "type": "order",
             "attribute": "birthday",
-            "attributeDisplay": "birthday",
             "attributeIdx": 2,
             "value": "first",
             "valueIdx": 1,
             "solutionIdx": 0,
-            "id": "0-2-1"
+            "id": "0-2-1",
+            "aliases": [],
+            "descriptors": [],
+            "sortComparisons": []
           }
         ],
         {
@@ -173,22 +195,26 @@ describe('puzzler utils', () => {
           {
             "type": "thing",
             "attribute": "animal",
-            "attributeDisplay": "animal",
             "attributeIdx": 0,
             "value": "monkey",
             "valueIdx": 0,
             "solutionIdx": 0,
-            "id": "0-0-0"
+            "id": "0-0-0",
+            "aliases": [],
+            "descriptors": [],
+            "sortComparisons": []
           },
           {
             "type": "thing",
             "attribute": "occupation",
-            "attributeDisplay": "occupation",
             "attributeIdx": 1,
             "value": "doctor",
             "valueIdx": 1,
             "solutionIdx": 0,
-            "id": "0-1-1"
+            "id": "0-1-1",
+            "aliases": [],
+            "descriptors": [],
+            "sortComparisons": []
           }
         ]
       );

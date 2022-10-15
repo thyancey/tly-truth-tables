@@ -55,30 +55,30 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
   },
   // 2x4
   {
-    title: '2 attributes, 4 values',
-    description: 'this puzzle has 2 attributes with 4 values each',
+    title: 'Charlie, Mac, Dennis, and Sweet Dee',
+    description: 'Charlie, Mac, Dennis, and Sweet Dee all showed up to the Pub after it was supposed to open, in what order did they show up to work?',
     attributes:[
       {
         id: 'person',
         type: 'name',
         values: [
           {
-            id: 'charlie',
+            id: 'Charlie',
             aliases: [],
             descriptors: ['has a beard']
           },
           {
-            id: 'mac',
+            id: 'Mac',
             aliases: [],
             descriptors: ['has a beard']
           },
           {
-            id: 'dennis',
+            id: 'Dennis',
             aliases: ['THE GOLDEN GOD'],
             descriptors: []
           },
           {
-            id: 'dee',
+            id: 'Sweet Dee',
             aliases: [],
             descriptors: ['is a bird']
           }
@@ -87,27 +87,27 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
       {
         id: 'queue',
         type: 'order',
-        orderDescriptions: [ 'showed up earlier than', 'showed up later than' ],
+        orderDescriptions: [ 'showed up before', 'showed up after' ],
         values: [
           {
-            id: 'first',
+            id: '11:21 AM',
             aliases: [ 'first to arrive' ],
-            descriptors: [ 'first to arrive' ]
+            descriptors: [ 'before noon' ]
           },
           {
-            id: 'second',
+            id: '11:34 AM',
             aliases: [ 'second in line' ],
-            descriptors: [ 'second in line' ]
+            descriptors: [ 'before noon' ]
           },
           {
-            id: 'third',
+            id: '1:06 PM',
             aliases: [ 'second to last to show up' ],
-            descriptors: [ 'second to last to show up' ]
+            descriptors: [ 'after noon' ]
           },
           {
-            id: 'last',
+            id: '4:15 PM',
             aliases: [ 'last to show up' ],
-            descriptors: [ 'last to show up' ]
+            descriptors: [ 'after noon' ]
           }
         ]
       }
@@ -147,17 +147,17 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
           {
             id: 'first',
             aliases: [ 'first to arrive' ],
-            descriptors: [ 'first to arrive' ]
+            descriptors: [ 'one of the first two to arrive' ]
           },
           {
             id: 'second',
             aliases: [ 'second in line' ],
-            descriptors: [ 'second in line' ]
+            descriptors: [ 'one of the first two to arrive', 'near the end of the line' ]
           },
           {
             id: 'last',
             aliases: [ 'last to show up' ],
-            descriptors: [ 'last to show up' ]
+            descriptors: [ 'near the end of the line' ]
           }
         ]
       },
