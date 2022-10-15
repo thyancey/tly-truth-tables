@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { useAppSelector } from '../../../app/hooks';
-import { getColor } from '../../../themes';
-import { GameStatus } from '../../../types';
-import { getGameStatus } from '../slice';
+import { useAppSelector } from '../../app/hooks';
+import { getColor } from '../../themes';
+import { GameStatus } from '../../types';
+import { getGameStatus } from '../main/slice';
 import { HelpModal, SplashModal, WinModal } from './modals';
 
 const StyledContainer = styled.div`

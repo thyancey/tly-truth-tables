@@ -55,13 +55,11 @@ const StyledLilManContainer = styled.div`
 
 const getRandomPlacement = (idx: number, topRange: number[], widthRange: number[], leftRange: number[]) => {
   return {
-    // marginLeft: idx === 0 ? `-10rem` : `${RandBetween(leftRange[0], leftRange[1])}rem`,
     marginLeft: idx === 0 ? `-10rem` : `${RandBetween(leftRange[0], leftRange[1])}rem`,
     marginTop: `${RandBetween(topRange[0], topRange[1])}rem`,
     width: `${RandBetween(widthRange[0], widthRange[1])}px`
   }
 }
-
 
 export function Footer() {
   const hints = useAppSelector(selectHints);

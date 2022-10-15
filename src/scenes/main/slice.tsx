@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, RawCell, RenderedHint, RoundData, RoundStatus } from '../../types';
+import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, RenderedHint, RoundData, RoundStatus } from '../../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data';
 import { generateHints, parseRoundData } from '../../utils/puzzler';
 
@@ -19,7 +19,6 @@ export interface GridState {
 }
 
 const initialState: GridState = {
-  // roundData: parseRoundData(SAMPLE_ROUNDDATA[ROUND_IDX]),
   roundData: null,
   cellMatrix: [],
   hints: [],
@@ -299,71 +298,6 @@ export const checkIfSolved = createSelector(
       }
     }
     return true;
-  }
-);
-
-
-/* unused stuff below here */
-export const selectCurrentAnswer = createSelector(
-  [selectRoundData, getCellMatrix, getSolution],
-  (roundData, cellMatrix, solution) => ({
-    roundData: roundData,
-    cellMatrix: cellMatrix,
-    solution: solution
-  })
-);
-
-export const selectGreenCells = createSelector(
-  [getCellMatrix],
-  (cellMatrix) => {
-    return cellMatrix.filter(c => c.status === 1);
-  }
-
-);
-export const getAttributePairFromIndex = (attrPair: RawCell, attributes: AttributeDef[]) => {
-  const attr = attributes[attrPair[0]];
-  return {
-    id: attr.id,
-    value: attr.values[attrPair[1]].id
-  }
-};
-
-export const getRenderedAttributes = (attributeMatrix:AttributeMatrix, attributes: AttributeDef[]) => {
-  return [
-    getAttributePairFromIndex(attributeMatrix[0], attributes),
-    getAttributePairFromIndex(attributeMatrix[1], attributes)
-  ];
-};
-
-export const getBoxAttributes = (boxIdx: number, numAttributes: number) => {
-  const gridShape = getGridShape(numAttributes);
-  const flatGrid = gridShape.flat();
-  return flatGrid[boxIdx];
-};
-
-export const getAttributeMatrixForCellIndex = (cellIndex: number, numAttributes: number, numValues: number) => {
-  const boxSize = Math.pow(numValues, 2);
-  const boxIdx = Math.floor(cellIndex / boxSize);
-  const boxAttrs = getBoxAttributes(boxIdx, numAttributes);
-
-  const rowIdx = Math.floor((cellIndex % boxSize) / numValues);
-  const colIdx = cellIndex % numValues;
-
-  const attrMatrix: AttributeMatrix = [
-    [boxAttrs[0], rowIdx],
-    [boxAttrs[1], colIdx],
-  ]
-
-  return attrMatrix;
-};
-
-// find solutions, return data.
-export const selectAnswerMatrix = createSelector(
-  [selectGridInfo, selectGreenCells],
-  (gridInfo, greenCells) => {
-    return greenCells.map(gc =>
-      getAttributeMatrixForCellIndex(gc.idx, gridInfo.numAttributes, gridInfo.gridSize)
-    );
   }
 );
 

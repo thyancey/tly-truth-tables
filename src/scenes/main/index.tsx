@@ -7,7 +7,7 @@ import { Board } from './board';
 import { Status } from './status';
 import { Footer } from './footer';
 import { Hint } from './hint';
-import { Modal } from './modal';
+import { Modal } from '../modal';
 import { useSelector } from 'react-redux';
 
 const StyledContainer = styled.div`
