@@ -7,6 +7,7 @@ import { Board } from './board';
 import { Status } from './status';
 import { Footer } from './footer';
 import { Hint } from './hint';
+import { Modal } from './modal';
 
 const StyledContainer = styled.div`
   position:absolute;
@@ -60,6 +61,7 @@ export function Main() {
 
   return (
     <StyledContainer>
+      <Modal />
       <Hint />
       <StyledTitle>{TITLE_TEXT}</StyledTitle>
       <StyledHeader>

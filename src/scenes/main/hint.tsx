@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 import styled from "styled-components";
-import Spritesheet from "react-responsive-spritesheet";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getColor, mixinFontFamily } from "../../themes";

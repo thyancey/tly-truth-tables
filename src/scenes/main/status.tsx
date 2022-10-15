@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
-import { checkIfSolved, getRoundStatus, resetMatrix, selectSolution, submitAnswer } from './slice';
+import { checkIfSolved, getRoundStatus, resetMatrix, selectSolution, setGameStatus, submitAnswer } from './slice';
 
 const StyledContainer = styled.div`
   margin-left:2rem;
@@ -63,14 +63,15 @@ const StyledSolvedStatus = styled(StyledStatus)`
     color: ${getColor('yellow')};
   }
 `;
-const StyledUnSolvedStatus = styled(StyledStatus)`
-  background-color: ${getColor('green')};  
+
+const StyledHelpButton = styled(StyledStatus)`
+  background-color: ${getColor('yellow')};  
   color: ${getColor('brown_dark')};
   border-color: ${getColor('brown_dark')};
   box-shadow: 0.0rem 0.4rem 0.1rem 0.1rem ${getColor('brown')};
   
   &:hover{
-    color: ${getColor('yellow')};
+    background-color: ${getColor('green_light')};
   }
 `;
 
@@ -80,8 +81,8 @@ export function Status() {
   const roundStatus = useAppSelector(getRoundStatus);
 
   const dispatch = useAppDispatch();
-  const onSubmitGame = useCallback((solved) => {
-    dispatch(submitAnswer(solved));
+  const onSubmitGame = useCallback((solved:boolean, forceWin?: boolean) => {
+    dispatch(submitAnswer(forceWin || solved));
   }, [ dispatch ]);
 
   return (
@@ -99,11 +100,9 @@ export function Status() {
       <StyledStatusContainer>
         <p>{roundStatus}</p>
         <StyledResetButton onClick={() => dispatch(resetMatrix())}>{'RESET'}</StyledResetButton>
-        { solved ? (
-          <StyledSolvedStatus onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedStatus>
-        ): (
-          <StyledUnSolvedStatus onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledUnSolvedStatus>
-        ) }
+        <StyledSolvedStatus onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedStatus>
+        <StyledSolvedStatus onClick={() => onSubmitGame(solved, true)}>{'CHEAT!'}</StyledSolvedStatus>
+        <StyledHelpButton onClick={() => dispatch(setGameStatus('help'))}>{'HELP?'}</StyledHelpButton>
       </StyledStatusContainer>
     </StyledContainer>
   );

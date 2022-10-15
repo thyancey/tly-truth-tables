@@ -1,8 +1,9 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, Hint, RawCell, RenderedHint, RoundData, RoundStatus } from '../../types';
+import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, RawCell, RenderedHint, RoundData, RoundStatus } from '../../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data';
 import { generateHints, parseRoundData } from '../../utils/puzzler';
+import { Satellite } from '@material-ui/icons';
 
 const MAX_HINTS = 8;
 const ROUND_IDX = 0;
@@ -14,7 +15,9 @@ export interface GridState {
   hints: Hint[],
   activeHintIdx: number,
   solution: AnswerSet | null,
-  roundStatus: RoundStatus
+  roundStatus: RoundStatus,
+  gameStatus: GameStatus,
+  roundIdx: number
 }
 
 const initialState: GridState = {
@@ -23,7 +26,9 @@ const initialState: GridState = {
   hints: [],
   activeHintIdx: -1,
   solution: null,
-  roundStatus: 'idle'
+  roundStatus: 'idle',
+  gameStatus: 'start',
+  roundIdx: -1
 };
 
 
@@ -90,14 +95,24 @@ export const gridSlice = createSlice({
       console.log('submitAnswer', action.payload);
       if(action.payload === true){
         state.roundStatus = 'correct';
+        state.gameStatus = 'roundWin';
+        state.roundIdx++;
       }else{
         state.roundStatus = 'incorrect';
       }
-    }
+    },
+    setGameStatus: (state, action: PayloadAction<GameStatus>) => {
+      state.gameStatus = action.payload;
+    },
+    startNextRound: (state) => {
+      console.log('startNextRound!');
+      state.gameStatus = 'playing';
+      state.roundIdx++;
+    },
   } 
 });
 
-export const { resetMatrix, rotateCell, setActiveHint, submitAnswer } = gridSlice.actions;
+export const { resetMatrix, rotateCell, setActiveHint, submitAnswer, startNextRound, setGameStatus } = gridSlice.actions;
 
 // answer set is the raw attributes (in order) and their values
 /// [1, 1, 1] would mean a valueIdx of 1 for attributes 0, 1, and 2
@@ -156,6 +171,7 @@ export const getSolution = (state: RootState) => state.board.solution;
 export const getHints = (state: RootState) => state.board.hints;
 export const getActiveHintIdx = (state: RootState) => state.board.activeHintIdx;
 export const getRoundStatus = (state: RootState) => state.board.roundStatus;
+export const getGameStatus = (state: RootState) => state.board.gameStatus;
 
 export const renderHint = (hint: Hint) => ({
   hintGiver: HINT_GIVERS[hint.hintGiverIdx],

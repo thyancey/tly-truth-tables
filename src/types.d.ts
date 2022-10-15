@@ -151,7 +151,7 @@ export type CalculatedHint = {
 };
 
 
-
+export type GameStatus = 'start' | 'roundWin' | 'roundPrompt' | 'playing' | 'help';
 export type RoundStatus = 'idle' | 'incorrect' | 'correct';
 export type InfluenceType = null | 'same' | 'different';
 export type InfluenceRatio = [
