@@ -3,7 +3,6 @@ import { RootState } from '../../app/store';
 import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, RawCell, RenderedHint, RoundData, RoundStatus } from '../../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data';
 import { generateHints, parseRoundData } from '../../utils/puzzler';
-import { Satellite } from '@material-ui/icons';
 
 const MAX_HINTS = 8;
 const ROUND_IDX = 0;

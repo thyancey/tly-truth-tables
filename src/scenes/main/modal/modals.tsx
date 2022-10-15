@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useAppDispatch } from '../../../app/hooks';
 import { Button } from '../../../components/button';
-import { getColor } from '../../../themes';
+// import { getColor } from '../../../themes';
 import { setGameStatus, startNextRound } from '../slice';
 
 const StyledContainer = styled.div`

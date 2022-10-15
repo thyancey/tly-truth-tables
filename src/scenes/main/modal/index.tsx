@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useAppSelector } from '../../../app/hooks';
 import { getColor } from '../../../themes';
 import { GameStatus } from '../../../types';
 import { getGameStatus } from '../slice';
@@ -31,7 +31,6 @@ export const getModal = (gameStatus: GameStatus) => {
 }
 
 export function Modal() {
-  const dispatch = useAppDispatch();
   const gameStatus = useAppSelector(getGameStatus);
   const modal = getModal(gameStatus);
   if(!modal) return null;

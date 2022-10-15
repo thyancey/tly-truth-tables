@@ -324,8 +324,6 @@ export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], 
 
   }
 
-  console.log('yesNoRatio is', yesNoRatio);
-
   return hints;
 }
 
