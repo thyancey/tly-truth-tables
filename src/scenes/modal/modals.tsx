@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Button } from '../../components/button';
 // import { getColor } from '../../../themes';
-import { selectSolution, setGameStatus, startNextRound, startRound } from '../main/slice';
+import { restartRound, selectSolution, setGameStatus, startNextRound, startRound } from '../main/slice';
 
 const StyledButtonContainer = styled.div`
   
@@ -34,6 +34,21 @@ export function WinModal() {
       <h1>{'YOU WIN!'}</h1>
       <StyledButtonContainer>
         <Button text={'OK'} onClick={() => dispatch(startNextRound())} />
+      </StyledButtonContainer>
+    </StyledContainer>
+  );
+}
+
+export function InvalidAnswerModal() {
+  const dispatch = useAppDispatch();
+
+  return (
+    <StyledContainer>
+      <h1>{'Sorry,that\'s not quite right'}</h1>
+      <StyledButtonContainer>
+        <Button text={'Keep Trying'} onClick={() => dispatch(setGameStatus('playing'))} />
+        <Button text={'RESTART!'} onClick={() => dispatch(restartRound())} />
+        <Button text={'SKIP!'} onClick={() => dispatch(startNextRound())} />
       </StyledButtonContainer>
     </StyledContainer>
   );

@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
-import { checkIfSolved, getRoundIdx, getRoundStatus, setGameStatus, submitAnswer } from './slice';
+import { checkIfSolved, getRoundIdx, setGameStatus, submitAnswer } from './slice';
 
 const StyledContainer = styled.div`
   margin-left:2rem;
@@ -47,7 +47,7 @@ const StyledResetButton = styled(StyledStatus)`
   }
 `
 
-const StyledSolvedStatus = styled(StyledStatus)`
+const StyledSolvedButton = styled(StyledStatus)`
   background-color: ${getColor('green')};  
   
   &:hover{
@@ -68,7 +68,6 @@ const StyledHelpButton = styled(StyledStatus)`
 
 export function Status() {
   const solved = useAppSelector(checkIfSolved);
-  const roundStatus = useAppSelector(getRoundStatus);
   const roundIdx = useAppSelector(getRoundIdx);
 
   const dispatch = useAppDispatch();
@@ -80,10 +79,8 @@ export function Status() {
     <StyledContainer>
       <StyledStatusContainer>
         <p>{`Level ${roundIdx + 1}`}</p>
-        <p>{roundStatus}</p>
-        {/* <StyledResetButton onClick={() => dispatch(resetMatrix())}>{'RESET'}</StyledResetButton> */}
-        <StyledSolvedStatus onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedStatus>
-        <StyledSolvedStatus onClick={() => onSubmitGame(solved, true)}>{'CHEAT!'}</StyledSolvedStatus>
+        <StyledSolvedButton onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedButton>
+        <StyledResetButton onClick={() => onSubmitGame(solved, true)}>{'CHEAT!'}</StyledResetButton>
         <StyledHelpButton onClick={() => dispatch(setGameStatus('help'))}>{'HELP?'}</StyledHelpButton>
       </StyledStatusContainer>
     </StyledContainer>

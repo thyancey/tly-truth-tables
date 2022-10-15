@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 import { getColor } from '../../themes';
-import { useAppDispatch } from '../../app/hooks';
-import { getGameReady, resetMatrix, selectRoundData } from './slice';
-import { useEffect } from 'react';
+import { getGameReady } from './slice';
 import { Board } from './board';
 import { Status } from './status';
 import { Footer } from './footer';
 import { Hint } from './hint';
 import { Modal } from '../modal';
 import { useSelector } from 'react-redux';
+import { RuleMaster } from './rulemaster';
 
 const StyledContainer = styled.div`
   position:absolute;
@@ -43,7 +42,6 @@ const StyledTitle = styled.div`
   line-height: 10rem;
   opacity: .1;
 
-  /* white-space: pre-wrap; */
   word-wrap: break-word;
 `
 
@@ -54,16 +52,11 @@ const TITLE_TEXT = 'TOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTH
   'TOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLES'
 
 export function Main() {
-  const dispatch = useAppDispatch();
-  const roundData = useSelector(selectRoundData);
   const gameReady = useSelector(getGameReady);
-
-  useEffect(() => {
-    if(roundData) dispatch(resetMatrix(roundData));
-  }, [dispatch, roundData]);
 
   return (
     <StyledContainer>
+      <RuleMaster />
       <Modal />
       <Hint />
       <StyledTitle>{TITLE_TEXT}</StyledTitle>

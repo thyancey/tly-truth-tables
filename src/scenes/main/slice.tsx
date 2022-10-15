@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, RenderedHint, RoundData, RoundStatus } from '../../types';
+import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, RenderedHint, RoundData } from '../../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data';
 import { generateHints, parseRoundData } from '../../utils/puzzler';
 
@@ -12,7 +12,6 @@ export interface GridState {
   hints: Hint[],
   activeHintIdx: number,
   solution: AnswerSet | null,
-  roundStatus: RoundStatus,
   gameStatus: GameStatus,
   roundIdx: number,
   gameReady: boolean
@@ -24,7 +23,6 @@ const initialState: GridState = {
   hints: [],
   activeHintIdx: -1,
   solution: null,
-  roundStatus: 'idle',
   gameStatus: 'start',
   roundIdx: -1,
   gameReady: false
@@ -69,10 +67,10 @@ export const gridSlice = createSlice({
               }
             }
           }
-
           state.solution = solutionSet;
           state.cellMatrix = newMatrix;
           state.gameReady = true;
+          state.gameStatus = 'playing';
           state.hints = generateHints(solutionSet, roundData.attributes, HINT_GIVERS, MAX_HINTS);
         } else{
           console.error('must have between 2 and 5 attributes');
@@ -95,10 +93,9 @@ export const gridSlice = createSlice({
     submitAnswer: (state, action: PayloadAction<boolean>) => {
       console.log('submitAnswer', action.payload);
       if(action.payload === true){
-        state.roundStatus = 'correct';
         state.gameStatus = 'roundWin';
       }else{
-        state.roundStatus = 'incorrect';
+        state.gameStatus = 'invalidAnswer';
       }
     },
     setGameStatus: (state, action: PayloadAction<GameStatus>) => {
@@ -106,18 +103,23 @@ export const gridSlice = createSlice({
     },
     startRound: (state, action: PayloadAction<number>) => {
       state.gameReady = false;
+      state.gameStatus = 'loading';
       state.roundIdx = getNextRoundIdx(action.payload - 1);
-      state.gameStatus = 'playing';
+    },
+    restartRound: (state) => {
+      state.gameReady = false;
+      state.gameStatus = 'loading';
+      state.roundIdx = getNextRoundIdx(state.roundIdx - 1);
     },
     startNextRound: (state) => {
       state.gameReady = false;
+      state.gameStatus = 'loading';
       state.roundIdx = getNextRoundIdx(state.roundIdx);
-      state.gameStatus = 'playing';
     },
   } 
 });
 
-export const { resetMatrix, rotateCell, setActiveHint, submitAnswer, startRound, startNextRound, setGameStatus } = gridSlice.actions;
+export const { resetMatrix, rotateCell, setActiveHint, submitAnswer, startRound, startNextRound, restartRound, setGameStatus } = gridSlice.actions;
 
 
 
@@ -177,7 +179,6 @@ export const getRoundData = (state: RootState) => state.board.roundData;
 export const getSolution = (state: RootState) => state.board.solution;
 export const getHints = (state: RootState) => state.board.hints;
 export const getActiveHintIdx = (state: RootState) => state.board.activeHintIdx;
-export const getRoundStatus = (state: RootState) => state.board.roundStatus;
 export const getGameStatus = (state: RootState) => state.board.gameStatus;
 export const getRoundIdx = (state: RootState) => state.board.roundIdx;
 export const getGameReady = (state: RootState) => state.board.gameReady;

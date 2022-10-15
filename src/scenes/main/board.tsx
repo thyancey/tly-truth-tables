@@ -8,7 +8,6 @@ import { rotateCell, selectGridBox, selectGridLabels, selectGridInfo } from './s
 const StyledBoard = styled.div`
   position:absolute;
   /* more perspectivey */
-  /* transform: matrix(2.0,.9,-1.75,1.5,-300,-50) scale(.4) translate(-50%, -50%); */
   transform: matrix(2.5,1.25,-2.5,1.25,-300,-0) scale(.4) translate(-50%, -50%);
   left: 50%;
   top:50%;

@@ -32,6 +32,10 @@ export const getPrefix = (attr: AttributeDetail) => {
       if(alias) return `The ${alias}`;
       return `The ${attr.value}`;
     }
+    case 'name': {
+      if(alias) return `${alias}`;
+      return `${attr.value}`;
+    }
     case 'modifier': {
       if(alias) return `The ${alias} one`;
       return `The ${attr.value} one`;
@@ -65,6 +69,19 @@ export const getSuffix = (attr: AttributeDetail, sameGroup: boolean, sortCompari
       }
       // 'THE_PREFIX {is:is not} a {monkey}'
       return `${sameGroup ? 'is' : 'is not'} a ${attr.value}`;
+    }
+    case 'name': {
+      if(sortComparison) {
+        // 'THE_PREFIX {was born before} the {fat loser}'
+        if(descriptor) return`${sortComparison} the ${descriptor}`;
+        // 'THE_PREFIX {was born before} {Tom}'
+        return `${sortComparison} ${attr.value}`;
+      } else if(descriptor && sameGroup){
+        // 'THE_PREFIX {is a fat loser}'
+        return `${descriptor}`;
+      }
+      // 'THE_PREFIX {is:is not} {Tom}'
+      return `${sameGroup ? 'is' : 'is not'} ${attr.value}`;
     }
     case 'modifier': {
       if(sortComparison) {

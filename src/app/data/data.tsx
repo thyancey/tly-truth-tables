@@ -60,53 +60,54 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
     attributes:[
       {
         id: 'person',
-        type: 'thing',
+        type: 'name',
         values: [
           {
             id: 'charlie',
             aliases: [],
-            descriptors: []
+            descriptors: ['has a beard']
           },
           {
             id: 'mac',
             aliases: [],
-            descriptors: []
+            descriptors: ['has a beard']
           },
           {
             id: 'dennis',
-            aliases: [],
+            aliases: ['THE GOLDEN GOD'],
             descriptors: []
           },
           {
             id: 'dee',
             aliases: [],
-            descriptors: []
+            descriptors: ['is a bird']
           }
         ]
       },
       {
-        id: 'drink',
-        type: 'modifier',
+        id: 'queue',
+        type: 'order',
+        orderDescriptions: [ 'showed up earlier than', 'showed up later than' ],
         values: [
           {
-            id: 'Monkey Booze',
-            aliases: [],
-            descriptors: []
+            id: 'first',
+            aliases: [ 'first to arrive' ],
+            descriptors: [ 'first to arrive' ]
           },
           {
-            id: 'Fight Milk',
-            aliases: [],
-            descriptors: []
+            id: 'second',
+            aliases: [ 'second in line' ],
+            descriptors: [ 'second in line' ]
           },
           {
-            id: 'Poison',
-            aliases: [],
-            descriptors: []
+            id: 'third',
+            aliases: [ 'second to last to show up' ],
+            descriptors: [ 'second to last to show up' ]
           },
           {
-            id: 'White Paint',
-            aliases: [],
-            descriptors: []
+            id: 'last',
+            aliases: [ 'last to show up' ],
+            descriptors: [ 'last to show up' ]
           }
         ]
       }
