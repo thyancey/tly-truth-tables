@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, RenderedHint, RoundData, RoundInfo } from '../../types';
+import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, HintGiver, RenderedHint, RoundData, RoundInfo } from '../../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data';
 import { generateHints, parseRoundData } from '../../utils/puzzler';
 
@@ -229,6 +229,11 @@ export const selectActiveHint = createSelector(
 
     return renderHint(hints[activeHintIdx]);
   }
+);
+
+export const selectActiveHintGiver = createSelector(
+  [selectActiveHint],
+  (activeHint): HintGiver | null => activeHint && activeHint.hintGiver || null
 );
 
 export const selectAttributes = createSelector(

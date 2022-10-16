@@ -14,12 +14,11 @@ interface StyledLilManProps {
 export const StyledLilManGif = styled.div<StyledLilManProps>`
   position:absolute;
   width:100%;
-  height:calc(100% + 2rem);
+  height:100%;
   bottom:-2rem;
   background: url(${p => p.imageUrl}) no-repeat center;
   background-position:center;
   background-size:contain;
-  filter: drop-shadow(0 0 7rem ${getColor('brown')});
 `;
 
 export const StyledLilManSpritesheet = styled.div`

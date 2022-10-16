@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 import styled from 'styled-components';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { getColor, mixinFontFamily } from '../../themes';
-import { HintText } from './hinttext';
-import { selectActiveHint, setActiveHint } from './slice';
-import { LilMan } from '../../components/lilman';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { getColor, mixinFontFamily } from '../../../themes';
+import { SpeechText } from '../../../components/speech-text';
+import { selectActiveHint, setActiveHint } from '../slice';
+import { LilMan } from '../../../components/lilman';
 
 const StyledContainer = styled.div`
   position: fixed;
@@ -165,7 +165,7 @@ export function Hint() {
         />
       </StyledLilManContainer>
       <StyledHintBox>
-        <HintText hintText={hint.text} />
+        <SpeechText text={hint.text} />
       </StyledHintBox>
       <StyledControls>
         <button onClick={() => onCloseHint()}>{'CLOSE'}</button>

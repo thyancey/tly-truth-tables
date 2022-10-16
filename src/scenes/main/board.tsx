@@ -9,7 +9,7 @@ const StyledBoard = styled.div`
   position:absolute;
   /* more perspectivey */
   transform: matrix(2.5,1.25,-2.5,1.25,-300,-0) scale(.4) translate(-50%, -50%);
-  left: 50%;
+  left:50%;
   top:50%;
 
   display:grid;
@@ -18,6 +18,7 @@ const StyledBoard = styled.div`
   column-gap: 2rem;
   row-gap: 2rem;
   color: ${getColor('brown')};
+  z-index: 1;
 
   >div{
     display:grid;
@@ -143,7 +144,7 @@ const StyledCell = styled.div<StyledCellProps>`
     box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('green')};
   `};
   ${p => p.status === 2 && css`
-    background-color:${getColor('pink_dark')};
+    background-color:${getColor('red_light')};
     border-color: ${getColor('pink')};
     box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('pink')};
   `};
@@ -172,7 +173,7 @@ const StyledCell = styled.div<StyledCellProps>`
     transform: translate(.35rem, .35rem);
 
     ${p => p.status === 0 && css`
-      background-color: ${getColor('pink_dark')};
+      background-color: ${getColor('red_light')};
       border-color: ${getColor('pink')};
       box-shadow: 0.1rem 0.1rem 0 0.1rem ${getColor('pink')};
     `};

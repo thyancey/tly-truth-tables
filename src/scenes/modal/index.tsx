@@ -17,8 +17,8 @@ const StyledContainer = styled.div`
   color: ${getColor('brown_dark')};
   border: 0.5rem solid ${getColor('brown_dark')};
 
-  z-index:1;
-  padding: 1rem;
+  z-index:5;
+  padding:1rem;
 `;
 
 export const getModal = (gameStatus: GameStatus) => {
