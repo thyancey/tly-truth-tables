@@ -29,14 +29,15 @@ export type CellMatrix = CellObj[];
 
 export type ValueDef = {
   id: string,
-  aliases: string[],
-  descriptors: string[]
+  aliases: string[], // ALIASES HAVE TO BE DISTINCT
+  descriptors: string[]  // DESCRIPTORS CAN BE SHARED FOR AN ATTRIBUTE
+  // when type is "thing", descriptors only can have an IS comparison
 }
 export type OrderDescription = [
   lessThan: string,
   moreThan: string 
 ];
-export type AttributeType = 'thing' | 'order' | 'modifier';
+export type AttributeType = 'thing' | 'order' | 'modifier' | 'name';
 export type AttributeDef = {
   id: string,
   display?: string,
@@ -65,10 +66,16 @@ export type AttributeDetail = {
   sortComparisons: SortComparison[]
 };
 
+//placeholder for later abstraction
+export type RawRoundData = {
+  title: string,
+  description?: string,
+  attributes: AttributeDef[]
+};
+
 export type RoundData = {
   title: string,
   description?: string,
-  valueSize: number,
   attributes: AttributeDef[]
 };
 
@@ -143,10 +150,16 @@ export type CalculatedHint = {
 };
 
 
-
+export type GameStatus = 'start' | 'roundWin' | 'roundPrompt' | 'invalidAnswer' | 'playing' | 'help' | 'loading';
 export type RoundStatus = 'idle' | 'incorrect' | 'correct';
 export type InfluenceType = null | 'same' | 'different';
 export type InfluenceRatio = [
   yesCount: number,
   noCount: number
 ];
+
+export type RoundInfo = {
+  title: string,
+  description?: string,
+  level: number
+}

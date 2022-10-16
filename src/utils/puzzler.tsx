@@ -1,4 +1,4 @@
-import { AnswerSet, AttributeDef, AttributeDetail, CalculatedHint, HintGiver, InfluenceRatio, InfluenceType, OrderDescription, SortComparison } from '../types';
+import { AnswerSet, AttributeDef, AttributeDetail, CalculatedHint, HintGiver, InfluenceRatio, InfluenceType, OrderDescription, RawRoundData, RoundData, SortComparison } from '../types';
 import { RandFromArray, RandIdx, RandIdxFromArray } from './index';
 
 // what % of the time the same/different hint ratio is checked and attempted to be balanced;
@@ -31,6 +31,10 @@ export const getPrefix = (attr: AttributeDetail) => {
     case 'thing': {
       if(alias) return `The ${alias}`;
       return `The ${attr.value}`;
+    }
+    case 'name': {
+      if(alias) return `${alias}`;
+      return `${attr.value}`;
     }
     case 'modifier': {
       if(alias) return `The ${alias} one`;
@@ -66,6 +70,19 @@ export const getSuffix = (attr: AttributeDetail, sameGroup: boolean, sortCompari
       // 'THE_PREFIX {is:is not} a {monkey}'
       return `${sameGroup ? 'is' : 'is not'} a ${attr.value}`;
     }
+    case 'name': {
+      if(sortComparison) {
+        // 'THE_PREFIX {was born before} the {fat loser}'
+        if(descriptor) return`${sortComparison} the ${descriptor}`;
+        // 'THE_PREFIX {was born before} {Tom}'
+        return `${sortComparison} ${attr.value}`;
+      } else if(descriptor && sameGroup){
+        // 'THE_PREFIX {is a fat loser}'
+        return `${descriptor}`;
+      }
+      // 'THE_PREFIX {is:is not} {Tom}'
+      return `${sameGroup ? 'is' : 'is not'} ${attr.value}`;
+    }
     case 'modifier': {
       if(sortComparison) {
         // 'THE_PREFIX {was born before} the {hot-headed} one'
@@ -82,8 +99,8 @@ export const getSuffix = (attr: AttributeDetail, sameGroup: boolean, sortCompari
     case 'order': {
       // order will never have a sortComparison 
       if(descriptor) {
-        // 'THE_PREFIX {is:is not} the {first to arrive}'
-        return `${sameGroup ? 'is' : 'is not'} the ${descriptor}`;
+        // 'THE_PREFIX {is:is not} {near the end of the line}'
+        return `${sameGroup ? 'is' : 'is not'} ${descriptor}`;
       }
       // 'THE_PREFIX {is:is not} the {first}'
       return `${sameGroup ? 'is' : 'is not'} the ${attr.value}`;
@@ -215,7 +232,7 @@ export const generateSingleHint = (groupAttrDetails: AttributeDetail[][], influe
   }
 }
 
-export const getSortComparisons = (solutions: AnswerSet, attributes: AttributeDef[]) => {
+export const getSortComparisons = (attributes: AttributeDef[]) => {
   const sortComparisons: SortComparison[] = [];
   attributes.forEach((attr, idx) => {
     if(attr.type === 'order'){
@@ -239,7 +256,7 @@ export const getSortComparisons = (solutions: AnswerSet, attributes: AttributeDe
 }
 
 export const convertSolutionsToAttributeDetails = (solutions: AnswerSet, attributes: AttributeDef[]) => {
-  const rawSortComparisons = getSortComparisons(solutions, attributes);
+  const rawSortComparisons = getSortComparisons(attributes);
 
   return solutions.map((solution, sIdx) => {
     const sortComparisons = rawSortComparisons.map(sC => ({...sC, value: solution[sC.attributeIdx]}));
@@ -324,7 +341,9 @@ export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], 
 
   }
 
-  console.log('yesNoRatio is', yesNoRatio);
-
   return hints;
+}
+
+export const parseRoundData = (rawRoundData: RawRoundData): RoundData => {
+  return rawRoundData as RoundData;
 }

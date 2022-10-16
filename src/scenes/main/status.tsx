@@ -2,20 +2,11 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
-import { checkIfSolved, getRoundStatus, resetMatrix, selectSolution, submitAnswer } from './slice';
+import { checkIfSolved, selectRoundInfo, setGameStatus, submitAnswer } from './slice';
 
 const StyledContainer = styled.div`
   margin-left:2rem;
 `;
-
-const StyledDebug = styled.div`
-  font-size:2rem;
-  opacity:.25;
-
-  li{
-    list-style:none;
-  }
-`
 
 const StyledStatusContainer = styled.div`
   position:absolute;
@@ -56,54 +47,56 @@ const StyledResetButton = styled(StyledStatus)`
   }
 `
 
-const StyledSolvedStatus = styled(StyledStatus)`
+const StyledSolvedButton = styled(StyledStatus)`
   background-color: ${getColor('green')};  
   
   &:hover{
     color: ${getColor('yellow')};
   }
 `;
-const StyledUnSolvedStatus = styled(StyledStatus)`
-  background-color: ${getColor('green')};  
+
+const StyledHelpButton = styled(StyledStatus)`
+  background-color: ${getColor('yellow')};  
   color: ${getColor('brown_dark')};
   border-color: ${getColor('brown_dark')};
   box-shadow: 0.0rem 0.4rem 0.1rem 0.1rem ${getColor('brown')};
   
   &:hover{
-    color: ${getColor('yellow')};
+    background-color: ${getColor('green_light')};
   }
 `;
 
+const StyledPuzzlePrompt = styled.div`
+  p {
+    font-size: 3rem;
+  }
+
+  padding-right:10rem;
+`;
+
 export function Status() {
-  const renderedSolution = useAppSelector(selectSolution);
   const solved = useAppSelector(checkIfSolved);
-  const roundStatus = useAppSelector(getRoundStatus);
+  const roundInfo = useAppSelector(selectRoundInfo);
 
   const dispatch = useAppDispatch();
-  const onSubmitGame = useCallback((solved) => {
-    dispatch(submitAnswer(solved));
+  const onSubmitGame = useCallback((solved:boolean, forceWin?: boolean) => {
+    dispatch(submitAnswer(forceWin || solved));
   }, [ dispatch ]);
 
   return (
     <StyledContainer>
-      <StyledDebug>
-        <p>{'DEBUG SOLUTION'}</p>
-        <ul>
-          {renderedSolution?.map((rS, idx) => (
-            <li key={idx}>{`[ ${rS.join(' | ')} ]`}</li>
-          ))}
-        </ul>
-      </StyledDebug>
-
-      
+      {roundInfo && (
+        <StyledPuzzlePrompt>
+          <p>{`Level ${roundInfo.level}: ${roundInfo.title}`}</p>
+          {roundInfo.description && (
+            <p>{roundInfo.description}</p>
+          )}
+        </StyledPuzzlePrompt>
+      )}
       <StyledStatusContainer>
-        <p>{roundStatus}</p>
-        <StyledResetButton onClick={() => dispatch(resetMatrix())}>{'RESET'}</StyledResetButton>
-        { solved ? (
-          <StyledSolvedStatus onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedStatus>
-        ): (
-          <StyledUnSolvedStatus onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledUnSolvedStatus>
-        ) }
+        <StyledSolvedButton onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedButton>
+        <StyledResetButton onClick={() => onSubmitGame(solved, true)}>{'CHEAT!'}</StyledResetButton>
+        <StyledHelpButton onClick={() => dispatch(setGameStatus('help'))}>{'HELP?'}</StyledHelpButton>
       </StyledStatusContainer>
     </StyledContainer>
   );

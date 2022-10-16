@@ -4,10 +4,280 @@ import { AnswerData, HintGiver, RawCell, RenderedAnswer, RoundData } from '../..
  * The attributes that defined the thingies this round
  */
 export const SAMPLE_ROUNDDATA: RoundData[] = [
+  // 2x3
+  {
+    title: '2 attributes, 3 values',
+    description: 'this puzzle has 2 attributes with 3 values each',
+    attributes:[
+      {
+        id: 'animal',
+        type: 'thing',
+        values: [
+          {
+            id: 'monkey',
+            aliases: [ 'swinging rat' ],
+            descriptors: [ 'has legs', 'rhymes with "funky"' ]
+          },
+          {
+            id: 'frog',
+            aliases: [ 'croaky boi' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          },
+          {
+            id: 'fish',
+            aliases: [ 'one with gills' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          }
+        ]
+      },
+      {
+        id: 'occupation',
+        type: 'thing',
+        values: [
+          {
+            id: 'firefighter',
+            aliases: [],
+            descriptors: [ 'uses a trampoline' ]
+          },
+          {
+            id: 'dentist',
+            aliases: [],
+            descriptors: []
+          },
+          {
+            id: 'clown',
+            aliases: [],
+            descriptors: [ 'uses a trampoline' ]
+          }
+        ]
+      }
+    ]
+  },
+  // 2x4
+  {
+    title: 'Charlie, Mac, Dennis, and Sweet Dee',
+    description: 'Charlie, Mac, Dennis, and Sweet Dee all showed up to the Pub after it was supposed to open, in what order did they show up to work?',
+    attributes:[
+      {
+        id: 'person',
+        type: 'name',
+        values: [
+          {
+            id: 'Charlie',
+            aliases: [],
+            descriptors: ['has a beard']
+          },
+          {
+            id: 'Mac',
+            aliases: [],
+            descriptors: ['has a beard']
+          },
+          {
+            id: 'Dennis',
+            aliases: ['THE GOLDEN GOD'],
+            descriptors: []
+          },
+          {
+            id: 'Sweet Dee',
+            aliases: [],
+            descriptors: ['is a bird']
+          }
+        ]
+      },
+      {
+        id: 'queue',
+        type: 'order',
+        orderDescriptions: [ 'showed up before', 'showed up after' ],
+        values: [
+          {
+            id: '11:21 AM',
+            aliases: [ 'first to arrive' ],
+            descriptors: [ 'before noon' ]
+          },
+          {
+            id: '11:34 AM',
+            aliases: [ 'second in line' ],
+            descriptors: [ 'before noon' ]
+          },
+          {
+            id: '1:06 PM',
+            aliases: [ 'second to last to show up' ],
+            descriptors: [ 'after noon' ]
+          },
+          {
+            id: '4:15 PM',
+            aliases: [ 'last to show up' ],
+            descriptors: [ 'after noon' ]
+          }
+        ]
+      }
+    ]
+  },
+  // 3x3
   {
     title: '3 attributes, 3 values',
+    description: 'this puzzle has 3 attributes with 3 values each',
+    attributes:[
+      {
+        id: 'animal',
+        type: 'thing',
+        values: [
+          {
+            id: 'monkey',
+            aliases: [ 'swinging rat' ], // ALIASES HAVE TO BE DISTINCT
+            descriptors: [ 'has legs', 'rhymes with "funky"' ] // DESCRIPTORS CAN BE SHARED FOR AN ATTRIBUTE
+          },
+          {
+            id: 'frog',
+            aliases: [ 'croaky boi' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          },
+          {
+            id: 'fish',
+            aliases: [ 'one with gills' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          }
+        ]
+      },
+      {
+        id: 'queue',
+        type: 'order',
+        orderDescriptions: [ 'is earlier in line than', 'is later in line than' ],
+        values: [
+          {
+            id: 'first',
+            aliases: [ 'first to arrive' ],
+            descriptors: [ 'one of the first two to arrive' ]
+          },
+          {
+            id: 'second',
+            aliases: [ 'second in line' ],
+            descriptors: [ 'one of the first two to arrive', 'near the end of the line' ]
+          },
+          {
+            id: 'last',
+            aliases: [ 'last to show up' ],
+            descriptors: [ 'near the end of the line' ]
+          }
+        ]
+      },
+      {
+        id: 'occupation',
+        type: 'thing',
+        values: [
+          {
+            id: 'firefighter',
+            aliases: [],
+            descriptors: [ 'uses a trampoline' ]
+          },
+          {
+            id: 'dentist',
+            aliases: [],
+            descriptors: []
+          },
+          {
+            id: 'clown',
+            aliases: [],
+            descriptors: [ 'uses a trampoline' ]
+          }
+        ]
+      }
+    ]
+  },
+  // 3x4
+  {
+    title: '3 attributes, 4 values',
+    description: 'this puzzle has 3 attributes with 4 values each',
+    attributes:[
+      {
+        id: 'animal',
+        type: 'thing',
+        values: [
+          {
+            id: 'monkey',
+            aliases: [ 'swinging rat' ],
+            descriptors: [ 'has legs', 'rhymes with "funky"' ]
+          },
+          {
+            id: 'frog',
+            aliases: [ 'croaky boi' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          },
+          {
+            id: 'fish',
+            aliases: [ 'one with gills' ],
+            descriptors: [ 'loves the water', 'eats flies' ]
+          },
+          {
+            id: 'crab',
+            aliases: [ 'pinchy boi' ],
+            descriptors: [ 'loves the water' ]
+          }
+        ]
+      },
+      {
+        id: 'queue',
+        type: 'order',
+        orderDescriptions: [ 'is earlier in line than', 'is later in line than' ],
+        values: [
+          {
+            id: 'first',
+            // the $
+            aliases: [ 'first to arrive' ],
+            // [is, is not] the $
+            descriptors: [ 'first to arrive' ]
+          },
+          {
+            id: 'second',
+            aliases: [],
+            descriptors: [ 'in the middle of the line' ]
+          },
+          {
+            id: 'third',
+            aliases: [],
+            descriptors: [ 'in the middle of the line' ]
+          },
+          {
+            id: 'last',
+            aliases: [ 'last to show up' ],
+            descriptors: [ 'last to show up' ]
+          }
+        ]
+      },
+      {
+        id: 'occupation',
+        type: 'thing',
+        values: [
+          {
+            id: 'firefighter',
+            // the $
+            aliases: [],
+            // $ (only IS comparison) 
+            descriptors: [ 'uses a trampoline' ]
+          },
+          {
+            id: 'dentist',
+            aliases: [],
+            descriptors: [ 'makes a lot of money' ]
+          },
+          {
+            id: 'clown',
+            aliases: [],
+            descriptors: [ 'uses a trampoline' ]
+          },
+          {
+            id: 'lawyer',
+            aliases: [],
+            descriptors: [ 'makes a lot of money' ]
+          }
+        ]
+      }
+    ]
+  },
+  // 4x3
+  {
+    title: '4 attributes, 3 values',
     description: 'this puzzle has 4 attributes with 3 values each',
-    valueSize: 3,
     attributes:[
       {
         id: 'animal',
@@ -99,10 +369,11 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
         ]
       }
     ]
-  },{
-    title: '3 attributes, 4 values',
+  },
+  // 4x4
+  {
+    title: '4 attributes, 4 values',
     description: 'this puzzle has 4 attributes with 4 values each',
-    valueSize: 4,
     attributes:[
       {
         id: 'animal',
@@ -110,9 +381,7 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
         values: [
           {
             id: 'monkey',
-            // the $
             aliases: [ 'swinging rat' ],
-            // $ (only IS comparison) 
             descriptors: [ 'has legs', 'rhymes with "funky"' ]
           },
           {
@@ -135,6 +404,7 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
       {
         id: 'queue',
         type: 'order',
+        orderDescriptions: [ 'is earlier in line than', 'is later in line than' ],
         values: [
           {
             id: 'first',

@@ -1,12 +1,11 @@
-import { useCallback } from "react";
-import styled from "styled-components";
-import Spritesheet from "react-responsive-spritesheet";
+import { useCallback } from 'react';
+import styled from 'styled-components';
 
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getColor, mixinFontFamily } from "../../themes";
-import { HintText } from "./hinttext";
-import { selectActiveHint, setActiveHint } from "./slice";
-import { LilMan } from "../../components/lilman";
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { getColor, mixinFontFamily } from '../../themes';
+import { HintText } from './hinttext';
+import { selectActiveHint, setActiveHint } from './slice';
+import { LilMan } from '../../components/lilman';
 
 const StyledContainer = styled.div`
   position: fixed;
@@ -35,7 +34,7 @@ const StyledHintBox = styled.div`
   padding: 2rem;
 
   p {
-    ${mixinFontFamily("speech")};
+    ${mixinFontFamily('speech')};
     font-size: 5rem;
   }
 `;
@@ -50,7 +49,7 @@ const StyledHintHeader = styled.div`
 
   > * {
     font-size: 8rem;
-    color: ${getColor("black")};
+    color: ${getColor('black')};
     opacity: 0.5;
   }
 `;
@@ -65,17 +64,17 @@ const StyledControls = styled.div`
     border-radius: 1rem;
     width: 100%;
     height: 100%;
-    background-color: ${getColor("brown_light")};
-    color: ${getColor("brown_dark")};
-    border: 0.5rem solid ${getColor("brown_dark")};
+    background-color: ${getColor('brown_light')};
+    color: ${getColor('brown_dark')};
+    border: 0.5rem solid ${getColor('brown_dark')};
 
     font-size: 5rem;
 
     cursor: pointer;
 
     &:hover {
-      color: ${getColor("brown")};
-      border-color: ${getColor("brown")};
+      color: ${getColor('brown')};
+      border-color: ${getColor('brown')};
     }
   }
 `;
@@ -104,8 +103,8 @@ const StyledBg = styled.div`
   z-index: -1;
 
   border-radius: 1rem;
-  background-color: ${getColor("white")};
-  border: 0.5rem solid ${getColor("brown_dark")};
+  background-color: ${getColor('white')};
+  border: 0.5rem solid ${getColor('brown_dark')};
 `;
 
 const StyledImageContainer = styled.div`
@@ -119,7 +118,7 @@ const StyledImageContainer = styled.div`
   overflow:hidden;
 
   border-radius: 3rem;
-  border: 1.5rem solid ${getColor("white")};
+  border: 1.5rem solid ${getColor('white')};
 
   >div:nth-child(1){
     position: absolute;
@@ -169,7 +168,7 @@ export function Hint() {
         <HintText hintText={hint.text} />
       </StyledHintBox>
       <StyledControls>
-        <button onClick={() => onCloseHint()}>{"CLOSE"}</button>
+        <button onClick={() => onCloseHint()}>{'CLOSE'}</button>
       </StyledControls>
       {hint.hintGiver.bgImage ? (
         <StyledImageContainer>

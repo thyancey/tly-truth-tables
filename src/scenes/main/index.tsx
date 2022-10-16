@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { getColor } from '../../themes';
-import { useAppDispatch } from '../../app/hooks';
-import { resetMatrix } from './slice';
-import { useEffect } from 'react';
+import { getGameReady } from './slice';
 import { Board } from './board';
 import { Status } from './status';
 import { Footer } from './footer';
 import { Hint } from './hint';
+import { Modal } from '../modal';
+import { useSelector } from 'react-redux';
+import { RuleMaster } from './rulemaster';
 
 const StyledContainer = styled.div`
   position:absolute;
@@ -41,7 +42,6 @@ const StyledTitle = styled.div`
   line-height: 10rem;
   opacity: .1;
 
-  /* white-space: pre-wrap; */
   word-wrap: break-word;
 `
 
@@ -52,23 +52,21 @@ const TITLE_TEXT = 'TOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTH
   'TOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLESTOOTHTABLES'
 
 export function Main() {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(resetMatrix());
-  }, [dispatch]);
+  const gameReady = useSelector(getGameReady);
 
   return (
     <StyledContainer>
+      <RuleMaster />
+      <Modal />
       <Hint />
       <StyledTitle>{TITLE_TEXT}</StyledTitle>
       <StyledHeader>
-        <Status />
+        {gameReady && <Status />}
       </StyledHeader>
       <StyledBody>
-        <Board />
+        {gameReady && <Board />}
       </StyledBody>
-      <Footer />
+      {gameReady && <Footer />}
     </StyledContainer>
   );
 }

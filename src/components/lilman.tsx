@@ -39,10 +39,6 @@ export function LilMan({hintGiver, onClick, isTalking = false, ssOverride = {} a
   if(hintGiver.imageType === 'spritesheet'){
     if(!hintGiver || !hintGiver.spritesheetData) return null;
 
-    console.log('LilMan', hintGiver.id);
-    console.log('LilMan', ssOverride.startAt, ssOverride.endAt, ssOverride.fps);
-
-
     return (
       <StyledLilManSpritesheet>
         <Spritesheet
