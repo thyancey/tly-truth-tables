@@ -7,18 +7,38 @@ import { HelpModal, SplashModal, WinModal, InvalidAnswerModal } from './modals';
 
 const StyledContainer = styled.div`
   position:fixed;
-  left:10%;
-  top:10%;
-  width:80%;
-  height:80%;
-  border-radius:1rem;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+  z-index:5;
+`;
+const StyledModal = styled.div`
+  position:absolute;
+
+  left:50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+  max-width:80%;
+  max-height:80%;
+  border-radius:2rem;
 
   background-color: ${getColor('brown_light')};
   color: ${getColor('brown_dark')};
-  border: 0.5rem solid ${getColor('brown_dark')};
+  border: 0.75rem solid ${getColor('brown_dark')};
 
-  z-index:5;
   padding:1rem;
+`;
+
+const StyledModalBg = styled.div`
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  background-color: ${getColor('brown')};
+  opacity: .95;
+  z-index:-1;
 `;
 
 export const getModal = (gameStatus: GameStatus) => {
@@ -38,7 +58,10 @@ export function Modal() {
 
   return (
     <StyledContainer>
-      {modal}
+      <StyledModal>
+        {modal}
+      </StyledModal>
+      <StyledModalBg />
     </StyledContainer>
   );
 }

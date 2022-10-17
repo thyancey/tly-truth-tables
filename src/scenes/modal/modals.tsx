@@ -5,25 +5,23 @@ import { Button } from '../../components/button';
 import { restartRound, selectSolution, setGameStatus, startNextRound, startRound } from '../../app/slice';
 
 const StyledButtonContainer = styled.div`
-  
+  flex: 1;
+  >div{
+    margin:2rem;
+  }
+`;
+
+const StyledBody = styled.div`
+  margin-top:-1.5rem;
+  margin-bottom: 2rem;
 `;
 
 const StyledContainer = styled.div`
-  position:absolute;
-  left:0;
-  top:0;
-  right:0;
-  bottom:0;
-  padding:3rem;
+  display:flex;
+  flex-direction:column;
 
+  padding:1.5rem;
   text-align:center;
-
-  ${StyledButtonContainer}{
-    position:absolute;
-    bottom: 1rem;
-    left:10%;
-    right:10%;
-  }
 `;
 
 export function WinModal() {
@@ -31,7 +29,9 @@ export function WinModal() {
 
   return (
     <StyledContainer>
-      <h1>{'YOU WIN!'}</h1>
+      <StyledBody>
+        <h2>{'YOU WIN!'}</h2>
+      </StyledBody>
       <StyledButtonContainer>
         <Button text={'OK'} onClick={() => dispatch(startNextRound())} />
       </StyledButtonContainer>
@@ -44,11 +44,14 @@ export function InvalidAnswerModal() {
 
   return (
     <StyledContainer>
-      <h1>{'Sorry,that\'s not quite right'}</h1>
+      <StyledBody>
+        <h2>{'INCORRECT!'}</h2>
+        <p>{'Every green cell must match the solution'}</p>
+      </StyledBody>
       <StyledButtonContainer>
-        <Button text={'Keep Trying'} onClick={() => dispatch(setGameStatus('playing'))} />
-        <Button text={'RESTART!'} onClick={() => dispatch(restartRound())} />
-        <Button text={'SKIP!'} onClick={() => dispatch(startNextRound())} />
+        <Button buttonType={'positive'} text={'BACK!'} onClick={() => dispatch(setGameStatus('playing'))} />
+        <Button buttonType={'special'} text={'RESTART!'} onClick={() => dispatch(restartRound())} />
+        <Button buttonType={'negative'} text={'SKIP!'} onClick={() => dispatch(startNextRound())} />
       </StyledButtonContainer>
     </StyledContainer>
   );
@@ -59,8 +62,10 @@ export function SplashModal() {
 
   return (
     <StyledContainer>
-      <h1>{'TOOTH TABLES'}</h1>
-      <h3>{'Some kinda puzzle game'}</h3>
+      <StyledBody>
+        <h2>{'TRUTH TABLES'}</h2>
+        <p>{'Some kinda puzzle game'}</p>
+      </StyledBody>
       <StyledButtonContainer>
         <Button text={'OK'} onClick={() => dispatch(startRound(0))} />
       </StyledButtonContainer>
@@ -86,7 +91,7 @@ export function HelpModal() {
 
   return (
     <StyledContainer>
-      <h1>{'HELP!'}</h1>
+      <h2>{'HELP!'}</h2>
       
       <StyledInstructions>
         <li><p>{'Click the characters at the bottom of the screen to reveal clues about the puzzle'}</p></li>

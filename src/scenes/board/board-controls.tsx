@@ -5,7 +5,6 @@ import { getColor } from '../../themes';
 import { checkIfSolved, setGameStatus, submitAnswer } from '../../app/slice';
 
 const StyledButton = styled.div`
-  display:block;
   border-radius: 1rem;
   border: .4rem solid ${getColor('brown')};
   cursor: pointer;

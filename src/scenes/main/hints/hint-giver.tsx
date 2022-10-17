@@ -13,8 +13,8 @@ const StyledContainer = styled.div`
 
 const StyledLilManContainer = styled.div`
   position: absolute;
-  left:-5rem;
-  bottom:-5rem;
+  left:-6rem;
+  bottom:-4rem;
   width:40rem;
   height:50rem;
 `;

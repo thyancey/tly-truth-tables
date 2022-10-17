@@ -16,7 +16,7 @@ const StyledContainer = styled.div`
   border-top: .75rem solid ${getColor('brown')};
 
   display:grid;
-  grid-template-columns: 20rem auto;
+  grid-template-columns: 27rem auto;
   grid-template-rows: 2rem auto;
 
   z-index:3;
