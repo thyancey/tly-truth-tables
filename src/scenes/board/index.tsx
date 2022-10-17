@@ -148,24 +148,15 @@ const StyledCell = styled.div<StyledCellProps>`
     border-color: ${getColor('pink')};
     box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('pink')};
   `};
-  ${p => p.status === 3 && css`
-    background-color:${getColor('brown_light')};
-    border-color: ${getColor('yellow')};
-    box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('yellow')};
-  `};
-
   &:hover{
     ${p => p.status === 0 && css`
       border-color: ${getColor('pink')};
     `};
     ${p => p.status === 1 && css`
-      border-color: ${getColor('yellow')};
+      border-color: ${getColor('white')};
     `};
     ${p => p.status === 2 && css`
-      border-color: ${getColor('green')};
-    `};
-    ${p => p.status === 3 && css`
-      border-color: ${getColor('white')};
+      border-color: ${getColor('green_light')};
     `};
   }
   
@@ -178,19 +169,14 @@ const StyledCell = styled.div<StyledCellProps>`
       box-shadow: 0.1rem 0.1rem 0 0.3rem ${getColor('pink')};
     `};
     ${p => p.status === 1 && css`
-      background-color: ${getColor('yellow_dark')};
-      border-color: ${getColor('yellow')};
-      box-shadow: 0.1rem 0.1rem 0 0.3rem ${getColor('yellow')};
+      background-color: ${getColor('brown')};
+      border-color: ${getColor('white')};
+      box-shadow: 0.1rem 0.1rem 0 0.3rem ${getColor('white')};
     `};
     ${p => p.status === 2 && css`
       background-color: ${getColor('green')};
       border-color: ${getColor('green_light')};
       box-shadow: 0.1rem 0.1rem 0 0.3rem ${getColor('green_light')};
-    `};
-    ${p => p.status === 3 && css`
-      background-color: ${getColor('brown')};
-      border-color: ${getColor('white')};
-      box-shadow: 0.1rem 0.1rem 0 0.3rem ${getColor('white')};
     `};
   }
 `

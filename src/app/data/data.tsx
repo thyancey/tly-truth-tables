@@ -436,14 +436,12 @@ export const HINT_GIVERS: HintGiver[] = [
     name: 'Fly Cook',
     idleImage: 'assets/hinters/fiveflys-static.gif',
     talkingImage: 'assets/hinters/fiveflys.gif',
-    // bgImage: 'assets/bg/bg-goobers.gif',
   },
   {
     id: 'eyetower',
     name: 'Eye Tower',
     idleImage: 'assets/hinters/eyetower-static.gif',
     talkingImage: 'assets/hinters/eyetower.gif',
-    // bgImage: 'assets/bg/bg-firespiral.gif',
   },
   {
     id: 'businessbobcat',
@@ -451,7 +449,6 @@ export const HINT_GIVERS: HintGiver[] = [
     imageType: 'spritesheet',
     idleImage: 'assets/hinters/businesscat-static.gif',
     talkingImage: 'assets/hinters/businesscat.gif',
-    bgImage: 'assets/bg/bg-cheesewave.gif',
     ssData:{
       idle:{
         startAt: 2,
@@ -479,14 +476,12 @@ export const HINT_GIVERS: HintGiver[] = [
     name: 'Fridgey',
     idleImage: 'assets/hinters/fridgey-static.gif',
     talkingImage: 'assets/hinters/fridgey.gif',
-    // bgImage: 'assets/bg/bg-jt.gif',
   },
   {
     id: 'mothman',
     name: 'Mothman',
     idleImage: 'assets/hinters/mothman-static.gif',
     talkingImage: 'assets/hinters/mothman.gif',
-    // bgImage: 'assets/bg/bg-splat.gif',
   },
   {
     id: 'raincat',
@@ -494,33 +489,6 @@ export const HINT_GIVERS: HintGiver[] = [
     idleImage: 'assets/hinters/raincat-static.gif',
     talkingImage: 'assets/hinters/raincat.gif',
     bottomBoost: 10,
-  },
-  {
-    id: 'raccoon',
-    name: 'Raccoon',
-    imageType: 'spritesheet',
-    idleImage: 'assets/hinters/sprites/raccoon.png',
-    talkingImage: 'assets/hinters/sprites/raccoon.png',
-    ssData:{
-      idle:{
-        startAt: 13,
-        endAt: 14,
-        fps: 2,
-      },
-      talking:{
-        startAt: 15,
-        endAt: 16,
-      }
-    },
-    spritesheetData: {
-      image: 'assets/hinters/sprites/raccoon.png',
-      widthFrame: 56,
-      heightFrame: 56,
-      startAt: 15,
-      endAt: 16,
-      steps: 20,
-      fps: 5
-    }
   }
 ]
 

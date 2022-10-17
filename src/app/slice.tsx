@@ -164,8 +164,7 @@ const getNextStatus = (cellObj: CellObj) => {
     switch(cellObj.status){
       case 0: return 2;
       case 2: return 1;
-      case 1: return 3;
-      case 3: return 0;
+      case 1: return 0;
     }
   } catch(e){
     console.error('unexpected lookup for cellObj', cellObj)

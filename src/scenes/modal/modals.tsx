@@ -30,10 +30,11 @@ export function WinModal() {
   return (
     <StyledContainer>
       <StyledBody>
-        <h2>{'YOU WIN!'}</h2>
+        <h2>{'CORRECT!'}</h2>
       </StyledBody>
       <StyledButtonContainer>
-        <Button text={'OK'} onClick={() => dispatch(startNextRound())} />
+        <Button text={'NEXT LEVEL'} onClick={() => dispatch(startNextRound())} />
+        <Button buttonType={'special'} text={'REPLAY LEVEL'} onClick={() => dispatch(startNextRound())} />
       </StyledButtonContainer>
     </StyledContainer>
   );
@@ -49,9 +50,9 @@ export function InvalidAnswerModal() {
         <p>{'Every green cell must match the solution'}</p>
       </StyledBody>
       <StyledButtonContainer>
-        <Button buttonType={'positive'} text={'BACK!'} onClick={() => dispatch(setGameStatus('playing'))} />
-        <Button buttonType={'special'} text={'RESTART!'} onClick={() => dispatch(restartRound())} />
-        <Button buttonType={'negative'} text={'SKIP!'} onClick={() => dispatch(startNextRound())} />
+        <Button buttonType={'positive'} text={'KEEP TRYING'} onClick={() => dispatch(setGameStatus('playing'))} />
+        <Button buttonType={'special'} text={'RESET LEVEL'} onClick={() => dispatch(restartRound())} />
+        <Button buttonType={'negative'} text={'SKIP TO NEXT LEVEL!'} onClick={() => dispatch(startNextRound())} />
       </StyledButtonContainer>
     </StyledContainer>
   );
@@ -97,7 +98,7 @@ export function HelpModal() {
         <li><p>{'Click the characters at the bottom of the screen to reveal clues about the puzzle'}</p></li>
         <li><p>{'Click the grid cells to cycle between RED (no), GREEN (yes) and YELLOW (maybe?)'}</p></li>
         <li><p>{'After selecting all of the correct GREEN tiles, click SUBMIT to see if you have the answer correct'}</p></li>
-        <li><p>{'The RED and YELLOW tiles do not have to be filled in to have a correct answer, they\'re there to help you rule out information'}</p></li>
+        <li><p>{'The RED tiles are not required, but they can be used to help you rule out information'}</p></li>
         <li><p>{'Each attribute combination can only be used once'}</p></li>
         <li><p>{'You may have to iterate through the clues multiple times to arrive at an answer'}</p></li>
       </StyledInstructions>

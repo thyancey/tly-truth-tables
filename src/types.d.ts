@@ -125,7 +125,6 @@ export type HintGiver = {
   name: string,
   idleImage: string,
   talkingImage: string,
-  bgImage?: string,
   bottomBoost?: number,
   imageType?: ImageType,
   spritesheetData?: SpritesheetData
