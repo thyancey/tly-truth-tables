@@ -2,9 +2,7 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
-import { checkIfSolved, setGameStatus, submitAnswer } from './slice';
-
-
+import { checkIfSolved, setGameStatus, submitAnswer } from '../../app/slice';
 
 const StyledButton = styled.div`
   border: .75rem solid ${getColor('brown_dark')};
@@ -53,7 +51,7 @@ const StyledHelpButton = styled(StyledButton)`
 const StyledContainer = styled.div`
   position:absolute;
   right:1rem;
-  bottom:1rem;
+  bottom: calc(100% + 1rem);
   text-align:center;
 
   >${StyledButton}{
@@ -71,7 +69,7 @@ export function SubmitControls() {
 
   return (
     <StyledContainer>
-    <StyledHelpButton onClick={() => dispatch(setGameStatus('help'))}>{'?'}</StyledHelpButton>
+      <StyledHelpButton onClick={() => dispatch(setGameStatus('help'))}>{'?'}</StyledHelpButton>
       <StyledSolvedButton onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedButton>
     </StyledContainer>
   );

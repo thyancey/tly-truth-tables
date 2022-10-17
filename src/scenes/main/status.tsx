@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
-import { checkIfSolved, selectRoundInfo, setGameStatus, submitAnswer } from './slice';
+import { checkIfSolved, selectRoundInfo, setGameStatus, submitAnswer } from '../../app/slice';
 
 const StyledContainer = styled.div`
   margin-left:2rem;

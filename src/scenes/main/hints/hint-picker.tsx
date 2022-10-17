@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { getColor } from '../../../themes';
-import { getActiveHintIdx, selectHints, setActiveHint } from '../slice';
+import { getActiveHintIdx, selectHints, setActiveHint } from '../../../app/slice';
 
 const StyledContainer = styled.div`
 `;
@@ -27,14 +27,14 @@ const StyledHint = styled.div<StyledHintProps>`
   width: 5rem;
   height: 5rem;
   margin: .25rem;
-  border: .75rem solid ${getColor('brown_dark')};
-  border-radius: 1rem;
+  border: .75rem solid ${getColor('brown')};
+  border-radius: 1.5rem;
   transition: all .3s;
 
   &:hover{  
     width: 7rem;
     height: 6rem;
-    background-color: ${getColor('pink')};
+    background-color: ${getColor('yellow_light')};
 
     transition: all .3s;
   }
@@ -48,7 +48,7 @@ const StyledHint = styled.div<StyledHintProps>`
     &:hover{  
       width: 9rem;
       height: 9rem;
-      background-color: ${getColor('yellow_light')};
+      background-color: ${getColor('pink')};
 
       transition: all .3s;
     }

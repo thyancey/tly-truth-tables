@@ -1,13 +1,11 @@
 import styled from 'styled-components';
 import { getColor } from '../../themes';
-import { getGameReady } from './slice';
-import { Board } from './board';
+import { getGameReady } from '../../app/slice';
+import { Board } from '../board';
 import { Modal } from '../modal';
 import { useSelector } from 'react-redux';
 import { RuleMaster } from './rulemaster';
-import { HintHeader } from './hints/hint-header';
-import { HintGiver } from './hint-giver';
-import { Status } from './status';
+import { HintBanner } from './hints/banner';
 import { SubmitControls } from './submit-controls';
 
 const StyledContainer = styled.div`
@@ -41,13 +39,11 @@ export function Main() {
     <StyledContainer>
       <RuleMaster />
       <Modal />
-      <HintHeader />
       <StyledBody>
         {gameReady && <Board />}
       </StyledBody>
       <StyledFooter>
-        <HintGiver />
-        <SubmitControls />
+        <HintBanner />
       </StyledFooter>
     </StyledContainer>
   );

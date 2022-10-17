@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
 import { GameStatus } from '../../types';
-import { getGameStatus } from '../main/slice';
+import { getGameStatus } from '../../app/slice';
 import { HelpModal, SplashModal, WinModal, InvalidAnswerModal } from './modals';
 
 const StyledContainer = styled.div`

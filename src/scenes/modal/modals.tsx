@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Button } from '../../components/button';
 // import { getColor } from '../../../themes';
-import { restartRound, selectSolution, setGameStatus, startNextRound, startRound } from '../main/slice';
+import { restartRound, selectSolution, setGameStatus, startNextRound, startRound } from '../../app/slice';
 
 const StyledButtonContainer = styled.div`
   

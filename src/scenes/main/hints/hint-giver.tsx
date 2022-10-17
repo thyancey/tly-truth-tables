@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { getColor, mixinFontFamily } from '../../themes';
-import { LilMan } from '../../components/lilman';
-import { selectActiveHintGiver } from './slice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { getColor, mixinFontFamily } from '../../../themes';
+import { LilMan } from '../../../components/lilman';
+import { selectActiveHintGiver } from '../../../app/slice';
 
 const StyledContainer = styled.div`
   position: absolute;
