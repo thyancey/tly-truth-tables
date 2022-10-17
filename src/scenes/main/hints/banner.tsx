@@ -1,10 +1,10 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useAppSelector } from '../../../app/hooks';
 import { getColor, mixinFontFamily } from '../../../themes';
 import { SpeechText } from '../../../components/speech-text';
-import { selectActiveHint, setActiveHint } from '../../../app/slice';
+import { selectActiveHint } from '../../../app/slice';
 import { HintPicker } from './hint-picker';
 import { HintGiver } from './hint-giver';
 
@@ -57,23 +57,31 @@ const StyledHintGiver = styled.div`
 `;
 
 export function HintBanner() {
+  const [ isTalking, setIsTalking ] = useState(true);
   const hint = useAppSelector(selectActiveHint);
 
-  const dispatch = useAppDispatch();
-  const onCloseHint = useCallback(() => {
-    dispatch(setActiveHint(-1));
-  }, [dispatch]);
+  const hintText = useMemo(() => {
+    return hint ? hint.text : ''
+  }, [ hint ]);
+
+  useEffect(() => {
+    setIsTalking(true);
+  }, [ hint, setIsTalking ])
+
+  const onTextComplete = useCallback(() => {
+    setIsTalking(false);
+  }, [ setIsTalking ]);
 
   return (
     <StyledContainer>
       <StyledHintGiver>
-        <HintGiver />
+        <HintGiver isTalking={isTalking}/>
       </StyledHintGiver>
       <StyledControls>
         <HintPicker />
       </StyledControls>
       <StyledHintBox>
-        {hint && <SpeechText text={hint.text} />}
+        {hint && <SpeechText text={hintText} onTextComplete={onTextComplete}/>}
       </StyledHintBox>
     </StyledContainer>
   );

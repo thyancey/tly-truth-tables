@@ -6,7 +6,6 @@ import { Modal } from '../modal';
 import { useSelector } from 'react-redux';
 import { RuleMaster } from './rulemaster';
 import { HintBanner } from './hints/banner';
-import { SubmitControls } from './submit-controls';
 
 const StyledContainer = styled.div`
   position:absolute;
@@ -14,7 +13,6 @@ const StyledContainer = styled.div`
   top:0;
   bottom:0;
   right:0;
-  /* background-image: linear-gradient(to bottom, ${getColor('white')}, ${getColor('brown')}); */
   background-color: ${getColor('brown')};
   color: ${getColor('brown_dark')};
   overflow: hidden;

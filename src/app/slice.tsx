@@ -234,7 +234,7 @@ export const selectActiveHint = createSelector(
 
 export const selectActiveHintGiver = createSelector(
   [selectActiveHint],
-  (activeHint): HintGiver | null => activeHint && activeHint.hintGiver || null
+  (activeHint): HintGiver | null => activeHint?.hintGiver || null
 );
 
 export const selectAttributes = createSelector(

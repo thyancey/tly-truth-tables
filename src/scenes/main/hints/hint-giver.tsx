@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { getColor, mixinFontFamily } from '../../../themes';
+import { useAppSelector } from '../../../app/hooks';
 import { LilMan } from '../../../components/lilman';
 import { selectActiveHintGiver } from '../../../app/slice';
 
@@ -19,21 +18,11 @@ const StyledLilManContainer = styled.div`
   height:50rem;
 `;
 
-const StyledLabel = styled.div`
-  position:absolute;
-  bottom: -1rem;
-  left: -1rem;
-  padding: .25rem 2rem;
-  border-radius: 0 3rem 0 0;
+interface HintGiverProps {
+  isTalking?: boolean
+}
 
-  white-space: nowrap;
-  color:${getColor('brown_dark')};
-  font-size: 5rem;
-  background-color: ${getColor('brown_light')};
-  border: .75rem solid ${getColor('brown_dark')};
-`
-
-export function HintGiver() {
+export function HintGiver({ isTalking }: HintGiverProps) {
   const hintGiver = useAppSelector(selectActiveHintGiver);
   if (!hintGiver) return null;
 
@@ -41,14 +30,10 @@ export function HintGiver() {
     <StyledContainer>
       <StyledLilManContainer>
         <LilMan
-          isTalking={true}
+          isTalking={isTalking}
           hintGiver={hintGiver}
-          ssOverride={hintGiver.ssData?.hint}
         />
       </StyledLilManContainer>
-      {/* <StyledLabel>
-        {hintGiver.name}
-      </StyledLabel> */}
     </StyledContainer>
   );
 }
