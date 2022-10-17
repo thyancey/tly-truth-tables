@@ -53,66 +53,6 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
       }
     ]
   },
-  // 2x4
-  {
-    title: 'Charlie, Mac, Dennis, and Sweet Dee',
-    description: 'Charlie, Mac, Dennis, and Sweet Dee all showed up to the Pub after it was supposed to open, in what order did they show up to work?',
-    attributes:[
-      {
-        id: 'person',
-        type: 'name',
-        values: [
-          {
-            id: 'Charlie',
-            aliases: [],
-            descriptors: ['has a beard']
-          },
-          {
-            id: 'Mac',
-            aliases: [],
-            descriptors: ['has a beard']
-          },
-          {
-            id: 'Dennis',
-            aliases: ['THE GOLDEN GOD'],
-            descriptors: []
-          },
-          {
-            id: 'Sweet Dee',
-            aliases: [],
-            descriptors: ['is a bird']
-          }
-        ]
-      },
-      {
-        id: 'queue',
-        type: 'order',
-        orderDescriptions: [ 'showed up before', 'showed up after' ],
-        values: [
-          {
-            id: '11:21 AM',
-            aliases: [ 'first to arrive' ],
-            descriptors: [ 'before noon' ]
-          },
-          {
-            id: '11:34 AM',
-            aliases: [ 'second in line' ],
-            descriptors: [ 'before noon' ]
-          },
-          {
-            id: '1:06 PM',
-            aliases: [ 'second to last to show up' ],
-            descriptors: [ 'after noon' ]
-          },
-          {
-            id: '4:15 PM',
-            aliases: [ 'last to show up' ],
-            descriptors: [ 'after noon' ]
-          }
-        ]
-      }
-    ]
-  },
   // 3x3
   {
     title: '3 attributes, 3 values',
@@ -494,31 +434,28 @@ export const HINT_GIVERS: HintGiver[] = [
   {
     id: 'fiveflys',
     name: 'Fly Cook',
-    thumbImage: 'assets/hinters/fiveflys-static.gif',
-    largeImage: 'assets/hinters/fiveflys.gif',
-    // bgImage: 'assets/bg/bg-goobers.gif',
+    idleImage: 'assets/hinters/fiveflys-static.gif',
+    talkingImage: 'assets/hinters/fiveflys.gif',
   },
   {
     id: 'eyetower',
     name: 'Eye Tower',
-    thumbImage: 'assets/hinters/eyetower-static.gif',
-    largeImage: 'assets/hinters/eyetower.gif',
-    // bgImage: 'assets/bg/bg-firespiral.gif',
+    idleImage: 'assets/hinters/eyetower-static.gif',
+    talkingImage: 'assets/hinters/eyetower.gif',
   },
   {
     id: 'businessbobcat',
     name: 'Business Bobcat',
     imageType: 'spritesheet',
-    thumbImage: 'assets/hinters/businesscat-static.gif',
-    largeImage: 'assets/hinters/businesscat.gif',
-    bgImage: 'assets/bg/bg-cheesewave.gif',
+    idleImage: 'assets/hinters/businesscat-static.gif',
+    talkingImage: 'assets/hinters/businesscat.gif',
     ssData:{
-      footer:{
+      idle:{
         startAt: 2,
         endAt: 4,
         fps: 1,
       },
-      hint:{
+      talking:{
         startAt: 1,
         endAt: 2,
         fps: 4,
@@ -537,50 +474,21 @@ export const HINT_GIVERS: HintGiver[] = [
   {
     id: 'fridgey',
     name: 'Fridgey',
-    thumbImage: 'assets/hinters/fridgey-static.gif',
-    largeImage: 'assets/hinters/fridgey.gif',
-    // bgImage: 'assets/bg/bg-jt.gif',
+    idleImage: 'assets/hinters/fridgey-static.gif',
+    talkingImage: 'assets/hinters/fridgey.gif',
   },
   {
     id: 'mothman',
     name: 'Mothman',
-    thumbImage: 'assets/hinters/mothman-static.gif',
-    largeImage: 'assets/hinters/mothman.gif',
-    // bgImage: 'assets/bg/bg-splat.gif',
+    idleImage: 'assets/hinters/mothman-static.gif',
+    talkingImage: 'assets/hinters/mothman.gif',
   },
   {
     id: 'raincat',
     name: 'Rain Cat',
-    thumbImage: 'assets/hinters/raincat-static.gif',
-    largeImage: 'assets/hinters/raincat.gif',
+    idleImage: 'assets/hinters/raincat-static.gif',
+    talkingImage: 'assets/hinters/raincat.gif',
     bottomBoost: 10,
-  },
-  {
-    id: 'raccoon',
-    name: 'Raccoon',
-    imageType: 'spritesheet',
-    thumbImage: 'assets/hinters/sprites/raccoon.png',
-    largeImage: 'assets/hinters/sprites/raccoon.png',
-    ssData:{
-      footer:{
-        startAt: 13,
-        endAt: 14,
-        fps: 2,
-      },
-      hint:{
-        startAt: 15,
-        endAt: 16,
-      }
-    },
-    spritesheetData: {
-      image: 'assets/hinters/sprites/raccoon.png',
-      widthFrame: 56,
-      heightFrame: 56,
-      startAt: 15,
-      endAt: 16,
-      steps: 20,
-      fps: 5
-    }
   }
 ]
 

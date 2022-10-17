@@ -123,9 +123,8 @@ export type ImageType = 'spritesheet' | 'gif';
 export type HintGiver = {
   id: string,
   name: string,
-  thumbImage: string,
-  largeImage: string,
-  bgImage?: string,
+  idleImage: string,
+  talkingImage: string,
   bottomBoost?: number,
   imageType?: ImageType,
   spritesheetData?: SpritesheetData

@@ -1,8 +1,8 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
-import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, RenderedHint, RoundData, RoundInfo } from '../../types';
-import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from '../../app/data/data';
-import { generateHints, parseRoundData } from '../../utils/puzzler';
+import { RootState } from './store';
+import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, HintGiver, RenderedHint, RoundData, RoundInfo } from '../types';
+import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from './data/data';
+import { generateHints, parseRoundData } from '../utils/puzzler';
 
 const MAX_HINTS = 8;
 
@@ -71,6 +71,7 @@ export const gridSlice = createSlice({
           state.cellMatrix = newMatrix;
           state.gameReady = true;
           state.gameStatus = 'playing';
+          state.activeHintIdx = 0;
           state.hints = generateHints(solutionSet, roundData.attributes, HINT_GIVERS, MAX_HINTS);
         } else{
           console.error('must have between 2 and 5 attributes');
@@ -163,8 +164,7 @@ const getNextStatus = (cellObj: CellObj) => {
     switch(cellObj.status){
       case 0: return 2;
       case 2: return 1;
-      case 1: return 3;
-      case 3: return 0;
+      case 1: return 0;
     }
   } catch(e){
     console.error('unexpected lookup for cellObj', cellObj)
@@ -229,6 +229,11 @@ export const selectActiveHint = createSelector(
 
     return renderHint(hints[activeHintIdx]);
   }
+);
+
+export const selectActiveHintGiver = createSelector(
+  [selectActiveHint],
+  (activeHint): HintGiver | null => activeHint?.hintGiver || null
 );
 
 export const selectAttributes = createSelector(

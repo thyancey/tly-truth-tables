@@ -88,27 +88,30 @@ const shadows = {
   z2: '-0.1rem 0.1rem .25rem .1rem rgba(0,0,0,0.36)',
   z3: '-.2rem .5rem 1rem .2rem rgba(0,0,0,.36)'
 }
-type tColor = 'brown_dark' | 'brown' | 'brown_light' | 'black' | 'grey' | 'grey_light' | 'white' | 'pink_dark' | 'pink' | 'pink_light' | 'red' | 'blue_dark' | 'blue' | 'blue_light' | 'green_dark' | 'green' | 'green_light' | 'yellow' | 'purple';
+type tColor = 'brown_dark' | 'brown' | 'brown_light' | 'black' | 'grey_dark' | 'grey' | 'grey_light' | 'white' | 'pink' | 'red_dark' | 'red' | 'red_light' | 'blue_dark' | 'blue' | 'blue_light' | 'green_dark' | 'green' | 'green_light' | 'yellow_dark' | 'yellow' | 'yellow_light' | 'purple';
 const colors = {
   brown_dark: '#35120e',
   brown: '#6b2b15',
   brown_light: '#d48e55',
-  black: '#1a1932',
+  black: '#07070e',
+  grey_dark: '#1a1932',
   grey: '#424c6e',
   grey_light: '#92a1b9',
-  white: '#e8c8a9',
-  pink_dark: '#bd1e7d',
-  pink: '#ff4785',
-  pink_light: '#ff8095',
+  white: '#f7ede3',
+  pink: '#f29caa',
+  red_dark: '#7b102b',
   red: '#b3102b',
-  green_dark: '#1e6f50',
-  green: '#5ac54f',
-  green_light: '#99e65f',
-  blue_dark: '#2a2f4e',
-  blue: '#0069aa',
-  blue_light: '#0098dc',
-  yellow: '#fff249',
-  purple: '#660e49',
+  red_light: '#e35970',
+  green_dark: '#123f1d',
+  green: '#33984b',
+  green_light: '#5ac54f',
+  blue_dark: '#003f61',
+  blue: '#1c638d',
+  blue_light: '#7ecbed',
+  yellow_dark: '#666a15',
+  yellow: '#afb224',
+  yellow_light: '#cfd14d',
+  purple: '#9c3d95',
 }
 
 type tBreakpoint = 'mobile_tiny' | 'mobile_medium' | 'mobile_large' | 'tablet' | 'desktop';

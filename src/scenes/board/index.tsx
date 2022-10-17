@@ -3,21 +3,22 @@ import styled, { css } from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
 import { CellObj, CellStatus, RawCell } from '../../types';
-import { rotateCell, selectGridBox, selectGridLabels, selectGridInfo } from './slice';
+import { rotateCell, selectGridBox, selectGridLabels, selectGridInfo } from '../../app/slice';
+import { BoardControls } from '../board/board-controls';
 
 const StyledBoard = styled.div`
   position:absolute;
-  /* more perspectivey */
   transform: matrix(2.5,1.25,-2.5,1.25,-300,-0) scale(.4) translate(-50%, -50%);
-  left: 50%;
-  top:50%;
+  left:50%;
+  top:40%;
 
   display:grid;
   grid-template-columns: 15rem 13rem 13rem 13rem; 
   grid-template-rows: 15rem 13rem 13rem 13rem; 
   column-gap: 2rem;
   row-gap: 2rem;
-  color: ${getColor('brown')};
+  color: ${getColor('brown_light')};
+  z-index: 1;
 
   >div{
     display:grid;
@@ -138,33 +139,24 @@ const StyledCell = styled.div<StyledCellProps>`
     box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('white')};
   `};
   ${p => p.status === 1 && css`
-    background-color:${getColor('green_dark')};
-    border-color: ${getColor('green')};
-    box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('green')};
+    background-color:${getColor('green')};
+    border-color: ${getColor('green_light')};
+    box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('green_light')};
   `};
   ${p => p.status === 2 && css`
-    background-color:${getColor('pink_dark')};
+    background-color:${getColor('red_light')};
     border-color: ${getColor('pink')};
     box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('pink')};
   `};
-  ${p => p.status === 3 && css`
-    background-color:${getColor('brown_light')};
-    border-color: ${getColor('yellow')};
-    box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('yellow')};
-  `};
-
   &:hover{
     ${p => p.status === 0 && css`
       border-color: ${getColor('pink')};
     `};
     ${p => p.status === 1 && css`
-      border-color: ${getColor('yellow')};
+      border-color: ${getColor('white')};
     `};
     ${p => p.status === 2 && css`
-      border-color: ${getColor('green')};
-    `};
-    ${p => p.status === 3 && css`
-      border-color: ${getColor('white')};
+      border-color: ${getColor('green_light')};
     `};
   }
   
@@ -172,19 +164,19 @@ const StyledCell = styled.div<StyledCellProps>`
     transform: translate(.35rem, .35rem);
 
     ${p => p.status === 0 && css`
-      background-color: ${getColor('pink_dark')};
+      background-color: ${getColor('red_light')};
       border-color: ${getColor('pink')};
-      box-shadow: 0.1rem 0.1rem 0 0.1rem ${getColor('pink')};
+      box-shadow: 0.1rem 0.1rem 0 0.3rem ${getColor('pink')};
     `};
     ${p => p.status === 1 && css`
       background-color: ${getColor('brown')};
       border-color: ${getColor('white')};
-      box-shadow: 0.1rem 0.1rem 0 0.1rem ${getColor('white')};
+      box-shadow: 0.1rem 0.1rem 0 0.3rem ${getColor('white')};
     `};
     ${p => p.status === 2 && css`
-      background-color: ${getColor('green_dark')};
-      border-color: ${getColor('green')};
-      box-shadow: 0.1rem 0.1rem 0 0.1rem ${getColor('green')};
+      background-color: ${getColor('green')};
+      border-color: ${getColor('green_light')};
+      box-shadow: 0.1rem 0.1rem 0 0.3rem ${getColor('green_light')};
     `};
   }
 `
@@ -192,6 +184,14 @@ const BlankCellGroup = styled(StyledRawCellGroup)`
   background-color: ${getColor('white')};
   opacity: .2;
 `
+
+const StyledControls = styled.div`
+  grid-column: 1 / span 1;
+  grid-row: 1 / span 1;
+  position:absolute;
+  bottom:0;
+  right:0;
+`;
 
 export function Board() {
   const dispatch = useAppDispatch();
@@ -245,6 +245,9 @@ export function Board() {
 
   return (
     <StyledBoard>
+      <StyledControls>
+        <BoardControls />
+      </StyledControls>
       <StyledCells>
         {grid.map((gridRow, grIdx) => (
           gridRow.map((cellGroup, cgIdx) => renderCellGroup(cellGroup, `cg${cgIdx}`, gridInfo.gridSize, cellRatio, [grIdx, cgIdx])

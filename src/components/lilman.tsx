@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { HintGiver, SpritesheetData, SpritesheetOverride } from '../types';
+import { HintGiver, SpritesheetOverride } from '../types';
 import Spritesheet from 'react-responsive-spritesheet';
-import { getColor } from '../themes';
+import { useMemo } from 'react';
 
 export const ScButton = styled.div`
   padding: 2rem;
@@ -14,12 +14,11 @@ interface StyledLilManProps {
 export const StyledLilManGif = styled.div<StyledLilManProps>`
   position:absolute;
   width:100%;
-  height:calc(100% + 2rem);
+  height:100%;
   bottom:-2rem;
   background: url(${p => p.imageUrl}) no-repeat center;
   background-position:center;
   background-size:contain;
-  filter: drop-shadow(0 0 7rem ${getColor('brown')});
 `;
 
 export const StyledLilManSpritesheet = styled.div`
@@ -31,13 +30,20 @@ export const StyledLilManSpritesheet = styled.div`
 interface LilManProps {
   hintGiver: HintGiver,
   onClick?: Function,
-  ssOverride?: SpritesheetOverride,
   isTalking?: boolean,
 }
 
-export function LilMan({hintGiver, onClick, isTalking = false, ssOverride = {} as SpritesheetData}: LilManProps) {
+export function LilMan({hintGiver, onClick, isTalking = false}: LilManProps) {
+  const ssOverride = useMemo((): SpritesheetOverride | undefined => {
+    if(!hintGiver) return undefined;
+    return isTalking ? hintGiver.ssData?.talking : hintGiver.ssData?.idle;
+  }, [ hintGiver, isTalking ])
+
+  
   if(hintGiver.imageType === 'spritesheet'){
-    if(!hintGiver || !hintGiver.spritesheetData) return null;
+    if(!hintGiver || !hintGiver.spritesheetData || !ssOverride) return null;
+
+    console.log('ssOverride', isTalking, ssOverride)
 
     return (
       <StyledLilManSpritesheet>
@@ -59,7 +65,7 @@ export function LilMan({hintGiver, onClick, isTalking = false, ssOverride = {} a
   } else{
     return (
       <StyledLilManGif
-        imageUrl={isTalking ? hintGiver.largeImage : hintGiver.thumbImage}
+        imageUrl={isTalking ? hintGiver.talkingImage : hintGiver.idleImage}
         onClick={(e) => onClick && onClick(e)}
       />
     );

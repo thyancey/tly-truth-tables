@@ -1,5 +1,5 @@
 import { useAppDispatch } from '../../app/hooks';
-import { getGameStatus, resetMatrix, selectRoundData } from './slice';
+import { getGameStatus, resetMatrix, selectRoundData } from '../../app/slice';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
