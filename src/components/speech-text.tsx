@@ -13,6 +13,7 @@ export function SpeechText({ text, onTextComplete }: SpeechTextProps) {
   }
 
   useEffect(() => {
+    // console.log(text, curText)
     if(curText.length < text.length){
       timerRef.current = setTimeout(() => {
         setCurText(getNextText(curText, text));
@@ -29,6 +30,7 @@ export function SpeechText({ text, onTextComplete }: SpeechTextProps) {
     setIsComplete(false);
 
     return () => {
+      // console.log('unmount!', timerRef.current)
       clearTimeout(timerRef.current);
     }
   }, [ text ]);
