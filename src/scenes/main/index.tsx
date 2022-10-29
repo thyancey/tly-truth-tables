@@ -5,7 +5,7 @@ import { Board } from '../board';
 import { Modal } from '../modal';
 import { useSelector } from 'react-redux';
 import { RuleMaster } from './rulemaster';
-import { HintBanner } from './hints/banner';
+import { InfoPanel } from '../info-panel';
 
 const StyledContainer = styled.div`
   position:absolute;
@@ -17,17 +17,14 @@ const StyledContainer = styled.div`
   color: ${getColor('brown_dark')};
   overflow: hidden;
 
-  display:flex;
-  flex-direction:column;
+  display:grid;
+  grid-template-columns: 27rem auto;
+  grid-template-rows: auto 30% 15rem;
 `;
 
 const StyledBody = styled.div`
-  flex: 1;
-`;
-
-const StyledFooter = styled.div`
-  flex: 0 0 15rem;
-  position:relative;
+  grid-column: 1 / span 2;
+  grid-row: 1 / span 2;
 `;
 
 export function Main() {
@@ -40,9 +37,7 @@ export function Main() {
       <StyledBody>
         {gameReady && <Board />}
       </StyledBody>
-      <StyledFooter>
-        <HintBanner />
-      </StyledFooter>
+      <InfoPanel />
     </StyledContainer>
   );
 }

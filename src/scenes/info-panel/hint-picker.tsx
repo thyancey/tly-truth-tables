@@ -1,17 +1,19 @@
 import { useCallback } from 'react';
 import styled, { css } from 'styled-components';
 
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { getColor } from '../../../themes';
-import { getActiveHintIdx, selectHints, setActiveHint } from '../../../app/slice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { getColor } from '../../themes';
+import { getActiveHintIdx, selectHints, setActiveHint } from '../../app/slice';
 
 const StyledContainer = styled.div`
+  pointer-events: none;
 `;
 
 const StyledControls = styled.ul`
   text-align:center;
   >div{
     display:inline-block;
+    pointer-events: all;
   }
 `;
 

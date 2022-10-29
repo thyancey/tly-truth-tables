@@ -1,17 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
-import { useAppSelector } from '../../../app/hooks';
-import { getColor, mixinFontFamily } from '../../../themes';
-import { SpeechText } from '../../../components/speech-text';
-import { selectActiveHint } from '../../../app/slice';
+import { useAppSelector } from '../../app/hooks';
+import { getColor, mixinFontFamily } from '../../themes';
+import { SpeechText } from '../../components/speech-text';
+import { selectActiveHint } from '../../app/slice';
 import { HintPicker } from './hint-picker';
 import { HintGiver } from './hint-giver';
 
-const StyledContainer = styled.div`
-  flex: 0 0 20rem;
-  width:100%;
-  height:100%;
+const StyledHintGiver = styled.div`
+  grid-column: 1 / span 1;
+  grid-row: 2 / span 2;
+  position:relative;
+  z-index:1;
+`;
+
+const StyledBanner = styled.div`
+  grid-column: 1 / span 2;
+  grid-row: 3 / span 1;
+
   background-color: ${getColor('brown_light')};
   border-top: .75rem solid ${getColor('brown')};
 
@@ -19,7 +26,7 @@ const StyledContainer = styled.div`
   grid-template-columns: 27rem auto;
   grid-template-rows: 2rem auto;
 
-  z-index:3;
+  z-index:1;
 `;
 
 const StyledHintBox = styled.div`
@@ -51,12 +58,8 @@ const StyledControls = styled.div`
   }
 `;
 
-const StyledHintGiver = styled.div`
-  grid-column: 1 / span 1;
-  grid-row: 1 / span 2;
-`;
 
-export function HintBanner() {
+export function InfoPanel() {
   const [ isTalking, setIsTalking ] = useState(true);
   const hint = useAppSelector(selectActiveHint);
 
@@ -73,16 +76,18 @@ export function HintBanner() {
   }, [ setIsTalking ]);
 
   return (
-    <StyledContainer>
+    <>
+      <StyledBanner>
+        <StyledControls>
+          <HintPicker />
+        </StyledControls>
+        <StyledHintBox>
+          {hint && <SpeechText text={hintText} onTextComplete={onTextComplete}/>}
+        </StyledHintBox>
+      </StyledBanner>
       <StyledHintGiver>
-        <HintGiver isTalking={isTalking}/>
+        <HintGiver isTalking={isTalking} align={'bottom'}/>
       </StyledHintGiver>
-      <StyledControls>
-        <HintPicker />
-      </StyledControls>
-      <StyledHintBox>
-        {hint && <SpeechText text={hintText} onTextComplete={onTextComplete}/>}
-      </StyledHintBox>
-    </StyledContainer>
+    </>
   );
 }

@@ -18,7 +18,6 @@ const StyledBoard = styled.div`
   column-gap: 2rem;
   row-gap: 2rem;
   color: ${getColor('brown_light')};
-  z-index: 1;
 
   >div{
     display:grid;
