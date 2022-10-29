@@ -24,7 +24,7 @@ export const StyledLilManGif = styled.div<StyledLilManProps>`
 export const StyledLilManSpritesheet = styled.div`
   position:absolute;
   width:100%;
-  height:100%;
+  bottom:0;
 `;
 
 interface LilManProps {
@@ -42,8 +42,6 @@ export function LilMan({hintGiver, onClick, isTalking = false}: LilManProps) {
   
   if(hintGiver.imageType === 'spritesheet'){
     if(!hintGiver || !hintGiver.spritesheetData || !ssOverride) return null;
-
-    console.log('ssOverride', isTalking, ssOverride)
 
     return (
       <StyledLilManSpritesheet>
