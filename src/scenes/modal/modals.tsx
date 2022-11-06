@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Button } from '../../components/button';
-import { restartRound, selectSolution, setGameStatus, startNextRound, startRound } from '../../app/slice';
+import { restartRound, selectAttributeLabels, selectAttributes, selectSolution, setGameStatus, startNextRound, startRound } from '../../app/slice';
 import { getColor } from '../../themes';
 
 const StyledButtonContainer = styled.div`
@@ -91,6 +91,22 @@ const StyledDebug = styled.div`
   }
 `
 
+const StyledSolution = styled.div`
+  margin-top: 2rem;
+
+  table{
+    width:100%;
+    border-collapse: collapse;
+    tr{
+      border: 2px solid ${getColor('white')};
+    }
+    th, td{
+      padding:.5rem;
+      text-align:center;
+      border: 2px solid ${getColor('white')};
+    }
+  }
+`
 const StyledInstructions = styled.ul`
   text-align:left;
 `;
@@ -123,6 +139,42 @@ export function HelpModal() {
       <StyledButtonContainer>
         <Button text={'OK'} onClick={() => dispatch(setGameStatus('playing'))} />
         <StyledWebsiteLink href="https://www.thomasyancey.com" target="_blank" title="see some of my other stuff">{'thomasyancey.com'}</StyledWebsiteLink>
+      </StyledButtonContainer>
+    </StyledContainer>
+  );
+}
+
+export function DebugModal() {
+  const dispatch = useAppDispatch();
+  const renderedSolution = useAppSelector(selectSolution);
+  const attributeLabels = useAppSelector(selectAttributeLabels);
+  console.log('attributeLabels', attributeLabels)
+  return (
+    <StyledContainer>
+      <h3>{'debug info'}</h3>
+      <StyledSolution>
+        <p>{'DEBUG SOLUTION'}</p>
+        <table>
+          <thead>
+            <tr>
+              {attributeLabels.map((al, idx) => (
+                <th key={idx}><span>{al.id}</span></th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {renderedSolution?.map((rS, idx) => (
+              <tr key={idx}>
+                {rS.map((rSe, rSeIdx) => (
+                  <td key={`${idx}-${rSeIdx}`}><span>{rSe}</span></td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </StyledSolution>
+      <StyledButtonContainer>
+        <Button text={'OK'} onClick={() => dispatch(setGameStatus('playing'))} />
       </StyledButtonContainer>
     </StyledContainer>
   );

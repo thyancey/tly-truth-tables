@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { AnswerSet, AttributeDef, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, HintGiver, RenderedHint, RoundData, RoundInfo } from '../types';
+import { AnswerSet, AttributeDef, AttributeLabel, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, HintGiver, RenderedHint, RoundData, RoundInfo } from '../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from './data/data';
 import { generateHints, parseRoundData } from '../utils/puzzler';
 
@@ -299,6 +299,15 @@ export const selectSolution = createSelector(
     )
   )
 );
+
+export const selectAttributeLabels = createSelector(
+  [selectAttributes],
+  (attributes): AttributeLabel[] => attributes?.map(attribute => ({
+    id: attribute.id,
+    type: attribute.type
+  }))
+);
+
 
 // if every "solution" cell has a 1 status, and there are not extra answers
 export const checkIfSolved = createSelector(

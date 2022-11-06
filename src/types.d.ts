@@ -45,6 +45,10 @@ export type AttributeDef = {
   orderDescriptions?: OrderDescription,
   values: ValueDef[]
 };
+export type AttributeLabel = {
+  id: string,
+  type: AttributeType
+};
 
 // "color" attribute can keep a ref like this to know if it is before another group set
 export type SortComparison = {
@@ -149,7 +153,7 @@ export type CalculatedHint = {
 };
 
 
-export type GameStatus = 'start' | 'roundWin' | 'roundPrompt' | 'invalidAnswer' | 'playing' | 'help' | 'loading';
+export type GameStatus = 'start' | 'roundWin' | 'roundPrompt' | 'invalidAnswer' | 'playing' | 'help' | 'loading' | 'debug';
 export type RoundStatus = 'idle' | 'incorrect' | 'correct';
 export type InfluenceType = null | 'same' | 'different';
 export type InfluenceRatio = [
