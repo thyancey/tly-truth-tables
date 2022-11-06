@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Button } from '../../components/button';
 import { restartRound, selectAttributeLabels, selectAttributes, selectSolution, setGameStatus, startNextRound, startRound } from '../../app/slice';
 import { getColor } from '../../themes';
+import { ComparisonHash } from '../../types';
+import { createComparisonHash } from '../../utils/puzzler';
 
 const StyledButtonContainer = styled.div`
   flex: 1;
@@ -144,11 +146,26 @@ export function HelpModal() {
   );
 }
 
+const attributesPartial = [
+  {
+    values:[
+      {}, {}, {}
+    ]
+  }
+]
+
 export function DebugModal() {
   const dispatch = useAppDispatch();
   const renderedSolution = useAppSelector(selectSolution);
   const attributeLabels = useAppSelector(selectAttributeLabels);
-  console.log('attributeLabels', attributeLabels)
+  const attributes = useAppSelector(selectAttributes);
+
+  console.log('attributes', attributes);
+  if(attributes){
+    const hash = createComparisonHash(attributes.length, attributes[0].values.length);
+    console.log('hash', hash);
+  }
+
   return (
     <StyledContainer>
       <h3>{'debug info'}</h3>

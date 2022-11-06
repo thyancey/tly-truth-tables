@@ -1,4 +1,4 @@
-import { AnswerSet, AttributeDef, AttributeDetail, CalculatedHint, HintGiver, InfluenceRatio, InfluenceType, OrderDescription, RawRoundData, RoundData, SortComparison } from '../types';
+import { AnswerSet, AttributeDef, AttributeDetail, CalculatedHint, ComparisonHash, HintGiver, InfluenceRatio, InfluenceType, OrderDescription, RawRoundData, RoundData, SortComparison } from '../types';
 import { RandFromArray, RandIdx, RandIdxFromArray } from './index';
 
 // what % of the time the same/different hint ratio is checked and attempted to be balanced;
@@ -346,4 +346,31 @@ export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], 
 
 export const parseRoundData = (rawRoundData: RawRoundData): RoundData => {
   return rawRoundData as RoundData;
+}
+
+// make a hash of all unique attribute:attribute combinations
+export const createComparisonHash = (numAttributes: number, numValues: number): ComparisonHash => {
+  const hash: ComparisonHash = {};
+  /**
+   * makes a flat hash of every unique attribute:value relationship to be used when script is iteratively
+   * "solving" to create hints. This can get quite large
+   * {
+   *  0:0|1:0,
+   *  0:0|1:1,
+   *  0:0|1:2,
+   *  0:0|2:0,
+   *  ...
+   * }
+   */
+  for(let i = 0; i < numAttributes-1; i++){
+    for(let j = 0; j < numValues; j++){
+      for(let k = i + 1; k < numAttributes; k++){
+        for(let l = 0; l < numValues; l++){
+          hash[`${i}:${j}|${k}:${l}`] = -1;
+        }
+      }
+    }
+  }
+
+  return hash;
 }

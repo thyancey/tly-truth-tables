@@ -50,6 +50,10 @@ export type AttributeLabel = {
   type: AttributeType
 };
 
+export type ComparisonHash = { 
+  [id: string]: number
+};
+
 // "color" attribute can keep a ref like this to know if it is before another group set
 export type SortComparison = {
   attributeIdx: number,
