@@ -8,6 +8,17 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
   {
     title: '2 attributes, 3 values',
     description: 'this puzzle has 2 attributes with 3 values each',
+    hardcoded:{
+      answers:[
+        [ 0, 1 ], // monkey dentist
+        [ 1, 0 ], // frog firefighter
+        [ 2, 2 ]  // fish clown
+      ],
+      hints:[ 
+        `I think there was a movie about this type of fish`,
+        `The dentist is very good with their fingers`
+      ]
+    },
     attributes:[
       {
         id: 'animal',
@@ -57,6 +68,17 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
   {
     title: '3 attributes, 3 values',
     description: 'this puzzle has 3 attributes with 3 values each',
+    hardcoded:{
+      answers:[
+        [ 0, 1, 0 ], // monkey second firefighter
+        [ 1, 0, 2 ], // frog first clown
+        [ 2, 2, 1 ]  // fish last dentist
+      ],
+      hints:[ 
+        `The second in line is the bravest fish I've ever met`,
+        `The frog showed up before the dentist`
+      ]
+    },
     attributes:[
       {
         id: 'animal',

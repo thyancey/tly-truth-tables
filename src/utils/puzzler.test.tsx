@@ -1,11 +1,11 @@
-import { createComparisonHash, filterUsedHints, generateHintText, getInfluenceType } from './puzzler';
+import { createComparisonHash, filterUsedHints, constructAutoHintText, getInfluenceType } from './puzzler';
 import { AttributeDetail } from '../types';
 
 
 describe('puzzler utils', () => {
   describe('#generateSingleHint', () => {
     it('should describe match for attribute in same group, use display for order', () => {
-      const result = generateHintText(
+      const result = constructAutoHintText(
         {
           "type": "thing",
           "attribute": "animal",
@@ -35,7 +35,7 @@ describe('puzzler utils', () => {
     });
 
     it('should describe mismatch for attribute in other group', () => {
-      const result = generateHintText(
+      const result = constructAutoHintText(
         {
           "type": "thing",
           "attribute": "animal",
@@ -65,7 +65,7 @@ describe('puzzler utils', () => {
     });
 
     it('should handle syntax for comparing things from the same group', () => {
-      const result = generateHintText(
+      const result = constructAutoHintText(
         {
           "type": "thing",
           "attribute": "animal",

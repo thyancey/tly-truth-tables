@@ -1,4 +1,5 @@
-import { AnswerSet, AttributeDef, AttributeDetail, CalculatedHint, ComparisonHash, HintGiver, InfluenceRatio, InfluenceType, OrderDescription, RawRoundData, RoundData, SortComparison } from '../types';
+import { getGridShape } from '../app/data/data';
+import { AnswerSet, AttributeDef, AttributeDetail, AttributeMatrix, CalculatedHint, CellObj, ComparisonHash, InfluenceRatio, InfluenceType, OrderDescription, SortComparison } from '../types';
 import { RandFromArray, RandIdx, RandIdxFromArray } from './index';
 
 // what % of the time the same/different hint ratio is checked and attempted to be balanced;
@@ -137,7 +138,7 @@ export const getSortComparison = (attrA: AttributeDetail, attrB: AttributeDetail
   return null;
 }
 
-export const generateHintText = (attrA: AttributeDetail, attrB: AttributeDetail) => {
+export const constructAutoHintText = (attrA: AttributeDetail, attrB: AttributeDetail) => {
   const sameGroup = attrA.solutionIdx === attrB.solutionIdx;
 
   let sortComparison = null;
@@ -224,7 +225,7 @@ export const generateSingleHint = (groupAttrDetails: AttributeDetail[][], influe
   const attrB = chooseAttribute(groupAttrDetails, attrA, influenceType);
   if(!attrB) return null;
 
-  const hintText = generateHintText(attrA, attrB);
+  const hintText = constructAutoHintText(attrA, attrB);
 
   return {
     text: hintText,
@@ -297,9 +298,9 @@ export const getInfluenceType = (curRatio: InfluenceRatio, influenceCalc: number
   return influenceCalc >= calcRatio ? 'same' : 'different';
 }
 
-export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], hintGivers: HintGiver[], maxHints: number = 0) => {
+export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], maxHints: number = 0) => {
   const attrDetails = convertSolutionsToAttributeDetails(solutions, attributes);
-  const hints = [];
+  const textHints = [];
 
   let workingAttrs = [...attrDetails];
 
@@ -308,9 +309,8 @@ export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], 
   let yesNoRatio: InfluenceRatio = [0,0];
 
   let i = 0;
-  let hgIdx = Math.floor(Math.random() * hintGivers.length);
 
-  while(hints.length < maxHints && workingAttrs.length > 0){
+  while(textHints.length < maxHints && workingAttrs.length > 0){
     if(i > 20){
       console.error('overflow in hint generation');
       break;
@@ -334,18 +334,10 @@ export const generateHints = (solutions: AnswerSet, attributes: AttributeDef[], 
       workingAttrs = filterFromWorkingAttrs(workingAttrs, usedAttributes);
     }
 
-    hints.push({
-      hintGiverIdx: (hgIdx + i) % hintGivers.length,
-      text: generated.text
-    });
-
+    textHints.push(generated.text);
   }
 
-  return hints;
-}
-
-export const parseRoundData = (rawRoundData: RawRoundData): RoundData => {
-  return rawRoundData as RoundData;
+  return textHints;
 }
 
 // make a hash of all unique attribute:attribute combinations
@@ -373,4 +365,68 @@ export const createComparisonHash = (numAttributes: number, numValues: number): 
   }
 
   return hash;
+}
+
+// answer set is the raw attributes (in order) and their values
+/// [1, 1, 1] would mean a valueIdx of 1 for attributes 0, 1, and 2
+
+// attrMatrix is a 2d array of attrIdx and numberIdx, so [[0,0],[2,0]] compares the 1st val of attr[0] with the 1st value of attr[2]
+export const isCellSolution = (answerSet: AnswerSet, attrMatrix: AttributeMatrix) => {
+  for(let a = 0; a < answerSet.length; a++){
+    if(attrMatrix.filter(attrPair => answerSet[a][attrPair[0]] === attrPair[1]).length === 2) return true;
+  }
+
+  return false;
+}
+
+// make a unique combination of each attribute/value, with no overlaps.
+// This is the solution to the current truth table.
+export const calcSolution = (numAnswers: number, numAttributes:number): AnswerSet => {
+  const availableAttributes = [];
+  for(let i = 0; i < numAttributes; i++){
+    availableAttributes.push(Array.from(Array(numAnswers).keys()))
+  }
+
+  let generatedAnswer = [];
+  for(let i = 0; i < numAnswers; i++){
+    let answerAttrs = [];
+    for(let i = 0; i < availableAttributes.length; i++){
+      const randIdx = Math.floor(Math.random() * availableAttributes[i].length);
+      answerAttrs.push(availableAttributes[i][randIdx]);
+      availableAttributes[i].splice(randIdx, 1);
+    }
+    generatedAnswer.push(answerAttrs)
+  }
+
+  return generatedAnswer;
+}
+
+export const generateCellMatrix = (solutionSet: AnswerSet, numValues:number, numAttributes:number) => {
+  const boxSize = Math.pow(numValues, 2);
+  const gridShape = getGridShape(numAttributes);
+  const newMatrix = [];
+
+  let idx = 0;
+  for(let r = 0; r < gridShape.length; r++){
+    for(let c = 0; c < gridShape[r].length; c ++){
+      for(let bi = 0; bi < boxSize; bi++){
+        // [ 0, 1 ] is comparing attr0 and attr1
+        const attrPair = gridShape[r][c];
+        const xVal = Math.floor((idx % boxSize) / numValues);
+        const yVal = idx % numValues;
+
+        const ansMatrix: AttributeMatrix = [ [ attrPair[0], xVal ], [attrPair[1], yVal ] ]
+        const isSolution = isCellSolution(solutionSet, ansMatrix)
+
+        newMatrix.push({
+          idx: idx++,
+          attrs: attrPair,
+          isSolution: isSolution,
+          status: 0
+        } as CellObj)
+      }
+    }
+  }
+
+  return newMatrix;
 }

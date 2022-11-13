@@ -1,15 +1,15 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { AnswerSet, AttributeDef, AttributeLabel, AttributeMatrix, CellMatrix, CellObj, GameStatus, Hint, HintGiver, RenderedHint, RoundData, RoundInfo } from '../types';
+import { AnswerSet, AttributeDef, AttributeLabel, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintDef, HintGiver, RenderedHint, RoundData, RoundInfo } from '../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from './data/data';
-import { generateHints, parseRoundData } from '../utils/puzzler';
+import { calcSolution, generateHints, generateCellMatrix } from '../utils/puzzler';
 
 const MAX_HINTS = 8;
 
 export interface GridState {
   roundData: RoundData | null,
   cellMatrix: CellMatrix,
-  hints: Hint[],
+  hints: HintDef[],
   activeHintIdx: number,
   solution: AnswerSet | null,
   gameStatus: GameStatus,
@@ -38,45 +38,31 @@ export const gridSlice = createSlice({
       if(roundData.attributes?.length > 0){
         const numAttributes = roundData.attributes.length || 0;
         const numValues = roundData.attributes[0].values.length;
-        const boxSize = Math.pow(numValues, 2);
-
-        if(numAttributes > 1 && numAttributes < 6){
-          const solutionSet = calcSolution(numValues, numAttributes);
-
-          const gridShape = getGridShape(numAttributes);
-          const newMatrix = [];
-
-          let idx = 0;
-          for(let r = 0; r < gridShape.length; r++){
-            for(let c = 0; c < gridShape[r].length; c ++){
-              for(let bi = 0; bi < boxSize; bi++){
-                // [ 0, 1 ] is comparing attr0 and attr1
-                const attrPair = gridShape[r][c];
-                const xVal = Math.floor((idx % boxSize) / numValues);
-                const yVal = idx % numValues;
-
-                const ansMatrix: AttributeMatrix = [ [ attrPair[0], xVal ], [attrPair[1], yVal ] ]
-                const isSolution = isCellSolution(solutionSet, ansMatrix)
-
-                newMatrix.push({
-                  idx: idx++,
-                  attrs: attrPair,
-                  isSolution: isSolution,
-                  status: 0
-                } as CellObj)
-              }
-            }
-          }
-          state.solution = solutionSet;
-          state.cellMatrix = newMatrix;
-          state.gameReady = true;
-          state.gameStatus = 'playing';
-          state.activeHintIdx = 0;
-          state.hints = generateHints(solutionSet, roundData.attributes, HINT_GIVERS, MAX_HINTS);
-        } else{
-          console.error('must have between 2 and 5 attributes');
-          state.cellMatrix = [];
+        if(numAttributes < 2 || numAttributes > 5){
+          console.error('invalid data, must use between 2 and 5 attributes');
         }
+
+        const solutionSet = roundData.hardcoded?.answers ? 
+          roundData.hardcoded?.answers
+          : calcSolution(numValues, numAttributes);
+
+        state.solution = solutionSet;
+        state.cellMatrix = generateCellMatrix(solutionSet, numValues, numAttributes);
+
+        const textHints = roundData.hardcoded?.hints ? 
+          roundData.hardcoded?.hints
+          : generateHints(solutionSet, roundData.attributes, MAX_HINTS);
+
+        let hgIdx = Math.floor(Math.random() * HINT_GIVERS.length);
+        state.hints = textHints.map((hT, i) => ({
+          hintGiverIdx: (hgIdx + i) % HINT_GIVERS.length,
+          text: hT
+        }));
+
+        state.activeHintIdx = 0;
+        state.gameStatus = 'playing';
+        state.gameReady = true;
+
       } else {
         state.cellMatrix = [];
       }
@@ -136,27 +122,7 @@ export const isCellSolution = (answerSet: AnswerSet, attrMatrix: AttributeMatrix
   return false;
 }
 
-// make a unique combination of each attribute/value, with no overlaps.
-// This is the solution to the current truth table.
-const calcSolution = (numAnswers: number, numAttributes:number): AnswerSet => {
-  const availableAttributes = [];
-  for(let i = 0; i < numAttributes; i++){
-    availableAttributes.push(Array.from(Array(numAnswers).keys()))
-  }
 
-  let generatedAnswer = [];
-  for(let i = 0; i < numAnswers; i++){
-    let answerAttrs = [];
-    for(let i = 0; i < availableAttributes.length; i++){
-      const randIdx = Math.floor(Math.random() * availableAttributes[i].length);
-      answerAttrs.push(availableAttributes[i][randIdx]);
-      availableAttributes[i].splice(randIdx, 1);
-    }
-    generatedAnswer.push(answerAttrs)
-  }
-
-  return generatedAnswer;
-}
 
 // blank > no > yes > maybe > blank
 const getNextStatus = (cellObj: CellObj) => {
@@ -173,7 +139,6 @@ const getNextStatus = (cellObj: CellObj) => {
   return 0;
 }
 
-
 export const getCellMatrix = (state: RootState) => state.board.cellMatrix;
 export const getSolution = (state: RootState) => state.board.solution;
 export const getHints = (state: RootState) => state.board.hints;
@@ -182,9 +147,9 @@ export const getGameStatus = (state: RootState) => state.board.gameStatus;
 export const getRoundIdx = (state: RootState) => state.board.roundIdx;
 export const getGameReady = (state: RootState) => state.board.gameReady;
 
-export const renderHint = (hint: Hint) => ({
-  hintGiver: HINT_GIVERS[hint.hintGiverIdx],
-  text: hint.text
+export const renderHint = (hintDef: HintDef) => ({
+  hintGiver: HINT_GIVERS[hintDef.hintGiverIdx],
+  text: hintDef.text
 });
 
 export const getNextRoundIdx = (curIdx: number) => {
@@ -199,7 +164,7 @@ export const getNextRoundIdx = (curIdx: number) => {
 export const selectRoundData = createSelector(
   [getRoundIdx],
   (roundIdx): RoundData => {
-    return parseRoundData(SAMPLE_ROUNDDATA[roundIdx])
+    return SAMPLE_ROUNDDATA[roundIdx]
   }
 );
 
