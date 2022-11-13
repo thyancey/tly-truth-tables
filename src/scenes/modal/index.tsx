@@ -3,7 +3,7 @@ import { useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
 import { GameStatus } from '../../types';
 import { getGameStatus } from '../../app/slice';
-import { HelpModal, SplashModal, WinModal, InvalidAnswerModal } from './modals';
+import { HelpModal, SplashModal, WinModal, InvalidAnswerModal, DebugModal } from './modals';
 
 const StyledContainer = styled.div`
   position:fixed;
@@ -47,6 +47,7 @@ export const getModal = (gameStatus: GameStatus) => {
     case 'roundWin': return <WinModal />
     case 'invalidAnswer': return <InvalidAnswerModal />
     case 'help': return <HelpModal />
+    case 'debug': return <DebugModal />
     default: return null;
   }
 }
