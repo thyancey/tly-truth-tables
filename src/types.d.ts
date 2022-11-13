@@ -38,16 +38,13 @@ export type OrderDescription = [
   moreThan: string 
 ];
 export type AttributeType = 'thing' | 'order' | 'modifier' | 'name';
-export type AttributeDef = {
+export type SimpleAttributeDef = string[];
+export type AttributeMetaDef = {
   id: string;
   display?: string;
   type: AttributeType;
   orderDescriptions?: OrderDescription;
   values: ValueDef[];
-};
-export type AttributeLabel = {
-  id: string;
-  type: AttributeType;
 };
 
 export type ComparisonHash = { 
@@ -83,7 +80,8 @@ export type RoundData = {
   title: string;
   description?: string;
   hardcoded?:HardcodedDef;
-  attributes: AttributeDef[];
+  attributes: SimpleAttributeDef[];
+  attributesMeta: AttributeMetaDef[];
 };
 
 export type AttributeIdxPair = [ attributeIdx: number, valueIdx: number ]; 

@@ -203,14 +203,13 @@ export function Board() {
   }, [ dispatch ]);
 
   const cellRatio = useMemo(() => {
-    if(gridInfo.gridSize === 3) {
+    if(gridInfo.numValues === 3) {
       return '30%';
-    } else if(gridInfo.gridSize === 4) {
+    } else if(gridInfo.numValues === 4) {
       return '20%';
     }
-    return `${Math.round(100 / gridInfo.gridSize)}%`;
-  }, [ gridInfo.gridSize ])
-
+    return `${Math.round(100 / gridInfo.numValues)}%`;
+  }, [ gridInfo.numValues ])
 
   const renderCellGroup = (cellGroup: CellObj[], cgKey: string, gridSize: number, cellRatio: string, boardCell: RawCell) => {
     // [0] check here cause this is all janky and the individual cells are undefined on load
@@ -249,15 +248,15 @@ export function Board() {
       </StyledControls>
       <StyledCells>
         {grid.map((gridRow, grIdx) => (
-          gridRow.map((cellGroup, cgIdx) => renderCellGroup(cellGroup, `cg${cgIdx}`, gridInfo.gridSize, cellRatio, [grIdx, cgIdx])
+          gridRow.map((cellGroup, cgIdx) => renderCellGroup(cellGroup, `cg${cgIdx}`, gridInfo.numValues, cellRatio, [grIdx, cgIdx])
         )))}
       </StyledCells>
       <StyledTopLabels>
         {gridLabels[1].map((gl, glIdx) => (
           <div key={`tl${glIdx}`}>
-            {gl.values.map((v,vIdx) => (
-              <StyledTopLabel key={`tv${vIdx}`} gridSize={gridInfo.gridSize}>
-                <span>{v.id.toUpperCase()}</span>
+            {gl.map((v,vIdx) => (
+              <StyledTopLabel key={`tv${vIdx}`} gridSize={gridInfo.numValues}>
+                <span>{v.toUpperCase()}</span>
               </StyledTopLabel>
             ))}
           </div>
@@ -266,9 +265,9 @@ export function Board() {
       <StyledLeftLabels>
         {gridLabels[0].map((gl, glIdx) => (
           <div key={`ll${glIdx}`}>
-            {gl.values.map((v,vIdx) => (
-              <StyledLeftLabel key={`lv${vIdx}`} gridSize={gridInfo.gridSize}>
-                <span>{v.id.toUpperCase()}</span>
+            {gl.map((v,vIdx) => (
+              <StyledLeftLabel key={`lv${vIdx}`} gridSize={gridInfo.numValues}>
+                <span>{v.toUpperCase()}</span>
               </StyledLeftLabel>
             ))}
           </div>

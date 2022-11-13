@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Button } from '../../components/button';
-import { restartRound, selectAttributeLabels, selectAttributes, selectSolution, setGameStatus, startNextRound, startRound } from '../../app/slice';
+import { restartRound, selectAttributes, selectGridInfo, selectSolution, setGameStatus, startNextRound, startRound } from '../../app/slice';
 import { getColor } from '../../themes';
-import { ComparisonHash } from '../../types';
 import { createComparisonHash } from '../../utils/puzzler';
 
 const StyledButtonContainer = styled.div`
@@ -157,14 +156,10 @@ const attributesPartial = [
 export function DebugModal() {
   const dispatch = useAppDispatch();
   const renderedSolution = useAppSelector(selectSolution);
-  const attributeLabels = useAppSelector(selectAttributeLabels);
   const attributes = useAppSelector(selectAttributes);
+  const gridInfo = useAppSelector(selectGridInfo);
 
-  console.log('attributes', attributes);
-  if(attributes){
-    const hash = createComparisonHash(attributes.length, attributes[0].values.length);
-    console.log('hash', hash);
-  }
+  const hash = createComparisonHash(gridInfo.numAttributes, gridInfo.numValues);
 
   return (
     <StyledContainer>
@@ -174,8 +169,8 @@ export function DebugModal() {
         <table>
           <thead>
             <tr>
-              {attributeLabels.map((al, idx) => (
-                <th key={idx}><span>{al.id}</span></th>
+              {attributes.map((attr, idx) => (
+                <th key={idx}><span>{attr}</span></th>
               ))}
             </tr>
           </thead>

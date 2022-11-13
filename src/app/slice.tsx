@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { AnswerSet, AttributeDef, AttributeLabel, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintDef, HintGiver, RenderedHint, RoundData, RoundInfo } from '../types';
+import { AnswerSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintDef, HintGiver, RenderedHint, RoundData, RoundInfo, SimpleAttributeDef } from '../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from './data/data';
 import { calcSolution, generateCellMatrix } from '../utils/puzzler';
 import { generateHints } from '../utils/hint-generator';
@@ -38,7 +38,7 @@ export const gridSlice = createSlice({
       const roundData = action.payload;
       if(roundData.attributes?.length > 0){
         const numAttributes = roundData.attributes.length || 0;
-        const numValues = roundData.attributes[0].values.length;
+        const numValues = roundData.attributes[0].length;
         if(numAttributes < 2 || numAttributes > 5){
           console.error('invalid data, must use between 2 and 5 attributes');
         }
@@ -52,7 +52,7 @@ export const gridSlice = createSlice({
 
         const textHints = roundData.hardcoded?.hints ? 
           roundData.hardcoded?.hints
-          : generateHints(solutionSet, roundData.attributes, MAX_HINTS);
+          : generateHints(solutionSet, roundData.attributesMeta, MAX_HINTS);
 
         let hgIdx = Math.floor(Math.random() * HINT_GIVERS.length);
         state.hints = textHints.map((hT, i) => ({
@@ -211,13 +211,13 @@ export const selectGridInfo = createSelector(
   [selectRoundData],
   (roundData) => ({
     numAttributes: roundData.attributes.length,
-    gridSize: roundData.attributes[0].values.length
+    numValues: roundData.attributes[0].length
   })
 );
 
 export const selectGridLabels = createSelector(
   [selectAttributes],
-  (attributes): [ rows: AttributeDef[], cols: AttributeDef[] ] => {
+  (attributes): [ rows: SimpleAttributeDef[], cols: SimpleAttributeDef[] ] => {
     const gridShape = getGridShape(attributes.length);
     const rowAttributes = gridShape.map(r => r[0][0]);
     const colAttributes = gridShape[0].map(rc => rc[1]);
@@ -230,14 +230,12 @@ export const selectGridLabels = createSelector(
 );
 
 export const selectGridBox = createSelector(
-  [selectRoundData, getCellMatrix],
-  (roundData, cellMatrix) => {
-    const gridShape = getGridShape(roundData.attributes.length);
-    const numValues = roundData.attributes[0].values.length;
+  [getCellMatrix, selectGridInfo],
+  (cellMatrix, gridInfo) => {
+    const gridShape = getGridShape(gridInfo.numAttributes);
     let idx = 0;
     const gridSize = gridShape[0].length;
-
-    const boxSize = Math.pow(numValues, 2);
+    const boxSize = Math.pow(gridInfo.numValues, 2);
     return gridShape?.map((row, rIdx) => {
       return [...Array(gridSize)].map((_, cIdx) => {
         let boxArr: CellObj[] = [];
@@ -261,19 +259,10 @@ export const selectSolution = createSelector(
   [getSolution, selectAttributes],
   (solution, attributes) => solution?.map(solution => 
     solution.map((vIdx,sIdx) => 
-      attributes[sIdx].values[vIdx].id
+      attributes[sIdx][vIdx]
     )
   )
 );
-
-export const selectAttributeLabels = createSelector(
-  [selectAttributes],
-  (attributes): AttributeLabel[] => attributes?.map(attribute => ({
-    id: attribute.id,
-    type: attribute.type
-  }))
-);
-
 
 // if every "solution" cell has a 1 status, and there are not extra answers
 export const checkIfSolved = createSelector(

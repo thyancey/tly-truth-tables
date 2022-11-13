@@ -19,7 +19,11 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
         `The dentist is very good with their fingers`
       ]
     },
-    attributes:[
+    attributes: [
+      [ 'monkey', 'frog', 'fish' ],
+      [ 'firefighter', 'dentist', 'clown' ]
+    ],
+    attributesMeta:[
       {
         id: 'animal',
         type: 'thing',
@@ -79,7 +83,12 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
         `The frog showed up before the dentist`
       ]
     },
-    attributes:[
+    attributes: [
+      [ 'monkey', 'frog', 'fish' ],
+      [ 'first', 'second', 'last' ],
+      [ 'firefighter', 'dentist', 'clown' ]
+    ],
+    attributesMeta:[
       {
         id: 'animal',
         type: 'thing',
@@ -150,7 +159,12 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
   {
     title: '3 attributes, 4 values',
     description: 'this puzzle has 3 attributes with 4 values each',
-    attributes:[
+    attributes: [
+      [ 'monkey', 'frog', 'fish', 'crab' ],
+      [ 'first', 'second', 'third', 'last' ],
+      [ 'firefighter', 'dentist', 'clown', 'lawyer' ]
+    ],
+    attributesMeta:[
       {
         id: 'animal',
         type: 'thing',
@@ -240,7 +254,13 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
   {
     title: '4 attributes, 3 values',
     description: 'this puzzle has 4 attributes with 3 values each',
-    attributes:[
+    attributes: [
+      [ 'monkey', 'frog', 'fish' ],
+      [ 'first', 'second', 'last' ],
+      [ 'happy', 'angry', 'sad' ],
+      [ 'firefighter', 'dentist', 'clown' ]
+    ],
+    attributesMeta:[
       {
         id: 'animal',
         type: 'thing',
@@ -336,7 +356,13 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
   {
     title: '4 attributes, 4 values',
     description: 'this puzzle has 4 attributes with 4 values each',
-    attributes:[
+    attributes: [
+      [ 'monkey', 'frog', 'fish', 'crab' ],
+      [ 'first', 'second', 'third', 'last' ],
+      [ 'happy', 'angry', 'sad', 'bored' ],
+      [ 'firefighter', 'dentist', 'clown', 'lawyer' ]
+    ],
+    attributesMeta:[
       {
         id: 'animal',
         type: 'thing',
