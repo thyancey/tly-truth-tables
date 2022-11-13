@@ -2,7 +2,8 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import { AnswerSet, AttributeDef, AttributeLabel, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintDef, HintGiver, RenderedHint, RoundData, RoundInfo } from '../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from './data/data';
-import { calcSolution, generateHints, generateCellMatrix } from '../utils/puzzler';
+import { calcSolution, generateCellMatrix } from '../utils/puzzler';
+import { generateHints } from '../utils/hint-generator';
 
 const MAX_HINTS = 8;
 
