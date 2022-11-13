@@ -50,9 +50,14 @@ export const gridSlice = createSlice({
         state.solution = solutionSet;
         state.cellMatrix = generateCellMatrix(solutionSet, numValues, numAttributes);
 
-        const textHints = roundData.hardcoded?.hints ? 
-          roundData.hardcoded?.hints
-          : generateHints(solutionSet, roundData.attributesMeta, MAX_HINTS);
+        let textHints: string[] = [];
+        if(roundData.hardcoded?.hints){
+          textHints = roundData.hardcoded?.hints;
+        } else if(roundData.attributesMeta){
+          textHints = generateHints(solutionSet, roundData.attributesMeta, MAX_HINTS);
+        } else{
+          console.error('invalid data, must have attributesMeta or hardcoded hints');
+        }
 
         let hgIdx = Math.floor(Math.random() * HINT_GIVERS.length);
         state.hints = textHints.map((hT, i) => ({

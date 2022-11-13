@@ -81,7 +81,7 @@ export type RoundData = {
   description?: string;
   hardcoded?:HardcodedDef;
   attributes: SimpleAttributeDef[];
-  attributesMeta: AttributeMetaDef[];
+  attributesMeta?: AttributeMetaDef[];
 };
 
 export type AttributeIdxPair = [ attributeIdx: number, valueIdx: number ]; 
