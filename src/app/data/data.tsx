@@ -6,115 +6,64 @@ import { AnswerData, HintGiver, RawCell, RenderedAnswer, RoundData } from '../..
 export const SAMPLE_ROUNDDATA: RoundData[] = [
   // 2x3
   {
-    title: '2 attributes, 3 values',
-    description: 'this puzzle has 2 attributes with 3 values each',
+    title: 'Simple matrix',
+    description: 'Three animals are looking for jobs.',
     hardcoded:{
       answers:[
-        [ 0, 1 ], // monkey dentist
-        [ 1, 0 ], // frog firefighter
-        [ 2, 2 ]  // fish clown
+        [ 0, 2 ], // monkey clown
+        [ 1, 0 ], // fish firefighter
+        [ 2, 1 ]  // frog dentist
       ],
       hints:[ 
-        `I think there was a movie about this type of fish`,
-        `The dentist is very good with their fingers`
+        `The fish hopes they get to use that trampoline at least once.`,
+        `Everyone knows that clowns disintegrate when they touch water.`
       ]
     },
     attributes: [
-      [ 'monkey', 'frog', 'fish' ],
+      [ 'monkey', 'fish', 'frog' ],
       [ 'firefighter', 'dentist', 'clown' ]
     ]
   },
   // 3x3
   {
-    title: '3 attributes, 3 values',
-    description: 'this puzzle has 3 attributes with 3 values each',
+    title: 'Food Chain',
+    description: 'A hiker, a camper, and a birder wandered in the woods. So did some apex predators.',
     hardcoded:{
       answers:[
-        [ 0, 1, 0 ], // monkey second firefighter
-        [ 1, 0, 2 ], // frog first clown
-        [ 2, 2, 1 ]  // fish last dentist
+        [ 0, 2, 2 ], // hiker last bear 
+        [ 1, 0, 0 ], // camper first lion 
+        [ 2, 1, 1 ]  // birder second tiger
       ],
       hints:[ 
-        `The second in line is the bravest fish I've ever met`,
-        `The frog showed up before the dentist`
+        `The camper loved cats, well.. used to love cats.`,
+        `The mountain lion ate before the tiger.`,
+        `The hiker walked past a tiger with a huge belly.`,
+        `The bird lover was eaten right before the camper.`
       ]
     },
     attributes: [
-      [ 'monkey', 'frog', 'fish' ],
-      [ 'first', 'second', 'last' ],
-      [ 'firefighter', 'dentist', 'clown' ]
-    ],
-    attributesMeta:[
-      {
-        id: 'animal',
-        type: 'thing',
-        values: [
-          {
-            id: 'monkey',
-            aliases: [ 'swinging rat' ], // ALIASES HAVE TO BE DISTINCT
-            descriptors: [ 'has legs', 'rhymes with "funky"' ] // DESCRIPTORS CAN BE SHARED FOR AN ATTRIBUTE
-          },
-          {
-            id: 'frog',
-            aliases: [ 'croaky boi' ],
-            descriptors: [ 'loves the water', 'eats flies' ]
-          },
-          {
-            id: 'fish',
-            aliases: [ 'one with gills' ],
-            descriptors: [ 'loves the water', 'eats flies' ]
-          }
-        ]
-      },
-      {
-        id: 'queue',
-        type: 'order',
-        orderDescriptions: [ 'is earlier in line than', 'is later in line than' ],
-        values: [
-          {
-            id: 'first',
-            aliases: [ 'first to arrive' ],
-            descriptors: [ 'one of the first two to arrive' ]
-          },
-          {
-            id: 'second',
-            aliases: [ 'second in line' ],
-            descriptors: [ 'one of the first two to arrive', 'near the end of the line' ]
-          },
-          {
-            id: 'last',
-            aliases: [ 'last to show up' ],
-            descriptors: [ 'near the end of the line' ]
-          }
-        ]
-      },
-      {
-        id: 'occupation',
-        type: 'thing',
-        values: [
-          {
-            id: 'firefighter',
-            aliases: [],
-            descriptors: [ 'uses a trampoline' ]
-          },
-          {
-            id: 'dentist',
-            aliases: [],
-            descriptors: []
-          },
-          {
-            id: 'clown',
-            aliases: [],
-            descriptors: [ 'uses a trampoline' ]
-          }
-        ]
-      }
+      [ 'hiker', 'camper', 'birder' ],
+      [ 'first meal', 'second feast', 'last dessert' ],
+      [ 'mountain lion', 'escaped tiger', 'bear' ]
     ]
   },
   // 3x4
   {
     title: '3 attributes, 4 values',
-    description: 'this puzzle has 3 attributes with 4 values each',
+    description: 'this puzzle has 3 attributes with 4 values. It doesnt work yet.',
+    hardcoded:{
+      answers:[
+        [ 0, 0, 0, 0 ],
+        [ 1, 1, 1, 1 ],
+        [ 2, 2, 2, 2 ]
+      ],
+      hints:[ 
+        `A hint needs to be created here`,
+        `A hint needs to be created here`,
+        `A hint needs to be created here`,
+        `A hint needs to be created here`
+      ]
+    },
     attributes: [
       [ 'monkey', 'frog', 'fish', 'crab' ],
       [ 'first', 'second', 'third', 'last' ],
@@ -124,7 +73,21 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
   // 4x3
   {
     title: '4 attributes, 3 values',
-    description: 'this puzzle has 4 attributes with 3 values each',
+    description: 'this puzzle has 4 attributes with 3 values. It doesnt work yet.',
+    hardcoded:{
+      answers:[
+        [ 0, 0, 0 ],
+        [ 1, 1, 1 ],
+        [ 2, 2, 2 ],
+        [ 3, 3, 3 ]
+      ],
+      hints:[ 
+        `A hint needs to be created here`,
+        `A hint needs to be created here`,
+        `A hint needs to be created here`,
+        `A hint needs to be created here`
+      ]
+    },
     attributes: [
       [ 'monkey', 'frog', 'fish' ],
       [ 'first', 'second', 'last' ],
@@ -135,7 +98,21 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
   // 4x4
   {
     title: '4 attributes, 4 values',
-    description: 'this puzzle has 4 attributes with 4 values each',
+    description: 'this puzzle has 4 attributes with 4 values. It doesnt work yet.',
+    hardcoded:{
+      answers:[
+        [ 0, 0, 0, 0 ],
+        [ 1, 1, 1, 1 ],
+        [ 2, 2, 2, 2 ],
+        [ 3, 3, 3, 3 ]
+      ],
+      hints:[ 
+        `A hint needs to be created here`,
+        `A hint needs to be created here`,
+        `A hint needs to be created here`,
+        `A hint needs to be created here`
+      ]
+    },
     attributes: [
       [ 'monkey', 'frog', 'fish', 'crab' ],
       [ 'first', 'second', 'third', 'last' ],
@@ -147,63 +124,25 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
 
 export const HINT_GIVERS: HintGiver[] = [
   {
-    id: 'fiveflys',
-    name: 'Fly Cook',
-    idleImage: 'assets/hinters/fiveflys-static.gif',
-    talkingImage: 'assets/hinters/fiveflys.gif',
-  },
-  {
-    id: 'eyetower',
-    name: 'Eye Tower',
-    idleImage: 'assets/hinters/eyetower-static.gif',
-    talkingImage: 'assets/hinters/eyetower.gif',
-  },
-  {
-    id: 'businessbobcat',
-    name: 'Business Bobcat',
-    imageType: 'spritesheet',
-    idleImage: 'assets/hinters/businesscat-static.gif',
-    talkingImage: 'assets/hinters/businesscat.gif',
-    ssData:{
-      idle:{
-        startAt: 2,
-        endAt: 4,
-        fps: 1,
-      },
-      talking:{
-        startAt: 1,
-        endAt: 2,
-        fps: 4,
-      }
-    },
-    spritesheetData: {
-      image: 'assets/hinters/sprites/bobcat.png',
-      widthFrame: 400,
-      heightFrame: 600,
-      startAt: 1,
-      endAt: 4,
-      steps: 4,
-      fps: 5
-    }
-  },
-  {
-    id: 'fridgey',
-    name: 'Fridgey',
-    idleImage: 'assets/hinters/fridgey-static.gif',
-    talkingImage: 'assets/hinters/fridgey.gif',
-  },
-  {
-    id: 'mothman',
-    name: 'Mothman',
-    idleImage: 'assets/hinters/mothman-static.gif',
-    talkingImage: 'assets/hinters/mothman.gif',
-  },
-  {
-    id: 'raincat',
-    name: 'Rain Cat',
-    idleImage: 'assets/hinters/raincat-static.gif',
-    talkingImage: 'assets/hinters/raincat.gif',
-    bottomBoost: 10,
+    id: 'skull',
+    name: 'Skull Guy',
+    bodyType: 'body1',
+    idleImage: 'assets/hinters/faces/skull-static.gif',
+    talkingImage: 'assets/hinters/faces/skull.gif',
+  }
+  ,{
+    id: 'cactoid',
+    name: 'Cactoid',
+    bodyType: 'body2',
+    idleImage: 'assets/hinters/faces/cactus-static.gif',
+    talkingImage: 'assets/hinters/faces/cactus.gif',
+  }
+  ,{
+    id: 'face1',
+    name: 'Face 1',
+    bodyType: 'body3',
+    idleImage: 'assets/hinters/faces/face1-static.gif',
+    talkingImage: 'assets/hinters/faces/face1.gif',
   }
 ]
 
@@ -235,7 +174,7 @@ export const generateGridShape = (size: number) => {
 }
 
 const generatedGrids: GridShapeDef = {};
-export const getGridShape = (size:number)  => {
+export const getGridShape = (size:number) => {
   if(!generatedGrids[size]){
     generatedGrids[size] = generateGridShape(size);
   }

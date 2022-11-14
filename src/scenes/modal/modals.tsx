@@ -114,7 +114,6 @@ const StyledInstructions = styled.ul`
 
 export function HelpModal() {
   const dispatch = useAppDispatch();
-  const renderedSolution = useAppSelector(selectSolution);
 
   return (
     <StyledContainer>
@@ -130,12 +129,6 @@ export function HelpModal() {
       </StyledInstructions>
       
       <StyledDebug>
-        <p>{'DEBUG SOLUTION'}</p>
-        <ul>
-          {renderedSolution?.map((rS, idx) => (
-            <li key={idx}><span>{`${rS.join(' | ')}`}</span></li>
-          ))}
-        </ul>
       </StyledDebug>
       <StyledButtonContainer>
         <Button text={'OK'} onClick={() => dispatch(setGameStatus('playing'))} />
@@ -145,21 +138,14 @@ export function HelpModal() {
   );
 }
 
-const attributesPartial = [
-  {
-    values:[
-      {}, {}, {}
-    ]
-  }
-]
-
 export function DebugModal() {
   const dispatch = useAppDispatch();
   const renderedSolution = useAppSelector(selectSolution);
   const attributes = useAppSelector(selectAttributes);
   const gridInfo = useAppSelector(selectGridInfo);
 
-  const hash = createComparisonHash(gridInfo.numAttributes, gridInfo.numValues);
+  const comparisonHash = createComparisonHash(gridInfo.numAttributes, gridInfo.numValues);
+  console.log('comparisonHash: ', comparisonHash);
 
   return (
     <StyledContainer>
@@ -170,7 +156,7 @@ export function DebugModal() {
           <thead>
             <tr>
               {attributes.map((attr, idx) => (
-                <th key={idx}><span>{attr}</span></th>
+                <th key={idx}><span>{`group ${idx + 1}`}</span></th>
               ))}
             </tr>
           </thead>
