@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { AnswerSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintDef, HintGiver, RenderedHint, RoundData, RoundInfo, SimpleAttributeDef } from '../types';
+import { AnswerSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintDef, HintGiver, RawCell, RenderedHint, RoundData, RoundInfo, SimpleAttributeDef } from '../types';
 import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from './data/data';
 import { calcSolution, generateCellMatrix } from '../utils/puzzler';
 import { generateHints } from '../utils/hint-generator';
@@ -65,7 +65,7 @@ export const gridSlice = createSlice({
           text: hT
         }));
 
-        state.activeHintIdx = 0;
+        state.activeHintIdx = -1;
         state.gameStatus = 'playing';
         state.gameReady = true;
 
@@ -223,7 +223,7 @@ export const selectGridInfo = createSelector(
 export const selectGridLabels = createSelector(
   [selectAttributes],
   (attributes): [ rows: SimpleAttributeDef[], cols: SimpleAttributeDef[] ] => {
-    const gridShape = getGridShape(attributes.length);
+    const gridShape:RawCell[][] = getGridShape(attributes.length);
     const rowAttributes = gridShape.map(r => r[0][0]);
     const colAttributes = gridShape[0].map(rc => rc[1]);
 
@@ -237,7 +237,7 @@ export const selectGridLabels = createSelector(
 export const selectGridBox = createSelector(
   [getCellMatrix, selectGridInfo],
   (cellMatrix, gridInfo) => {
-    const gridShape = getGridShape(gridInfo.numAttributes);
+    const gridShape: RawCell[][] = getGridShape(gridInfo.numAttributes);
     let idx = 0;
     const gridSize = gridShape[0].length;
     const boxSize = Math.pow(gridInfo.numValues, 2);

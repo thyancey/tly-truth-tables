@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { useAppSelector } from '../../app/hooks';
 import { getColor, mixinFontFamily } from '../../themes';
 import { SpeechText } from '../../components/speech-text';
-import { selectActiveHint } from '../../app/slice';
+import { selectActiveHint, selectRoundInfo } from '../../app/slice';
 import { HintPicker } from './hint-picker';
-import { HintGiver } from './hint-giver';
+import { NewHintGiver } from './new-hint-giver';
 
 const StyledHintGiver = styled.div`
   grid-column: 1 / span 1;
@@ -24,7 +24,7 @@ const StyledBanner = styled.div`
 
   display:grid;
   grid-template-columns: 27rem auto;
-  grid-template-rows: 2rem auto;
+  grid-template-rows: 1rem auto;
 
   z-index:1;
 `;
@@ -36,6 +36,7 @@ const StyledHintBox = styled.div`
 
   grid-column: 2 / span 1;
   grid-row: 2 / span 1;
+  padding: 0 2rem;
 
   p {
     ${mixinFontFamily('speech')};
@@ -62,10 +63,16 @@ const StyledControls = styled.div`
 export function InfoPanel() {
   const [ isTalking, setIsTalking ] = useState(true);
   const hint = useAppSelector(selectActiveHint);
+  const roundInfo = useAppSelector(selectRoundInfo);
 
   const hintText = useMemo(() => {
     return hint ? hint.text : ''
   }, [ hint ]);
+  
+  const description = useMemo(() => {
+    if(!roundInfo) return null;
+    return `Level ${roundInfo.level}: ${roundInfo.description}`;
+  }, [ roundInfo ])
 
   useEffect(() => {
     setIsTalking(true);
@@ -75,6 +82,9 @@ export function InfoPanel() {
     setIsTalking(false);
   }, [ setIsTalking ]);
 
+  if(!description) return null;
+
+
   return (
     <>
       <StyledBanner>
@@ -82,11 +92,15 @@ export function InfoPanel() {
           <HintPicker />
         </StyledControls>
         <StyledHintBox>
-          {hint && <SpeechText text={hintText} onTextComplete={onTextComplete}/>}
+          {hint ? (
+            <SpeechText text={hintText} onTextComplete={onTextComplete} delay={750} />
+          ) : (
+            <SpeechText text={description} onTextComplete={onTextComplete} delay={500} />
+          )}
         </StyledHintBox>
       </StyledBanner>
       <StyledHintGiver>
-        <HintGiver isTalking={isTalking} align={'bottom'}/>
+        <NewHintGiver isTalking={isTalking} />
       </StyledHintGiver>
     </>
   );

@@ -21,6 +21,14 @@ interface StyledHintProps {
   isActive?: boolean;
 };
 
+const StyledHintHint = styled.div`
+  position: absolute;
+  top: 100%;
+  font-size: 1.5rem;
+  left:50%;
+  transform: translateX(-50%);
+`
+
 const StyledHint = styled.div<StyledHintProps>`
   cursor: pointer;
 
@@ -88,6 +96,7 @@ export function HintPicker() {
             />
           )
         )}
+        {activeHintIdx === -1 && <StyledHintHint>{'^^ click the clues to solve the puzzle ^^'}</StyledHintHint>}
       </StyledControls>
     </StyledContainer>
   );
