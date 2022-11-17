@@ -40,7 +40,7 @@ const StyledHintBox = styled.div`
 
   p {
     ${mixinFontFamily('speech')};
-    font-size: 5rem;
+    font-size: min(4vw, 5rem);
   }
 `;
 
