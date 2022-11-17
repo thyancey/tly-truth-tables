@@ -8,7 +8,7 @@ import { BoardControls } from '../board/board-controls';
 
 const StyledBoard = styled.div`
   position:absolute;
-  transform: matrix(2.5,1.25,-2.5,1.25,-300,-0) scale(.4) translate(-50%, -50%);
+  /* transform: matrix(2.5,1.25,-2.5,1.25,-300,-0) scale(.4) translate(-50%, -50%); */
   left:50%;
   top:40%;
 
@@ -241,8 +241,15 @@ export function Board() {
     )
   }
 
+  const zoom = 0.4;
+  const position = [ 0, -50 ];
+
+  const tStyles = {
+    transform: `translate(${position[0]}%, ${position[1]}%) matrix(2.5,1.25,-2.5,1.25,-300,-0) scale(${zoom})`
+  };
+
   return (
-    <StyledBoard>
+    <StyledBoard style={tStyles}>
       <StyledControls>
         <BoardControls />
       </StyledControls>
