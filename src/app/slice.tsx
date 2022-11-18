@@ -183,7 +183,24 @@ export const selectLevelInfo = createSelector(
       title: levelData.title,
       description: levelData.description,
       level: levelIdx + 1
-    }
+    };
+  }
+);
+
+export const getCompletedLevels = () => ([
+  0, 2
+]);
+
+// eventually, merge in saved progress
+export const selectAllLevelInfo = createSelector(
+  [getCompletedLevels],
+  (completedLevels) => {
+    return LEVELDATA.map((levelData, idx) => ({
+      title: levelData.title,
+      description: levelData.description,
+      completed: completedLevels.includes(idx),
+      level: idx + 1
+    }))
   }
 );
 
@@ -231,7 +248,7 @@ export const selectGridLabels = createSelector(
     return [
       rowAttributes.map(idx => attributes[idx]),
       colAttributes.map(idx => attributes[idx])
-    ]
+    ];
   }
 );
 
@@ -264,7 +281,7 @@ export const selectGridBox = createSelector(
 export const selectSolution = createSelector(
   [getSolution, selectAttributes],
   (solution, attributes) => solution?.map(solution => {
-    console.log(solution, attributes)
+    console.log(solution, attributes);
 
     return solution.map((vIdx,sIdx) => 
       attributes[sIdx][vIdx]
