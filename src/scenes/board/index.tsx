@@ -5,10 +5,18 @@ import { getColor } from '../../themes';
 import { CellObj, CellStatus, RawCell } from '../../types';
 import { rotateCell, selectGridBox, selectGridLabels, selectGridInfo } from '../../app/slice';
 import { BoardControls } from '../board/board-controls';
+import { getPosition, getZoom } from '../../app/ui-slice';
+import { PositionControls } from './position-controls';
+
+
+const StyledBoardContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+`
 
 const StyledBoard = styled.div`
   position:absolute;
-  transform: matrix(2.5,1.25,-2.5,1.25,-300,-0) scale(.4) translate(-50%, -50%);
   left:50%;
   top:40%;
 
@@ -197,6 +205,8 @@ export function Board() {
   const grid = useAppSelector(selectGridBox);
   const gridLabels = useAppSelector(selectGridLabels);
   const gridInfo = useAppSelector(selectGridInfo);
+  const zoom = useAppSelector(getZoom);
+  const position = useAppSelector(getPosition);
 
   const onClickCell = useCallback((cellIdx) => {
     dispatch(rotateCell(cellIdx));
@@ -241,38 +251,46 @@ export function Board() {
     )
   }
 
+  const tStyles = {
+    transform: `translate(${position[0]}%, ${position[1]}%) matrix(2.5,1.25,-2.5,1.25,-300,-0) scale(${zoom})`
+  };
+
   return (
-    <StyledBoard>
-      <StyledControls>
-        <BoardControls />
-      </StyledControls>
-      <StyledCells>
-        {grid.map((gridRow, grIdx) => (
-          gridRow.map((cellGroup, cgIdx) => renderCellGroup(cellGroup, `cg${cgIdx}`, gridInfo.numValues, cellRatio, [grIdx, cgIdx])
-        )))}
-      </StyledCells>
-      <StyledTopLabels>
-        {gridLabels[1].map((gl, glIdx) => (
-          <div key={`tl${glIdx}`}>
-            {gl.map((v,vIdx) => (
-              <StyledTopLabel key={`tv${vIdx}`} gridSize={gridInfo.numValues}>
-                <span>{v.toUpperCase()}</span>
-              </StyledTopLabel>
-            ))}
-          </div>
-        ))}
-      </StyledTopLabels>
-      <StyledLeftLabels>
-        {gridLabels[0].map((gl, glIdx) => (
-          <div key={`ll${glIdx}`}>
-            {gl.map((v,vIdx) => (
-              <StyledLeftLabel key={`lv${vIdx}`} gridSize={gridInfo.numValues}>
-                <span>{v.toUpperCase()}</span>
-              </StyledLeftLabel>
-            ))}
-          </div>
-        ))}
-      </StyledLeftLabels>
-    </StyledBoard>
+    <StyledBoardContainer>
+      <PositionControls />
+      <StyledBoard style={tStyles}>
+        <StyledControls>
+          <BoardControls />
+        </StyledControls>
+        <StyledCells>
+          {grid.map((gridRow, grIdx) => (
+            gridRow.map((cellGroup, cgIdx) => renderCellGroup(cellGroup, `cg${cgIdx}`, gridInfo.numValues, cellRatio, [grIdx, cgIdx])
+          )))}
+        </StyledCells>
+        <StyledTopLabels>
+          {gridLabels[1].map((gl, glIdx) => (
+            <div key={`tl${glIdx}`}>
+              {gl.map((v,vIdx) => (
+                <StyledTopLabel key={`tv${vIdx}`} gridSize={gridInfo.numValues}>
+                  <span>{v.toUpperCase()}</span>
+                </StyledTopLabel>
+              ))}
+            </div>
+          ))}
+        </StyledTopLabels>
+        <StyledLeftLabels>
+          {gridLabels[0].map((gl, glIdx) => (
+            <div key={`ll${glIdx}`}>
+              {gl.map((v,vIdx) => (
+                <StyledLeftLabel key={`lv${vIdx}`} gridSize={gridInfo.numValues}>
+                  <span>{v.toUpperCase()}</span>
+                </StyledLeftLabel>
+              ))}
+            </div>
+          ))}
+        </StyledLeftLabels>
+
+      </StyledBoard>
+    </StyledBoardContainer>
   );
 }

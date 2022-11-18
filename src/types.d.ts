@@ -167,3 +167,8 @@ export type RoundInfo = {
   description?: string;
   level: number;
 }
+
+export type Coordinate = [
+  x: number,
+  y: number
+]

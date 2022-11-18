@@ -47,6 +47,7 @@ export const gridSlice = createSlice({
           roundData.hardcoded?.answers
           : calcSolution(numValues, numAttributes);
 
+          console.log('solution saved as ', solutionSet)
         state.solution = solutionSet;
         state.cellMatrix = generateCellMatrix(solutionSet, numValues, numAttributes);
 
@@ -262,11 +263,13 @@ export const selectGridBox = createSelector(
 
 export const selectSolution = createSelector(
   [getSolution, selectAttributes],
-  (solution, attributes) => solution?.map(solution => 
-    solution.map((vIdx,sIdx) => 
+  (solution, attributes) => solution?.map(solution => {
+    console.log(solution, attributes)
+
+    return solution.map((vIdx,sIdx) => 
       attributes[sIdx][vIdx]
     )
-  )
+  })
 );
 
 // if every "solution" cell has a 1 status, and there are not extra answers

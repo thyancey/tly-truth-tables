@@ -27,7 +27,7 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
   // 3x3
   {
     title: 'Food Chain',
-    description: 'A hiker, a camper, and a birder wandered in the woods. So did some apex predators.',
+    description: 'A hiker, a camper, and a birder wandered in the woods. So did some apex predators. Who got eaten by what?',
     hardcoded:{
       answers:[
         [ 0, 2, 2 ], // hiker last bear 
@@ -38,7 +38,7 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
         `The camper loved cats, well.. used to love cats.`,
         `The mountain lion ate before the tiger.`,
         `The hiker walked past a tiger with a huge belly.`,
-        `The bird lover was eaten right before the camper.`
+        `The bird lover was eaten right after the camper.`
       ]
     },
     attributes: [
@@ -49,25 +49,27 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
   },
   // 3x4
   {
-    title: '3 attributes, 4 values',
-    description: 'this puzzle has 3 attributes with 4 values. It doesnt work yet.',
+    title: 'Pirate Predicament',
+    description: 'A crew of pirates are trying to find the treasure they buried. Help them remember what they buried and how to find it',
     hardcoded:{
       answers:[
-        [ 0, 0, 0, 0 ],
-        [ 1, 1, 1, 1 ],
-        [ 2, 2, 2, 2 ]
+        [ 0, 2, 1 ],
+        [ 1, 3, 0 ],
+        [ 2, 1, 3 ],
+        [ 3, 0, 2 ]
       ],
       hints:[ 
-        `A hint needs to be created here`,
-        `A hint needs to be created here`,
-        `A hint needs to be created here`,
-        `A hint needs to be created here`
+        `Blue Beard will not be happy with his treasure`,
+        `The message in a bottle reads "yarrrr read me treasure and ye skin will melt off. just speakin' from experience"`,
+        `The valuable treasures were not written down`,
+        `Gravy bones is always drunk, it finally did something good for him`,
+        `Stank tooths treasure has to do with uh, teeth.`
       ]
     },
     attributes: [
-      [ 'monkey', 'frog', 'fish', 'crab' ],
-      [ 'first', 'second', 'third', 'last' ],
-      [ 'firefighter', 'dentist', 'clown', 'lawyer' ]
+      [ 'Blue Beard', 'Carl the Skinless', 'Stank Tooth', 'Gravy Bones' ],
+      [ 'Gold Doubloons', 'Skull with Gold Teeth', 'Just an Old Boot', 'A Book of Curses' ],
+      [ 'Message in a Bottle', 'Treasure Map', 'Grog-induced Dream', 'A Sea Shanty' ]
     ]
   },
   // 4x3
