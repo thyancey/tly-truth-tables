@@ -1,4 +1,4 @@
-import { isCellSolution } from '../../app/slice';
+import { isCellSolution } from '../../app/board-slice';
 
 describe('board store', () => {
   describe('#isCellSolution', () => {

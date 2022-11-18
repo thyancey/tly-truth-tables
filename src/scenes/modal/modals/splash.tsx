@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useAppDispatch } from '../../../app/hooks';
-import { startLevel } from '../../../app/slice';
+import { startLevel } from '../../../app/board-slice';
 import { Button } from '../../../components/button';
 
 const StyledButtonContainer = styled.div`

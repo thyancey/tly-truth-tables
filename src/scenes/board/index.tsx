@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
 import { CellObj, CellStatus, RawCell } from '../../types';
-import { rotateCell, selectGridBox, selectGridLabels, selectGridInfo } from '../../app/slice';
+import { rotateCell, selectGridBox, selectGridLabels, selectGridInfo } from '../../app/board-slice';
 import { BoardControls } from '../board/board-controls';
 import { getPosition, getZoom } from '../../app/ui-slice';
 import { PositionControls } from './position-controls';

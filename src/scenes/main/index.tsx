@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { getColor } from '../../themes';
-import { getGameReady } from '../../app/slice';
+import { getGameReady } from '../../app/board-slice';
 import { Board } from '../board';
 import { Modal } from '../modal';
 import { useSelector } from 'react-redux';

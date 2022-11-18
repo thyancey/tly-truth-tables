@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
-import { checkIfSolved, setGameStatus, submitAnswer } from '../../app/slice';
+import { checkIfSolved, setGameStatus, submitAnswer } from '../../app/board-slice';
 
 const StyledButton = styled.div`
   border-radius: 1rem;

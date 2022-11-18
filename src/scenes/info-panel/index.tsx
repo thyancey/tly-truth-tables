@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useAppSelector } from '../../app/hooks';
 import { getColor, mixinFontFamily } from '../../themes';
 import { SpeechText } from '../../components/speech-text';
-import { selectActiveHint, selectLevelInfo } from '../../app/slice';
+import { selectActiveHint, selectLevelInfo } from '../../app/board-slice';
 import { HintPicker } from './hint-picker';
 import { NewHintGiver } from './new-hint-giver';
 

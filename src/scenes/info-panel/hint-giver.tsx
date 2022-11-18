@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { useAppSelector } from '../../app/hooks';
 import { LilMan } from '../../components/lilman';
-import { selectActiveHintGiver } from '../../app/slice';
+import { selectActiveHintGiver } from '../../app/board-slice';
 
 const StyledLilManContainer = styled.div`
   position: absolute;

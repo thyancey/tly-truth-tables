@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useAppDispatch } from '../../../app/hooks';
 import { Button } from '../../../components/button';
-import { setGameStatus } from '../../../app/slice';
+import { setGameStatus } from '../../../app/board-slice';
 
 const StyledButtonContainer = styled.div`
   flex: 1;

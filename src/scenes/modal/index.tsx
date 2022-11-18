@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
 import { GameStatus } from '../../types';
-import { getGameStatus } from '../../app/slice';
+import { getGameStatus } from '../../app/board-slice';
 import { WinModal, LoseModal } from './modals/winlose';
 import { DebugModal } from './modals/debug';
 import { SplashModal } from './modals/splash';

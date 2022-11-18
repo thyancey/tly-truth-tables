@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectAttributes, selectGridInfo, selectSolution, setGameStatus } from '../../../app/slice';
+import { selectAttributes, selectGridInfo, selectSolution, setGameStatus } from '../../../app/board-slice';
 import { Button } from '../../../components/button';
 import { getColor } from '../../../themes';
 import { createComparisonHash } from '../../../utils/puzzler';

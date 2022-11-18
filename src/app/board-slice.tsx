@@ -30,7 +30,7 @@ const initialState: GridState = {
 };
 
 
-export const gridSlice = createSlice({
+export const boardSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
@@ -113,7 +113,7 @@ export const gridSlice = createSlice({
   } 
 });
 
-export const { resetMatrix, rotateCell, setActiveHint, submitAnswer, startLevel, startNextLevel, restartLevel, setGameStatus } = gridSlice.actions;
+export const { resetMatrix, rotateCell, setActiveHint, submitAnswer, startLevel, startNextLevel, restartLevel, setGameStatus } = boardSlice.actions;
 
 
 
@@ -307,4 +307,4 @@ export const checkIfSolved = createSelector(
   }
 );
 
-export default gridSlice.reducer;
+export default boardSlice.reducer;

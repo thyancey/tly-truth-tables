@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
-import { getActiveHintIdx, selectHints, setActiveHint } from '../../app/slice';
+import { getActiveHintIdx, selectHints, setActiveHint } from '../../app/board-slice';
 
 const StyledContainer = styled.div`
   pointer-events: none;
