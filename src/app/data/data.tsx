@@ -1,9 +1,9 @@
-import { AnswerData, HintGiver, RawCell, RenderedAnswer, RoundData } from '../../types';
+import { AnswerData, HintGiver, RawCell, RenderedAnswer, LevelData } from '../../types';
 
 /**
- * The attributes that defined the thingies this round
+ * The attributes that defined the thingies this level
  */
-export const SAMPLE_ROUNDDATA: RoundData[] = [
+export const LEVELDATA: LevelData[] = [
   // 2x3
   {
     title: 'Simple matrix',

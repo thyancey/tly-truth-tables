@@ -76,7 +76,7 @@ export type HardcodedDef = {
   hints: string[];
 }
 
-export type RoundData = {
+export type LevelData = {
   title: string;
   description?: string;
   hardcoded?:HardcodedDef;
@@ -84,8 +84,8 @@ export type RoundData = {
   attributesMeta?: AttributeMetaDef[];
 };
 
-// TODO partial from or combine with RoundData
-export type RoundInfo = {
+// TODO partial from or combine with LevelData
+export type LevelInfo = {
   title: string;
   level: number;
   description?: string;
@@ -104,7 +104,7 @@ export type RenderedBoard = {
  */
 export type AnswerIdx = number;
 /**
- * Index of attribute, based on provided roundData
+ * Index of attribute, based on provided levelData
  */
 export type AnswerAttributes = AnswerIdx[];
 export type AnswerData = AnswerAttributes[];
@@ -163,7 +163,7 @@ export type CalculatedHint = {
 };
 
 export type GameStatus = 'start' | 'roundWin' | 'roundPrompt' | 'invalidAnswer' | 'playing' | 'help' | 'loading' | 'debug';
-export type RoundStatus = 'idle' | 'incorrect' | 'correct';
+export type LevelStatus = 'idle' | 'incorrect' | 'correct';
 export type InfluenceType = null | 'same' | 'different';
 export type InfluenceRatio = [
   yesCount: number,

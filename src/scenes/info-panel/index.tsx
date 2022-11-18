@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useAppSelector } from '../../app/hooks';
 import { getColor, mixinFontFamily } from '../../themes';
 import { SpeechText } from '../../components/speech-text';
-import { selectActiveHint, selectRoundInfo } from '../../app/slice';
+import { selectActiveHint, selectLevelInfo } from '../../app/slice';
 import { HintPicker } from './hint-picker';
 import { NewHintGiver } from './new-hint-giver';
 
@@ -63,16 +63,16 @@ const StyledControls = styled.div`
 export function InfoPanel() {
   const [ isTalking, setIsTalking ] = useState(true);
   const hint = useAppSelector(selectActiveHint);
-  const roundInfo = useAppSelector(selectRoundInfo);
+  const levelInfo = useAppSelector(selectLevelInfo);
 
   const hintText = useMemo(() => {
     return hint ? hint.text : ''
   }, [ hint ]);
   
   const description = useMemo(() => {
-    if(!roundInfo) return null;
-    return `Level ${roundInfo.level}: ${roundInfo.description}`;
-  }, [ roundInfo ])
+    if(!levelInfo) return null;
+    return `Level ${levelInfo.level}: ${levelInfo.description}`;
+  }, [ levelInfo ])
 
   useEffect(() => {
     setIsTalking(true);

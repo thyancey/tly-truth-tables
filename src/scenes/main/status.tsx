@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
-import { checkIfSolved, selectRoundInfo, setGameStatus, submitAnswer } from '../../app/slice';
+import { checkIfSolved, selectLevelInfo, setGameStatus, submitAnswer } from '../../app/slice';
 
 const StyledContainer = styled.div`
   margin-left:2rem;
@@ -76,7 +76,7 @@ const StyledPuzzlePrompt = styled.div`
 
 export function Status() {
   const solved = useAppSelector(checkIfSolved);
-  const roundInfo = useAppSelector(selectRoundInfo);
+  const levelInfo = useAppSelector(selectLevelInfo);
 
   const dispatch = useAppDispatch();
   const onSubmitGame = useCallback((solved:boolean, forceWin?: boolean) => {
@@ -85,11 +85,11 @@ export function Status() {
 
   return (
     <StyledContainer>
-      {roundInfo && (
+      {levelInfo && (
         <StyledPuzzlePrompt>
-          <p>{`Level ${roundInfo.level}: ${roundInfo.title}`}</p>
-          {roundInfo.description && (
-            <p>{roundInfo.description}</p>
+          <p>{`Level ${levelInfo.level}: ${levelInfo.title}`}</p>
+          {levelInfo.description && (
+            <p>{levelInfo.description}</p>
           )}
         </StyledPuzzlePrompt>
       )}

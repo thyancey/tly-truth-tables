@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Button } from '../../components/button';
-import { restartRound, selectAttributes, selectGridInfo, selectSolution, setGameStatus, startNextRound, startRound } from '../../app/slice';
+import { restartLevel, selectAttributes, selectGridInfo, selectSolution, setGameStatus, startNextLevel, startLevel } from '../../app/slice';
 import { getColor } from '../../themes';
 import { createComparisonHash } from '../../utils/puzzler';
 
@@ -43,8 +43,8 @@ export function WinModal() {
         <h2>{'CORRECT!'}</h2>
       </StyledBody>
       <StyledButtonContainer>
-        <Button text={'NEXT LEVEL'} onClick={() => dispatch(startNextRound())} />
-        <Button buttonType={'special'} text={'REPLAY LEVEL'} onClick={() => dispatch(startNextRound())} />
+        <Button text={'NEXT LEVEL'} onClick={() => dispatch(startNextLevel())} />
+        <Button buttonType={'special'} text={'REPLAY LEVEL'} onClick={() => dispatch(startNextLevel())} />
       </StyledButtonContainer>
     </StyledContainer>
   );
@@ -61,8 +61,8 @@ export function InvalidAnswerModal() {
       </StyledBody>
       <StyledButtonContainer>
         <Button buttonType={'positive'} text={'KEEP TRYING'} onClick={() => dispatch(setGameStatus('playing'))} />
-        <Button buttonType={'special'} text={'RESET LEVEL'} onClick={() => dispatch(restartRound())} />
-        <Button buttonType={'negative'} text={'SKIP TO NEXT LEVEL!'} onClick={() => dispatch(startNextRound())} />
+        <Button buttonType={'special'} text={'RESET LEVEL'} onClick={() => dispatch(restartLevel())} />
+        <Button buttonType={'negative'} text={'SKIP TO NEXT LEVEL!'} onClick={() => dispatch(startNextLevel())} />
       </StyledButtonContainer>
     </StyledContainer>
   );
@@ -78,7 +78,7 @@ export function SplashModal() {
         <p>{'Some kinda puzzle game'}</p>
       </StyledBody>
       <StyledButtonContainer>
-        <Button text={'OK'} onClick={() => dispatch(startRound(0))} />
+        <Button text={'OK'} onClick={() => dispatch(startLevel(0))} />
       </StyledButtonContainer>
     </StyledContainer>
   );

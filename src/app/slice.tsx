@@ -1,31 +1,31 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { AnswerSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintDef, HintGiver, RawCell, RenderedHint, RoundData, RoundInfo, SimpleAttributeDef } from '../types';
-import { getGridShape, SAMPLE_ROUNDDATA, HINT_GIVERS } from './data/data';
+import { AnswerSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintDef, HintGiver, RawCell, RenderedHint, LevelData, LevelInfo, SimpleAttributeDef } from '../types';
+import { getGridShape, LEVELDATA, HINT_GIVERS } from './data/data';
 import { calcSolution, generateCellMatrix } from '../utils/puzzler';
 import { generateHints } from '../utils/hint-generator';
 
 const MAX_HINTS = 8;
 
 export interface GridState {
-  roundData: RoundData | null,
+  levelData: LevelData | null,
   cellMatrix: CellMatrix,
   hints: HintDef[],
   activeHintIdx: number,
   solution: AnswerSet | null,
   gameStatus: GameStatus,
-  roundIdx: number,
+  levelIdx: number,
   gameReady: boolean
 }
 
 const initialState: GridState = {
-  roundData: null,
+  levelData: null,
   cellMatrix: [],
   hints: [],
   activeHintIdx: -1,
   solution: null,
   gameStatus: 'start',
-  roundIdx: -1,
+  levelIdx: -1,
   gameReady: false
 };
 
@@ -34,17 +34,17 @@ export const gridSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-    resetMatrix: (state: GridState, action: PayloadAction<RoundData>) => {
-      const roundData = action.payload;
-      if(roundData.attributes?.length > 0){
-        const numAttributes = roundData.attributes.length || 0;
-        const numValues = roundData.attributes[0].length;
+    resetMatrix: (state: GridState, action: PayloadAction<LevelData>) => {
+      const levelData = action.payload;
+      if(levelData.attributes?.length > 0){
+        const numAttributes = levelData.attributes.length || 0;
+        const numValues = levelData.attributes[0].length;
         if(numAttributes < 2 || numAttributes > 5){
           console.error('invalid data, must use between 2 and 5 attributes');
         }
 
-        const solutionSet = roundData.hardcoded?.answers ? 
-          roundData.hardcoded?.answers
+        const solutionSet = levelData.hardcoded?.answers ? 
+          levelData.hardcoded?.answers
           : calcSolution(numValues, numAttributes);
 
           console.log('solution saved as ', solutionSet)
@@ -52,10 +52,10 @@ export const gridSlice = createSlice({
         state.cellMatrix = generateCellMatrix(solutionSet, numValues, numAttributes);
 
         let textHints: string[] = [];
-        if(roundData.hardcoded?.hints){
-          textHints = roundData.hardcoded?.hints;
-        } else if(roundData.attributesMeta){
-          textHints = generateHints(solutionSet, roundData.attributesMeta, MAX_HINTS);
+        if(levelData.hardcoded?.hints){
+          textHints = levelData.hardcoded?.hints;
+        } else if(levelData.attributesMeta){
+          textHints = generateHints(solutionSet, levelData.attributesMeta, MAX_HINTS);
         } else{
           console.error('invalid data, must have attributesMeta or hardcoded hints');
         }
@@ -95,25 +95,25 @@ export const gridSlice = createSlice({
     setGameStatus: (state, action: PayloadAction<GameStatus>) => {
       state.gameStatus = action.payload;
     },
-    startRound: (state, action: PayloadAction<number>) => {
+    startLevel: (state, action: PayloadAction<number>) => {
       state.gameReady = false;
       state.gameStatus = 'loading';
-      state.roundIdx = getNextRoundIdx(action.payload - 1);
+      state.levelIdx = getNextLevelIdx(action.payload - 1);
     },
-    restartRound: (state) => {
+    restartLevel: (state) => {
       state.gameReady = false;
       state.gameStatus = 'loading';
-      state.roundIdx = getNextRoundIdx(state.roundIdx - 1);
+      state.levelIdx = getNextLevelIdx(state.levelIdx - 1);
     },
-    startNextRound: (state) => {
+    startNextLevel: (state) => {
       state.gameReady = false;
       state.gameStatus = 'loading';
-      state.roundIdx = getNextRoundIdx(state.roundIdx);
+      state.levelIdx = getNextLevelIdx(state.levelIdx);
     },
   } 
 });
 
-export const { resetMatrix, rotateCell, setActiveHint, submitAnswer, startRound, startNextRound, restartRound, setGameStatus } = gridSlice.actions;
+export const { resetMatrix, rotateCell, setActiveHint, submitAnswer, startLevel, startNextLevel, restartLevel, setGameStatus } = gridSlice.actions;
 
 
 
@@ -151,7 +151,7 @@ export const getSolution = (state: RootState) => state.board.solution;
 export const getHints = (state: RootState) => state.board.hints;
 export const getActiveHintIdx = (state: RootState) => state.board.activeHintIdx;
 export const getGameStatus = (state: RootState) => state.board.gameStatus;
-export const getRoundIdx = (state: RootState) => state.board.roundIdx;
+export const getLevelIdx = (state: RootState) => state.board.levelIdx;
 export const getGameReady = (state: RootState) => state.board.gameReady;
 
 export const renderHint = (hintDef: HintDef) => ({
@@ -159,8 +159,8 @@ export const renderHint = (hintDef: HintDef) => ({
   text: hintDef.text
 });
 
-export const getNextRoundIdx = (curIdx: number) => {
-  if(curIdx + 1 < SAMPLE_ROUNDDATA.length){
+export const getNextLevelIdx = (curIdx: number) => {
+  if(curIdx + 1 < LEVELDATA.length){
     return curIdx + 1;
   }
 
@@ -168,21 +168,21 @@ export const getNextRoundIdx = (curIdx: number) => {
   return 0;
 };
 
-export const selectRoundData = createSelector(
-  [getRoundIdx],
-  (roundIdx): RoundData => {
-    return SAMPLE_ROUNDDATA[roundIdx]
+export const selectLevelData = createSelector(
+  [getLevelIdx],
+  (levelIdx): LevelData => {
+    return LEVELDATA[levelIdx]
   }
 );
 
-export const selectRoundInfo = createSelector(
-  [selectRoundData, getRoundIdx],
-  (roundData, roundIdx): RoundInfo | null => {
-    if(!roundData) return null;
+export const selectLevelInfo = createSelector(
+  [selectLevelData, getLevelIdx],
+  (levelData, levelIdx): LevelInfo | null => {
+    if(!levelData) return null;
     return {
-      title: roundData.title,
-      description: roundData.description,
-      level: roundIdx + 1
+      title: levelData.title,
+      description: levelData.description,
+      level: levelIdx + 1
     }
   }
 );
@@ -209,15 +209,15 @@ export const selectActiveHintGiver = createSelector(
 );
 
 export const selectAttributes = createSelector(
-  [selectRoundData],
-  (roundData) => roundData.attributes
+  [selectLevelData],
+  (levelData) => levelData.attributes
 );
 
 export const selectGridInfo = createSelector(
-  [selectRoundData],
-  (roundData) => ({
-    numAttributes: roundData.attributes.length,
-    numValues: roundData.attributes[0].length
+  [selectLevelData],
+  (levelData) => ({
+    numAttributes: levelData.attributes.length,
+    numValues: levelData.attributes[0].length
   })
 );
 

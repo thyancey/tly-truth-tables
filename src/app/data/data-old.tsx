@@ -1,9 +1,9 @@
-import { AnswerData, HintGiver, RawCell, RenderedAnswer, RoundData } from '../../types';
+import { AnswerData, HintGiver, RawCell, RenderedAnswer, LevelData } from '../../types';
 
 /**
- * The attributes that defined the thingies this round
+ * The attributes that defined the thingies this levelData
  */
-export const SAMPLE_ROUNDDATA: RoundData[] = [
+export const LEVELDATA: LevelData[] = [
   // 2x3
   {
     title: '2 attributes, 3 values',
