@@ -38,7 +38,7 @@ export const SAMPLE_ROUNDDATA: RoundData[] = [
         `The camper loved cats, well.. used to love cats.`,
         `The mountain lion ate before the tiger.`,
         `The hiker walked past a tiger with a huge belly.`,
-        `The bird lover was eaten right before the camper.`
+        `The bird lover was eaten right after the camper.`
       ]
     },
     attributes: [
