@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { AnswerSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintDef, HintGiver, RawCell, RenderedHint, LevelData, LevelInfo, SimpleAttributeDef } from '../types';
-import { getGridShape, LEVELDATA, HINT_GIVERS } from './data/data';
+import { AnswerSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintDef, HintGiver, RawCell, RenderedHint, LevelData, LevelInfo, SimpleAttributeDef, RenderedMenuGroup } from '../types';
+import { getGridShape, LEVELDATA, HINT_GIVERS, LEVELMENU } from './data/data';
 import { calcSolution, generateCellMatrix } from '../utils/puzzler';
 import { generateHints } from '../utils/hint-generator';
 
@@ -47,7 +47,6 @@ export const boardSlice = createSlice({
           levelData.hardcoded?.answers
           : calcSolution(numValues, numAttributes);
 
-          console.log('solution saved as ', solutionSet)
         state.solution = solutionSet;
         state.cellMatrix = generateCellMatrix(solutionSet, numValues, numAttributes);
 
@@ -182,25 +181,32 @@ export const selectLevelInfo = createSelector(
     return {
       title: levelData.title,
       description: levelData.description,
-      level: levelIdx + 1
+      level: levelIdx
     };
   }
 );
 
-export const getCompletedLevels = () => ([
-  0, 2
-]);
+// export const getCompletedLevels = (state: RootState) => [0, 2];
+export const getCompletedLevels = (state: RootState): number[] => [];
+export const getLevelMenu = (state: RootState) => LEVELMENU;
+
 
 // eventually, merge in saved progress
 export const selectAllLevelInfo = createSelector(
-  [getCompletedLevels],
-  (completedLevels) => {
-    return LEVELDATA.map((levelData, idx) => ({
+  [getCompletedLevels, getLevelMenu],
+  (completedLevels, levelMenu): RenderedMenuGroup[] => {
+    const levels = LEVELDATA.map((levelData, idx) => ({
       title: levelData.title,
       description: levelData.description,
+      layout: levelData.layout,
       completed: completedLevels.includes(idx),
-      level: idx + 1
-    }))
+      level: idx
+    }));
+
+    return levelMenu.map((menuGroup, idx) => ({
+      title: menuGroup.title,
+      levels: menuGroup.levels.map(lId => levels[lId])
+    })).filter(levelMenu => levelMenu.levels.length > 0);
   }
 );
 

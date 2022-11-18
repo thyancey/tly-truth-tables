@@ -24,9 +24,21 @@ const StyledBanner = styled.div`
 
   display:grid;
   grid-template-columns: 27rem auto;
-  grid-template-rows: 1rem auto;
+  grid-template-rows: min-content auto;
 
   z-index:1;
+
+  h2{
+    font-size: 3rem;
+    grid-column: 2 / span 1;
+    grid-row: 1 / span 1;
+
+    padding: .5rem;
+    padding-top: 1rem;
+
+    margin: auto 0;
+    color: ${getColor('brown')};
+  }
 `;
 
 const StyledHintBox = styled.div`
@@ -41,6 +53,7 @@ const StyledHintBox = styled.div`
   p {
     ${mixinFontFamily('speech')};
     font-size: min(4vw, 5rem);
+    line-height: 75%;
   }
 `;
 
@@ -69,14 +82,13 @@ export function InfoPanel() {
     return hint ? hint.text : ''
   }, [ hint ]);
   
-  const description = useMemo(() => {
-    if(!levelInfo) return null;
-    return `Level ${levelInfo.level}: ${levelInfo.description}`;
-  }, [ levelInfo ])
+  const description = useMemo(() => 
+    (levelInfo?.description || null)
+  , [ levelInfo ]);
 
   useEffect(() => {
     setIsTalking(true);
-  }, [ hint, setIsTalking ])
+  }, [ hint, setIsTalking ]);
 
   const onTextComplete = useCallback(() => {
     setIsTalking(false);
@@ -98,6 +110,7 @@ export function InfoPanel() {
             <SpeechText text={description} onTextComplete={onTextComplete} delay={500} />
           )}
         </StyledHintBox>
+        <h2>{`Level ${(levelInfo?.level || 0) + 1}: ${levelInfo?.title}`}</h2>
       </StyledBanner>
       <StyledHintGiver>
         <NewHintGiver isTalking={isTalking} />

@@ -83,9 +83,9 @@ export function BoardControls() {
 
   return (
     <StyledContainer>
-      <StyledProgressButton onClick={() => dispatch(setGameStatus('progress'))}>{'progress'}</StyledProgressButton>
       <StyledHelpButton onClick={() => dispatch(setGameStatus('debug'))}>{'debug'}</StyledHelpButton>
       <StyledHelpButton onClick={() => dispatch(setGameStatus('help'))}>{'HELP!'}</StyledHelpButton>
+      <StyledProgressButton onClick={() => dispatch(setGameStatus('progress'))}>{'progress'}</StyledProgressButton>
       <StyledSolvedButton onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedButton>
     </StyledContainer>
   );

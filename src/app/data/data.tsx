@@ -1,13 +1,32 @@
-import { AnswerData, HintGiver, RawCell, RenderedAnswer, LevelData } from '../../types';
+import { AnswerData, HintGiver, RawCell, RenderedAnswer, LevelData, LevelMenuGroup } from '../../types';
 
+export const LEVELMENU: LevelMenuGroup[] = [
+  {
+    title: 'tutorial',
+    levels: [ 0 ]
+  },
+  {
+    title: 'easy',
+    levels: [ 0, 1 ]
+  },
+  {
+    title: 'medium',
+    levels: [ 2 ]
+  },
+  {
+    title: 'hard',
+    levels: []
+  }
+]
 /**
  * The attributes that defined the thingies this level
  */
 export const LEVELDATA: LevelData[] = [
   // 2x3
   {
-    title: 'Simple matrix',
+    title: 'Animals Doing People Jobs',
     description: 'Three animals are looking for jobs.',
+    layout: '2x3',
     hardcoded:{
       answers:[
         [ 0, 2 ], // monkey clown
@@ -28,6 +47,7 @@ export const LEVELDATA: LevelData[] = [
   {
     title: 'Food Chain',
     description: 'A hiker, a camper, and a birder wandered in the woods. So did some apex predators. Who got eaten by what?',
+    layout: '3x3',
     hardcoded:{
       answers:[
         [ 0, 2, 2 ], // hiker last bear 
@@ -50,7 +70,8 @@ export const LEVELDATA: LevelData[] = [
   // 3x4
   {
     title: 'Pirate Predicament',
-    description: 'A crew of pirates are trying to find the treasure they buried. Help them remember what they buried and how to find it',
+    description: 'A crew of pirates are trying to find the treasure they buried, they don\'t even remember how they did it!',
+    layout: '3x4',
     hardcoded:{
       answers:[
         [ 0, 2, 1 ],
@@ -76,6 +97,7 @@ export const LEVELDATA: LevelData[] = [
   {
     title: '4 attributes, 3 values',
     description: 'this puzzle has 4 attributes with 3 values. It doesnt work yet.',
+    layout: '4x3',
     hardcoded:{
       answers:[
         [ 0, 0, 0 ],
@@ -101,6 +123,7 @@ export const LEVELDATA: LevelData[] = [
   {
     title: '4 attributes, 4 values',
     description: 'this puzzle has 4 attributes with 4 values. It doesnt work yet.',
+    layout: '4x4',
     hardcoded:{
       answers:[
         [ 0, 0, 0, 0 ],

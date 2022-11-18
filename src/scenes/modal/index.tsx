@@ -19,6 +19,8 @@ const StyledContainer = styled.div`
 `;
 const StyledModal = styled.div`
   position:absolute;
+  width:100%;
+  height:100%;
 
   left:50%;
   top:50%;

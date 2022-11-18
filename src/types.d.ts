@@ -79,6 +79,7 @@ export type HardcodedDef = {
 export type LevelData = {
   title: string;
   description?: string;
+  layout?: string;
   hardcoded?:HardcodedDef;
   attributes: SimpleAttributeDef[];
   attributesMeta?: AttributeMetaDef[];
@@ -89,6 +90,7 @@ export type LevelInfo = {
   title: string;
   level: number;
   description?: string;
+  layout?: string;
   completed?: boolean;
 }
 
@@ -174,3 +176,13 @@ export type Coordinate = [
   x: number,
   y: number
 ];
+
+export type LevelMenuGroup = {
+  title: string,
+  levels: number[]
+}
+
+export type RenderedMenuGroup = {
+  title: string,
+  levels: LevelInfo[]
+}

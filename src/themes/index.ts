@@ -28,7 +28,8 @@ export default createGlobalStyle`
     margin:0 auto;
   }
   h1, h2, h3, h4{
-    font-family: 'Noto Sans', sans-serif;
+    /* font-family: 'Noto Sans', sans-serif; */
+    ${mixinFontFamily()};
   }
   a, p, button, span, h5, h6{
     ${mixinFontFamily()};

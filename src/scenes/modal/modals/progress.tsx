@@ -1,33 +1,182 @@
-import styled from 'styled-components';
-import { useAppDispatch } from '../../../app/hooks';
+import styled, { css } from 'styled-components';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { Button } from '../../../components/button';
-import { setGameStatus } from '../../../app/board-slice';
+import { selectAllLevelInfo, setGameStatus, startLevel } from '../../../app/board-slice';
+import { getColor } from '../../../themes';
+import { LevelInfo, RenderedMenuGroup } from '../../../types';
+import { useCallback } from 'react';
 
-const StyledButtonContainer = styled.div`
-  flex: 1;
-  >div{
-    margin:2rem;
-  }
-`;
 
 const StyledContainer = styled.div`
-  display:flex;
-  flex-direction:column;
+  display:grid;
+  grid-template-columns: 5rem auto 5rem; 
+  grid-template-rows: min-content auto min-content;
+  height: 100%;
+  width: 100%;
 
-  padding:1.5rem;
+  padding:0rem;
+`;
+
+export const StyledHeader = styled.div`
+  grid-column: 1 / span 3;
+  grid-row: 1 / span 1;
   text-align:center;
 `;
 
+export const StyledBody = styled.ul`
+  grid-column: 1 / span 3;
+  grid-row: 2 / span 1;
+
+  border: .75rem solid ${getColor('brown_dark')};
+  background-color: ${getColor('brown')};
+  border-radius: 2rem;
+  width:100%;
+  height:100%;
+  padding: 3rem;
+  overflow-y:auto;
+
+  li{
+    list-style: none;
+    padding:0;
+    margin:0;
+  }
+`;
+
+interface StyledLevelEntryProps {
+  completed?: boolean,
+  isEven: boolean
+}
+export const StyledLevelEntry = styled.li<StyledLevelEntryProps>`
+  width:100%;
+
+  color: ${getColor('brown_light')};
+
+  ${p => p.isEven ? css`
+    background-color: rgba(53, 18, 14, .5);
+  `: css`
+    background-color: rgba(53, 18, 14, .3);
+  `}
+
+  cursor: pointer;
+  &:hover{
+    color: ${getColor('white')};
+  }
+
+  display:grid;
+  grid-template-columns: 4rem auto 5rem;
+  gap: .5rem;
+  justify-items:middle;
+  align-items: middle;
+  justify-content: middle;
+
+  >span{
+    margin: auto 0;
+    font-size: 3rem;
+
+    &:last-child{
+      font-size: 2rem;
+    }
+  }
+`;
+
+interface StyledCompletedProps {
+  completed?: boolean
+}
+export const StyledCompleted = styled.div<StyledCompletedProps>`
+  width: 60%;
+  height: 50%;
+  margin:auto;
+  border-radius: 5rem;
+  padding: 1rem;
+  ${p => p.completed ? css`
+    background-color: ${getColor('brown_light')}
+  `: css`
+    background-color: ${getColor('brown')}
+  `}
+`
+
+export const StyledFooter = styled.div`
+  grid-column: 1 / span 3;
+  grid-row: 3 / span 1;
+
+  padding: 1rem;
+`;
+
+
+export const StyledGroupEntry = styled.li`
+  h2{
+    margin-top: 2rem;
+    margin-left:-1rem;
+    color: ${getColor('brown_light')};
+  }
+
+  hr{
+    color: ${getColor('brown_light')};
+    background: none;
+    background-color: ${getColor('brown_light')};
+    border: 0;
+    height:.5rem;
+    margin: .5rem 0 .5rem 0;
+  }
+`;
+
+
+
+interface LevelGroupEntryProps {
+  levelGroup: RenderedMenuGroup,
+  startLevel: Function
+}
+export function LevelGroupEntry({levelGroup, startLevel}: LevelGroupEntryProps) {
+  return (
+    <StyledGroupEntry>
+      <h2>{levelGroup.title}</h2>
+      <hr/>
+      <ul>
+        {levelGroup.levels.map((lI, idx) => (
+          <LevelInfoEntry key={idx} data={lI} idx={idx} startLevel={startLevel}/>
+        ))}
+      </ul>
+    </StyledGroupEntry>
+  )
+}
+
+interface LevelInfoEntryProps {
+  data: LevelInfo,
+  startLevel: Function,
+  idx: number
+}
+export function LevelInfoEntry({data, idx, startLevel}: LevelInfoEntryProps) {
+  return (
+    <StyledLevelEntry completed={data.completed} isEven={idx % 2 === 0} onClick={() => startLevel(data.level)}>
+      <StyledCompleted completed={data.completed} />
+      <span>{`${data.title}`}</span>
+      <span>{`(${data.layout})`}</span>
+    </StyledLevelEntry>
+  )
+}
+
 export function ProgressModal() {
   const dispatch = useAppDispatch();
+  const levelInfo = useAppSelector(selectAllLevelInfo);
+
+  const onStartLevel = useCallback((idx => {
+    dispatch(startLevel(idx))
+  }), [dispatch]);
 
   return (
     <StyledContainer>
-      <h2>{'Progress!'}</h2>
+      <StyledHeader>
+        <h1>{'PROGRESS'}</h1>
+      </StyledHeader>
       
-      <StyledButtonContainer>
+      <StyledBody>
+        {levelInfo.map((lI, idx) => (
+          <LevelGroupEntry key={idx} levelGroup={lI} startLevel={onStartLevel}/>
+        ))}
+      </StyledBody>
+      <StyledFooter>
         <Button text={'OK'} onClick={() => dispatch(setGameStatus('playing'))} />
-      </StyledButtonContainer>
+      </StyledFooter>
     </StyledContainer>
   );
 }
