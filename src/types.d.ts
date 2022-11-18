@@ -84,6 +84,14 @@ export type RoundData = {
   attributesMeta?: AttributeMetaDef[];
 };
 
+// TODO partial from or combine with RoundData
+export type RoundInfo = {
+  title: string;
+  level: number;
+  description?: string;
+  completed?: boolean;
+}
+
 export type AttributeIdxPair = [ attributeIdx: number, valueIdx: number ]; 
 export type AttributePair = [ attribute: string, value: string ]; 
 export type RenderedBoard = {
@@ -162,13 +170,7 @@ export type InfluenceRatio = [
   noCount: number
 ];
 
-export type RoundInfo = {
-  title: string;
-  description?: string;
-  level: number;
-}
-
 export type Coordinate = [
   x: number,
   y: number
-]
+];
