@@ -21,7 +21,7 @@ const initialState: GridState = {
   cellMatrix: [],
   hintGivers: [],
   gameStatus: 'start',
-  levelIdx: 0,
+  levelIdx: -1,
   hintIdx: -1,
   progression: [],
   gameReady: false
@@ -75,7 +75,7 @@ export const boardSlice = createSlice({
     startLevel: (state, action: PayloadAction<number>) => {
       state.gameReady = false;
       state.gameStatus = 'loading';
-      state.levelIdx = getNextLevelIdx(action.payload - 1);
+      state.levelIdx = action.payload;
     },
     restartLevel: (state) => {
       state.gameReady = false;

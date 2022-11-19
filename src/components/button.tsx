@@ -82,8 +82,8 @@ const StyledNeutralButton = styled(StyledButton)`
 type ButtonType = 'positive' | 'negative' | 'special' | 'neutral';
 
 interface LBType {
-  onClick: MouseEventHandler,
   text: string,
+  onClick?: MouseEventHandler,
   buttonType?: ButtonType
 }
 

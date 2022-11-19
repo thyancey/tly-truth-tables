@@ -2,25 +2,14 @@ import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { getLevelIdx, startLevel } from '../../../app/board-slice';
 import { Button } from '../../../components/button';
+import { StyledModalBody, StyledModalContainer, StyledModalFooter, StyledModalHeader } from './basic';
+import { resetData } from '../../../utils/localstorage';
 
-const StyledButtonContainer = styled.div`
-  flex: 1;
+const StyledFooter = styled(StyledModalFooter)`
   >div{
-    margin:2rem;
+    /* max-width: 30rem; */
+    margin:2rem auto;
   }
-`;
-
-const StyledContainer = styled.div`
-  display:flex;
-  flex-direction:column;
-
-  padding:1.5rem;
-  text-align:center;
-`;
-
-const StyledBody = styled.div`
-  margin-top:-1.5rem;
-  margin-bottom: 2rem;
 `;
 
 export function SplashModal() {
@@ -28,14 +17,27 @@ export function SplashModal() {
   const levelIdx = useAppSelector(getLevelIdx);
 
   return (
-    <StyledContainer>
-      <StyledBody>
-        <h2>{'TRUTH TABLES'}</h2>
-        <p>{'Some kinda puzzle game'}</p>
-      </StyledBody>
-      <StyledButtonContainer>
-        <Button text={'OK'} onClick={() => dispatch(startLevel(levelIdx))} />
-      </StyledButtonContainer>
-    </StyledContainer>
+    <StyledModalContainer>
+      <StyledModalHeader>
+        <h1>{'TRUTH TABLES'}</h1>
+      </StyledModalHeader>
+      
+      <StyledModalBody>
+        <h2>{''}</h2>
+      </StyledModalBody>
+
+      <StyledFooter>
+        {levelIdx > -1 ? (
+          <>
+            <Button buttonType="positive" text={'CONTINUE SAVED'} onClick={() => dispatch(startLevel(levelIdx))} />
+            <Button buttonType="negative" text={'CLEAR SAVE'} onClick={() => resetData()} />
+          </>
+        ):(
+          <>
+            <Button buttonType="positive" text={'NEW GAME'} onClick={() => dispatch(startLevel(0))} />
+          </>
+        )}
+      </StyledFooter>
+    </StyledModalContainer>
   );
 }

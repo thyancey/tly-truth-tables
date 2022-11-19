@@ -7,34 +7,12 @@ import { LevelInfo, RenderedMenuGroup } from '../../../types';
 import { useCallback } from 'react';
 
 import DoneIcon from '@material-ui/icons/Done';
+import { StyledModalBody, StyledModalContainer, StyledModalFooter, StyledModalHeader } from './basic';
 
-const StyledContainer = styled.div`
-  display:grid;
-  grid-template-columns: 5rem auto 5rem; 
-  grid-template-rows: min-content auto min-content;
-  height: 100%;
-  width: 100%;
-
-  padding:0rem;
-`;
-
-export const StyledHeader = styled.div`
-  grid-column: 1 / span 3;
-  grid-row: 1 / span 1;
-  text-align:center;
-`;
-
-export const StyledBody = styled.ul`
-  grid-column: 1 / span 3;
-  grid-row: 2 / span 1;
-
+export const StyledBody = styled(StyledModalBody)`
   border: .75rem solid ${getColor('brown_dark')};
   background-color: ${getColor('brown')};
   border-radius: 2rem;
-  width:100%;
-  height:100%;
-  padding: .5rem 3rem;
-  overflow-y:auto;
 
   li{
     list-style: none;
@@ -115,14 +93,6 @@ export const StyledCompleted = styled.div<StyledCompletedProps>`
   `}
 `;
 
-export const StyledFooter = styled.div`
-  grid-column: 1 / span 3;
-  grid-row: 3 / span 1;
-
-  padding: 1rem;
-`;
-
-
 export const StyledGroupEntry = styled.li`
   h2{
     margin-left:-1rem;
@@ -138,8 +108,6 @@ export const StyledGroupEntry = styled.li`
     margin: .5rem 0 .5rem 0;
   }
 `;
-
-
 
 interface LevelGroupEntryProps {
   levelGroup: RenderedMenuGroup,
@@ -186,19 +154,19 @@ export function ProgressModal() {
   }), [dispatch]);
 
   return (
-    <StyledContainer>
-      <StyledHeader>
+    <StyledModalContainer>
+      <StyledModalHeader>
         <h1>{'PROGRESS'}</h1>
-      </StyledHeader>
+      </StyledModalHeader>
       
       <StyledBody>
         {levelInfo.map((lI, idx) => (
           <LevelGroupEntry key={idx} levelGroup={lI} startLevel={onStartLevel}/>
         ))}
       </StyledBody>
-      <StyledFooter>
+      <StyledModalFooter>
         <Button text={'OK'} onClick={() => dispatch(setGameStatus('playing'))} />
-      </StyledFooter>
-    </StyledContainer>
+      </StyledModalFooter>
+    </StyledModalContainer>
   );
 }
