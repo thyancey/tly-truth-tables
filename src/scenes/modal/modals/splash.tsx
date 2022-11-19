@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { useAppDispatch } from '../../../app/hooks';
-import { startLevel } from '../../../app/board-slice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { getLevelIdx, startLevel } from '../../../app/board-slice';
 import { Button } from '../../../components/button';
 
 const StyledButtonContainer = styled.div`
@@ -25,6 +25,7 @@ const StyledBody = styled.div`
 
 export function SplashModal() {
   const dispatch = useAppDispatch();
+  const levelIdx = useAppSelector(getLevelIdx);
 
   return (
     <StyledContainer>
@@ -33,7 +34,7 @@ export function SplashModal() {
         <p>{'Some kinda puzzle game'}</p>
       </StyledBody>
       <StyledButtonContainer>
-        <Button text={'OK'} onClick={() => dispatch(startLevel(0))} />
+        <Button text={'OK'} onClick={() => dispatch(startLevel(levelIdx))} />
       </StyledButtonContainer>
     </StyledContainer>
   );

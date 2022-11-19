@@ -33,7 +33,7 @@ export const StyledBody = styled.ul`
   border-radius: 2rem;
   width:100%;
   height:100%;
-  padding: 3rem;
+  padding: .5rem 3rem;
   overflow-y:auto;
 
   li{
@@ -125,7 +125,6 @@ export const StyledFooter = styled.div`
 
 export const StyledGroupEntry = styled.li`
   h2{
-    margin-top: 2rem;
     margin-left:-1rem;
     color: ${getColor('brown_light')};
   }

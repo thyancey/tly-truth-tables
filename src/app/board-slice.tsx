@@ -21,7 +21,7 @@ const initialState: GridState = {
   cellMatrix: [],
   hintGivers: [],
   gameStatus: 'start',
-  levelIdx: -1,
+  levelIdx: 0,
   hintIdx: -1,
   progression: [],
   gameReady: false
@@ -130,7 +130,7 @@ export const getGameStatus = (state: RootState) => state.board.gameStatus;
 export const getLevelIdx = (state: RootState) => state.board.levelIdx;
 export const getGameReady = (state: RootState) => state.board.gameReady;
 export const getProgression = (state: RootState) => state.board.progression;
-// export const getProgression = (state: RootState) => [0];
+// export const getProgression = (state: RootState) => [0,1];
 
 export const renderHint = (hintGiverIdx: number, text: string) => ({
   hintGiver: HINT_GIVERS[hintGiverIdx],
@@ -154,12 +154,15 @@ export const selectLevelData = createSelector(
 );
 
 export const selectLevelInfo = createSelector(
-  [selectLevelData, getLevelIdx],
-  (levelData, levelIdx): LevelInfo | null => {
+  [selectLevelData, getLevelIdx, getProgression],
+  (levelData, levelIdx, progression): LevelInfo | null => {
     if(!levelData) return null;
     return {
       title: levelData.title,
       description: levelData.description,
+      layout: levelData.layout,
+      completed: progression.includes(levelIdx),
+      current: true,
       level: levelIdx
     };
   }

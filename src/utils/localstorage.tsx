@@ -17,6 +17,9 @@ export const loadState = () => {
       return undefined;
     }
 
+    // hack for now, force player to start a new level and reset some messy data
+    state.board.gameStatus = 'start';
+
     return state;
   } catch(e) {
     return undefined;
