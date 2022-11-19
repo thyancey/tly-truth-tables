@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { getLevelIdx, startLevel } from '../../../app/board-slice';
+import { getLevelIdx, resumeLevel, startLevel } from '../../../app/board-slice';
 import { Button } from '../../../components/button';
 import { StyledModalBody, StyledModalContainer, StyledModalFooter, StyledModalHeader } from './basic';
 import { resetData } from '../../../utils/localstorage';
@@ -14,19 +14,19 @@ export function SplashModal() {
         <h1>{'TRUTH TABLES'}</h1>
       </StyledModalHeader>
       
-      <StyledModalBody>
-        <h2>{''}</h2>
+      <StyledModalBody style={{ textAlign:'center' }}>
+      {levelIdx > -1 && (<p>{'welcome back!'}</p>) }
       </StyledModalBody>
 
       <StyledModalFooter>
         {levelIdx > -1 ? (
           <>
-            <Button buttonType="positive" text={'CONTINUE SAVED'} onClick={() => dispatch(startLevel(levelIdx))} />
             <Button buttonType="negative" text={'CLEAR SAVE'} onClick={() => resetData()} />
+            <Button text={'CONTINUE SAVED'} onClick={() => dispatch(resumeLevel(levelIdx))} />
           </>
         ):(
           <>
-            <Button buttonType="positive" text={'NEW GAME'} onClick={() => dispatch(startLevel(0))} />
+            <Button text={'NEW GAME'} onClick={() => dispatch(startLevel(0))} />
           </>
         )}
       </StyledModalFooter>

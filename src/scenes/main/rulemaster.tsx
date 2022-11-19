@@ -10,8 +10,12 @@ export function RuleMaster() {
 
   // eventually, should move this logic into the slice somehow
   useEffect(() => {
-    if(levelData && gameStatus === 'loading') {
-      dispatch(resetMatrix(levelData));
+    if(levelData){
+      if(gameStatus === 'loading'){
+        dispatch(resetMatrix({ levelData }));
+      } else if(gameStatus === 'loadingResume'){
+        dispatch(resetMatrix({ levelData, resume: true }));
+      }
     }
   }, [dispatch, levelData, gameStatus]);
 

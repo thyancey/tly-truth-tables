@@ -66,9 +66,7 @@ export function Modal() {
 
   return (
     <StyledContainer>
-      <StyledModal>
-        {modal}
-      </StyledModal>
+      {modal}
       <StyledModalBg />
     </StyledContainer>
   );

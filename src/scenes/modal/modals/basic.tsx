@@ -1,14 +1,32 @@
 import styled from 'styled-components';
 import { Button, StyledButton } from '../../../components/button';
+import { getColor } from '../../../themes';
 
-export const StyledModalContainer = styled.div`
+// basic positioning all modals should have
+export const StyledModalAbstract = styled.div`
+  position:absolute;
+  width:100%;
+  height:100%;
+  
+  left:50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+  
   display:grid;
   grid-template-columns: 5rem auto 5rem; 
   grid-template-rows: min-content auto min-content;
-  height: 100%;
-  width: 100%;
 
-  padding:0rem;
+  padding:1rem;
+`
+
+export const StyledModalContainer = styled(StyledModalAbstract)`
+  max-width:80%;
+  max-height:80%;
+  border-radius:2rem;
+
+  background-color: ${getColor('brown_light')};
+  color: ${getColor('brown_dark')};
+  border: 0.75rem solid ${getColor('brown_dark')};
 `;
 
 export const StyledModalHeader = styled.div`

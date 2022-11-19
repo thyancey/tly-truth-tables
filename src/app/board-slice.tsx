@@ -27,26 +27,35 @@ const initialState: GridState = {
   gameReady: false
 };
 
-
+type ResetType = {
+  levelData: LevelData,
+  resume?: boolean
+}
 export const boardSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-    resetMatrix: (state: GridState, action: PayloadAction<LevelData>) => {
-      const levelData = action.payload;
-      if(levelData.attributes?.length > 0){
-        state.cellMatrix = generateCellMatrix(levelData.solution, levelData.attributes);
-
-        // randomize the hintgivers a bit by starting from a random idx
-        let hgIdx = Math.floor(Math.random() * HINT_GIVERS.length);
-        state.hintGivers = levelData.hints.map((hT, i) => (hgIdx + i) % HINT_GIVERS.length);
-
+    resetMatrix: (state: GridState, action: PayloadAction<ResetType>) => {
+      const levelData = action.payload.levelData;
+      if(action.payload.resume && state.cellMatrix.length > 0){
         state.hintIdx = -1;
         state.gameStatus = 'playing';
         state.gameReady = true;
-
-      } else {
-        state.cellMatrix = [];
+      }else{
+        if(levelData.attributes?.length > 0){
+          state.cellMatrix = generateCellMatrix(levelData.solution, levelData.attributes);
+  
+          // randomize the hintgivers a bit by starting from a random idx
+          let hgIdx = Math.floor(Math.random() * HINT_GIVERS.length);
+          state.hintGivers = levelData.hints.map((hT, i) => (hgIdx + i) % HINT_GIVERS.length);
+  
+          state.hintIdx = -1;
+          state.gameStatus = 'playing';
+          state.gameReady = true;
+  
+        } else {
+          state.cellMatrix = [];
+        }
       }
     },
     rotateCell: (state, action: PayloadAction<number>) => {
@@ -72,6 +81,11 @@ export const boardSlice = createSlice({
     setGameStatus: (state, action: PayloadAction<GameStatus>) => {
       state.gameStatus = action.payload;
     },
+    resumeLevel: (state, action: PayloadAction<number>) => {
+      state.gameReady = false;
+      state.gameStatus = 'loadingResume';
+      state.levelIdx = action.payload;
+    },
     startLevel: (state, action: PayloadAction<number>) => {
       state.gameReady = false;
       state.gameStatus = 'loading';
@@ -90,7 +104,7 @@ export const boardSlice = createSlice({
   } 
 });
 
-export const { resetMatrix, rotateCell, setActiveHint, submitAnswer, startLevel, startNextLevel, restartLevel, setGameStatus } = boardSlice.actions;
+export const { resetMatrix, rotateCell, setActiveHint, submitAnswer, startLevel, resumeLevel, startNextLevel, restartLevel, setGameStatus } = boardSlice.actions;
 
 
 

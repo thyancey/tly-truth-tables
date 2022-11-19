@@ -156,7 +156,7 @@ export type CalculatedHint = {
   used: AttributeDetail[];
 };
 
-export type GameStatus = 'start' | 'roundWin' | 'roundPrompt' | 'invalidAnswer' | 'playing' | 'help' | 'loading' | 'debug' | 'progress';
+export type GameStatus = 'start' | 'roundWin' | 'roundPrompt' | 'invalidAnswer' | 'playing' | 'help' | 'loading' | 'loadingResume' | 'debug' | 'progress';
 export type LevelStatus = 'idle' | 'incorrect' | 'correct';
 export type InfluenceType = null | 'same' | 'different';
 export type InfluenceRatio = [

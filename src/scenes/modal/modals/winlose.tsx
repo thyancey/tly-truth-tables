@@ -36,9 +36,9 @@ export function LoseModal() {
         <p>{'Every green cell must match the solution'}</p>
       </StyledModalBody>
       <StyledModalFooter>
-        <Button buttonType={'positive'} text={'KEEP TRYING'} onClick={() => dispatch(setGameStatus('playing'))} />
         <Button buttonType={'negative'} text={'RESET LEVEL'} onClick={() => dispatch(restartLevel())} />
         <Button buttonType={'special'} text={'SKIP TO NEXT LEVEL!'} onClick={() => dispatch(startNextLevel())} />
+        <Button text={'KEEP TRYING'} onClick={() => dispatch(setGameStatus('playing'))} />
       </StyledModalFooter>
     </StyledModalContainer>
   );
