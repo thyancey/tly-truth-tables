@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectAttributes, selectGridInfo, selectRenderedSolution, setGameStatus } from '../../../app/board-slice';
+import { selectAttributes, selectRenderedSolution, setGameStatus } from '../../../app/board-slice';
 import { Button } from '../../../components/button';
 import { getColor } from '../../../themes';
-import { createComparisonHash } from '../../../utils/puzzler';
 
 const StyledButtonContainer = styled.div`
   flex: 1;
@@ -41,10 +40,6 @@ export function DebugModal() {
   const dispatch = useAppDispatch();
   const renderedSolution = useAppSelector(selectRenderedSolution);
   const attributes = useAppSelector(selectAttributes);
-  const gridInfo = useAppSelector(selectGridInfo);
-
-  const comparisonHash = createComparisonHash(gridInfo.numAttributes, gridInfo.numValues);
-  console.log('comparisonHash: ', comparisonHash);
 
   return (
     <StyledContainer>

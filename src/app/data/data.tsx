@@ -7,7 +7,7 @@ export const LEVELMENU: LevelMenuGroup[] = [
   },
   {
     title: 'easy',
-    levels: [ 0, 1 ]
+    levels: [ 1 ]
   },
   {
     title: 'medium',

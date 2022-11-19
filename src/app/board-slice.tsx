@@ -12,6 +12,7 @@ export interface GridState {
   gameStatus: GameStatus,
   levelIdx: number,
   hintIdx: number,
+  progression: number[],
   gameReady: boolean
 }
 
@@ -22,6 +23,7 @@ const initialState: GridState = {
   gameStatus: 'start',
   levelIdx: -1,
   hintIdx: -1,
+  progression: [],
   gameReady: false
 };
 
@@ -59,6 +61,9 @@ export const boardSlice = createSlice({
     submitAnswer: (state, action: PayloadAction<boolean>) => {
       console.log('submitAnswer', action.payload);
       if(action.payload === true){
+        if(!state.progression.includes(state.levelIdx)){
+          state.progression.push(state.levelIdx)
+        }
         state.gameStatus = 'roundWin';
       }else{
         state.gameStatus = 'invalidAnswer';
@@ -124,6 +129,8 @@ export const getActiveHintIdx = (state: RootState) => state.board.hintIdx;
 export const getGameStatus = (state: RootState) => state.board.gameStatus;
 export const getLevelIdx = (state: RootState) => state.board.levelIdx;
 export const getGameReady = (state: RootState) => state.board.gameReady;
+export const getProgression = (state: RootState) => state.board.progression;
+// export const getProgression = (state: RootState) => [0];
 
 export const renderHint = (hintGiverIdx: number, text: string) => ({
   hintGiver: HINT_GIVERS[hintGiverIdx],
@@ -158,24 +165,23 @@ export const selectLevelInfo = createSelector(
   }
 );
 
-// export const getCompletedLevels = (state: RootState) => [0, 2];
-export const getCompletedLevels = (state: RootState): number[] => [];
 export const getLevelMenu = (state: RootState) => LEVELMENU;
 
 
 // eventually, merge in saved progress
 export const selectAllLevelInfo = createSelector(
-  [getCompletedLevels, getLevelMenu],
-  (completedLevels, levelMenu): RenderedMenuGroup[] => {
+  [getProgression, getLevelMenu, getLevelIdx],
+  (progression, levelMenu, levelIdx): RenderedMenuGroup[] => {
     const levels = LEVELDATA.map((levelData, idx) => ({
       title: levelData.title,
       description: levelData.description,
       layout: levelData.layout,
-      completed: completedLevels.includes(idx),
+      completed: progression.includes(idx),
+      current: idx === levelIdx,
       level: idx
     }));
 
-    return levelMenu.map((menuGroup, idx) => ({
+    return levelMenu.map(menuGroup => ({
       title: menuGroup.title,
       levels: menuGroup.levels.map(lId => levels[lId])
     })).filter(levelMenu => levelMenu.levels.length > 0);
@@ -267,8 +273,6 @@ export const selectSolution = createSelector(
 export const selectRenderedSolution = createSelector(
   [selectSolution, selectAttributes],
   (solution, attributes) => solution?.map(solution => {
-    console.log(solution, attributes);
-
     return solution.map((vIdx,sIdx) => 
       attributes[sIdx][vIdx]
     )

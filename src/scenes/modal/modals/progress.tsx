@@ -6,6 +6,7 @@ import { getColor } from '../../../themes';
 import { LevelInfo, RenderedMenuGroup } from '../../../types';
 import { useCallback } from 'react';
 
+import DoneIcon from '@material-ui/icons/Done';
 
 const StyledContainer = styled.div`
   display:grid;
@@ -37,19 +38,24 @@ export const StyledBody = styled.ul`
 
   li{
     list-style: none;
-    padding:0;
+    padding:1rem 0;
     margin:0;
   }
 `;
 
 interface StyledLevelEntryProps {
-  completed?: boolean,
+  current?: boolean,
   isEven: boolean
 }
 export const StyledLevelEntry = styled.li<StyledLevelEntryProps>`
   width:100%;
+  border: .5rem dashed transparent;
+  transition: border-color .2s ease-out;
 
   color: ${getColor('brown_light')};
+  ${p => p.current && css`
+    border-color: ${getColor('green')};
+  `}
 
   ${p => p.isEven ? css`
     background-color: rgba(53, 18, 14, .5);
@@ -60,6 +66,7 @@ export const StyledLevelEntry = styled.li<StyledLevelEntryProps>`
   cursor: pointer;
   &:hover{
     color: ${getColor('white')};
+    border-color: ${getColor('brown_light')};
   }
 
   display:grid;
@@ -82,18 +89,31 @@ export const StyledLevelEntry = styled.li<StyledLevelEntryProps>`
 interface StyledCompletedProps {
   completed?: boolean
 }
+
 export const StyledCompleted = styled.div<StyledCompletedProps>`
-  width: 60%;
-  height: 50%;
-  margin:auto;
-  border-radius: 5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: .25rem auto 0 auto;
+  border-radius: 50%;
   padding: 1rem;
+  background-color: ${getColor('brown')};
+
+  >svg{
+    opacity:0;
+    color: ${getColor('brown_light')};
+    font-size:2.5rem;
+    margin-left:-1rem;
+    margin-top:-1rem;
+  }
+
   ${p => p.completed ? css`
-    background-color: ${getColor('brown_light')}
+    >svg{
+      opacity:1;
+    }
+  }
   `: css`
-    background-color: ${getColor('brown')}
   `}
-`
+`;
 
 export const StyledFooter = styled.div`
   grid-column: 1 / span 3;
@@ -147,8 +167,11 @@ interface LevelInfoEntryProps {
 }
 export function LevelInfoEntry({data, idx, startLevel}: LevelInfoEntryProps) {
   return (
-    <StyledLevelEntry completed={data.completed} isEven={idx % 2 === 0} onClick={() => startLevel(data.level)}>
-      <StyledCompleted completed={data.completed} />
+    <StyledLevelEntry current={data.current} isEven={idx % 2 === 0} onClick={() => startLevel(data.level)}>
+
+      <StyledCompleted completed={data.completed}>
+        <DoneIcon />
+      </StyledCompleted>
       <span>{`${data.title}`}</span>
       <span>{`(${data.layout})`}</span>
     </StyledLevelEntry>

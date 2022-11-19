@@ -88,6 +88,7 @@ export type LevelInfo = {
   description?: string;
   layout?: string;
   completed?: boolean;
+  current?: boolean;
 }
 
 export type AttributeIdxPair = [ attributeIdx: number, valueIdx: number ]; 

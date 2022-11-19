@@ -4,7 +4,7 @@
    to invalidate older saves. prevents corrupting localStorage while its tied to loose
    redux state
 */
-export const STORE_SCHEMA = 1668886384000;
+export const STORE_SCHEMA = 1668887370995;
 
 const LS_KEY = 'state';
 export const loadState = () => {
@@ -12,7 +12,6 @@ export const loadState = () => {
     const serializedState = localStorage.getItem(LS_KEY);
     if(!serializedState) return undefined;
     const state = JSON.parse(serializedState);
-    console.log(state.board.storeSchema, STORE_SCHEMA)
     if(state.board.storeSchema !== STORE_SCHEMA) {
       console.log('saved data does not match store schema, resetting');
       return undefined;
