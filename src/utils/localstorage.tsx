@@ -31,3 +31,9 @@ export const saveSate = async (state: any) => {
     
   }
 }
+
+// TODO see if this has async issues with redux
+export const resetData = () => {
+  localStorage.removeItem(LS_KEY);
+  document.location.reload();
+}

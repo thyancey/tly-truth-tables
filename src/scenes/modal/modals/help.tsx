@@ -3,6 +3,7 @@ import { useAppDispatch } from '../../../app/hooks';
 import { setGameStatus } from '../../../app/board-slice';
 import { Button } from '../../../components/button';
 import { getColor } from '../../../themes';
+import { resetData } from '../../../utils/localstorage';
 
 const StyledButtonContainer = styled.div`
   flex: 1;
@@ -60,6 +61,7 @@ export function HelpModal() {
       <StyledDebug>
       </StyledDebug>
       <StyledButtonContainer>
+        <Button text={'CLEAR SAVE'} buttonType="negative" onClick={() => resetData()} />
         <Button text={'OK'} onClick={() => dispatch(setGameStatus('playing'))} />
         <StyledWebsiteLink href="https://www.thomasyancey.com" target="_blank" title="see some of my other stuff">{'thomasyancey.com'}</StyledWebsiteLink>
       </StyledButtonContainer>

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { MouseEventHandler } from 'hoist-non-react-statics/node_modules/@types/react';
 import { getColor } from '../themes';
 
-const StyledButton = styled.div`
+export const StyledButton = styled.div`
   border-radius: 1rem;
   cursor: pointer;
   transition: background-color .1s, border-color .2s, box-shadow .15s, transform .15s;
