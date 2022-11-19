@@ -1,41 +1,25 @@
-import styled from 'styled-components';
 import { useAppDispatch } from '../../../app/hooks';
 import { Button } from '../../../components/button';
 import { restartLevel, setGameStatus, startNextLevel } from '../../../app/board-slice';
-
-const StyledButtonContainer = styled.div`
-  flex: 1;
-  >div{
-    margin:2rem;
-  }
-`;
-
-const StyledBody = styled.div`
-  margin-top:-1.5rem;
-  margin-bottom: 2rem;
-`;
-
-const StyledContainer = styled.div`
-  display:flex;
-  flex-direction:column;
-
-  padding:1.5rem;
-  text-align:center;
-`;
+import { StyledModalBody, StyledModalContainer, StyledModalFooter, StyledModalHeader } from './basic';
 
 export function WinModal() {
   const dispatch = useAppDispatch();
 
   return (
-    <StyledContainer>
-      <StyledBody>
-        <h2>{'CORRECT!'}</h2>
-      </StyledBody>
-      <StyledButtonContainer>
+    <StyledModalContainer>
+      <StyledModalHeader>
+        <h1>{'CORRECT!'}</h1>
+      </StyledModalHeader>
+
+      <StyledModalBody>
+        
+      </StyledModalBody>
+      <StyledModalFooter>
         <Button text={'NEXT LEVEL'} onClick={() => dispatch(startNextLevel())} />
         <Button buttonType={'special'} text={'REPLAY LEVEL'} onClick={() => dispatch(startNextLevel())} />
-      </StyledButtonContainer>
-    </StyledContainer>
+      </StyledModalFooter>
+    </StyledModalContainer>
   );
 }
 
@@ -43,16 +27,19 @@ export function LoseModal() {
   const dispatch = useAppDispatch();
 
   return (
-    <StyledContainer>
-      <StyledBody>
-        <h2>{'INCORRECT!'}</h2>
+    <StyledModalContainer>
+      <StyledModalHeader>
+        <h1>{'INCORRECT!'}</h1>
+      </StyledModalHeader>
+
+      <StyledModalBody>
         <p>{'Every green cell must match the solution'}</p>
-      </StyledBody>
-      <StyledButtonContainer>
+      </StyledModalBody>
+      <StyledModalFooter>
         <Button buttonType={'positive'} text={'KEEP TRYING'} onClick={() => dispatch(setGameStatus('playing'))} />
-        <Button buttonType={'special'} text={'RESET LEVEL'} onClick={() => dispatch(restartLevel())} />
-        <Button buttonType={'negative'} text={'SKIP TO NEXT LEVEL!'} onClick={() => dispatch(startNextLevel())} />
-      </StyledButtonContainer>
-    </StyledContainer>
+        <Button buttonType={'negative'} text={'RESET LEVEL'} onClick={() => dispatch(restartLevel())} />
+        <Button buttonType={'special'} text={'SKIP TO NEXT LEVEL!'} onClick={() => dispatch(startNextLevel())} />
+      </StyledModalFooter>
+    </StyledModalContainer>
   );
 }

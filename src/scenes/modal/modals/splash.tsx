@@ -1,16 +1,8 @@
-import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { getLevelIdx, startLevel } from '../../../app/board-slice';
 import { Button } from '../../../components/button';
 import { StyledModalBody, StyledModalContainer, StyledModalFooter, StyledModalHeader } from './basic';
 import { resetData } from '../../../utils/localstorage';
-
-const StyledFooter = styled(StyledModalFooter)`
-  >div{
-    /* max-width: 30rem; */
-    margin:2rem auto;
-  }
-`;
 
 export function SplashModal() {
   const dispatch = useAppDispatch();
@@ -26,7 +18,7 @@ export function SplashModal() {
         <h2>{''}</h2>
       </StyledModalBody>
 
-      <StyledFooter>
+      <StyledModalFooter>
         {levelIdx > -1 ? (
           <>
             <Button buttonType="positive" text={'CONTINUE SAVED'} onClick={() => dispatch(startLevel(levelIdx))} />
@@ -37,7 +29,7 @@ export function SplashModal() {
             <Button buttonType="positive" text={'NEW GAME'} onClick={() => dispatch(startLevel(0))} />
           </>
         )}
-      </StyledFooter>
+      </StyledModalFooter>
     </StyledModalContainer>
   );
 }

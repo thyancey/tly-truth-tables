@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button } from '../../../components/button';
+import { Button, StyledButton } from '../../../components/button';
 
 export const StyledModalContainer = styled.div`
   display:grid;
@@ -32,6 +32,10 @@ export const StyledModalFooter = styled.div`
   grid-row: 3 / span 1;
 
   padding: 1rem;
+
+  >${StyledButton}{
+    margin: 2rem 0rem;
+  }
 `;
 
 export function BasicModal() {

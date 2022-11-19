@@ -1,23 +1,9 @@
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectAttributes, selectRenderedSolution, setGameStatus } from '../../../app/board-slice';
+import { StyledModalBody, StyledModalContainer, StyledModalFooter, StyledModalHeader } from './basic';
 import { Button } from '../../../components/button';
 import { getColor } from '../../../themes';
-
-const StyledButtonContainer = styled.div`
-  flex: 1;
-  >div{
-    margin:2rem;
-  }
-`;
-
-const StyledContainer = styled.div`
-  display:flex;
-  flex-direction:column;
-
-  padding:1.5rem;
-  text-align:center;
-`;
 
 const StyledSolution = styled.div`
   margin-top: 2rem;
@@ -42,32 +28,37 @@ export function DebugModal() {
   const attributes = useAppSelector(selectAttributes);
 
   return (
-    <StyledContainer>
-      <h3>{'debug info'}</h3>
-      <StyledSolution>
-        <p>{'DEBUG SOLUTION'}</p>
-        <table>
-          <thead>
-            <tr>
-              {attributes.map((attr, idx) => (
-                <th key={idx}><span>{`group ${idx + 1}`}</span></th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {renderedSolution?.map((rS, idx) => (
-              <tr key={idx}>
-                {rS.map((rSe, rSeIdx) => (
-                  <td key={`${idx}-${rSeIdx}`}><span>{rSe}</span></td>
+    <StyledModalContainer>
+      <StyledModalHeader>
+        <h1>{'DEBUG'}</h1>
+      </StyledModalHeader>
+      
+      <StyledModalBody>
+        <StyledSolution>
+          <p>{'DEBUG SOLUTION'}</p>
+          <table>
+            <thead>
+              <tr>
+                {attributes.map((attr, idx) => (
+                  <th key={idx}><span>{`group ${idx + 1}`}</span></th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </StyledSolution>
-      <StyledButtonContainer>
+            </thead>
+            <tbody>
+              {renderedSolution?.map((rS, idx) => (
+                <tr key={idx}>
+                  {rS.map((rSe, rSeIdx) => (
+                    <td key={`${idx}-${rSeIdx}`}><span>{rSe}</span></td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </StyledSolution>
+      </StyledModalBody>
+      <StyledModalFooter>
         <Button text={'OK'} onClick={() => dispatch(setGameStatus('playing'))} />
-      </StyledButtonContainer>
-    </StyledContainer>
+      </StyledModalFooter>
+    </StyledModalContainer>
   );
 }
