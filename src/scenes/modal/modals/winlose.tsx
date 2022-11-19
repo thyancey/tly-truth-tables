@@ -16,8 +16,8 @@ export function WinModal() {
         
       </StyledModalBody>
       <StyledModalFooter>
-        <Button text={'NEXT LEVEL'} onClick={() => dispatch(startNextLevel())} />
         <Button buttonType={'special'} text={'REPLAY LEVEL'} onClick={() => dispatch(startNextLevel())} />
+        <Button text={'NEXT LEVEL'} onClick={() => dispatch(startNextLevel())} />
       </StyledModalFooter>
     </StyledModalContainer>
   );

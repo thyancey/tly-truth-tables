@@ -68,7 +68,6 @@ export const boardSlice = createSlice({
       state.hintIdx = action.payload;
     },
     submitAnswer: (state, action: PayloadAction<boolean>) => {
-      console.log('submitAnswer', action.payload);
       if(action.payload === true){
         if(!state.progression.includes(state.levelIdx)){
           state.progression.push(state.levelIdx)

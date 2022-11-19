@@ -17,24 +17,6 @@ const StyledContainer = styled.div`
   bottom:0;
   z-index:5;
 `;
-const StyledModal = styled.div`
-  position:absolute;
-  width:100%;
-  height:100%;
-
-  left:50%;
-  top:50%;
-  transform: translate(-50%, -50%);
-  max-width:80%;
-  max-height:80%;
-  border-radius:2rem;
-
-  background-color: ${getColor('brown_light')};
-  color: ${getColor('brown_dark')};
-  border: 0.75rem solid ${getColor('brown_dark')};
-
-  padding:1rem;
-`;
 
 const StyledModalBg = styled.div`
   position:absolute;

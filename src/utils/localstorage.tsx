@@ -4,7 +4,7 @@
    to invalidate older saves. prevents corrupting localStorage while its tied to loose
    redux state
 */
-export const STORE_SCHEMA = 1668893882490;
+export const STORE_SCHEMA = 1668897086331;
 
 const LS_KEY = 'state';
 export const loadState = () => {
