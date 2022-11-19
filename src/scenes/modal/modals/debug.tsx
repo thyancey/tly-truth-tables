@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectAttributes, selectGridInfo, selectSolution, setGameStatus } from '../../../app/board-slice';
+import { selectAttributes, selectGridInfo, selectRenderedSolution, setGameStatus } from '../../../app/board-slice';
 import { Button } from '../../../components/button';
 import { getColor } from '../../../themes';
 import { createComparisonHash } from '../../../utils/puzzler';
@@ -39,7 +39,7 @@ const StyledSolution = styled.div`
 
 export function DebugModal() {
   const dispatch = useAppDispatch();
-  const renderedSolution = useAppSelector(selectSolution);
+  const renderedSolution = useAppSelector(selectRenderedSolution);
   const attributes = useAppSelector(selectAttributes);
   const gridInfo = useAppSelector(selectGridInfo);
 

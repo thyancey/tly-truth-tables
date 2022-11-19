@@ -1,31 +1,24 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { AnswerSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintDef, HintGiver, RawCell, RenderedHint, LevelData, LevelInfo, SimpleAttributeDef, RenderedMenuGroup } from '../types';
+import { AnswerSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintGiver, RawCell, RenderedHint, LevelData, LevelInfo, SimpleAttributeDef, RenderedMenuGroup } from '../types';
 import { getGridShape, LEVELDATA, HINT_GIVERS, LEVELMENU } from './data/data';
-import { calcSolution, generateCellMatrix } from '../utils/puzzler';
-import { generateHints } from '../utils/hint-generator';
-
-const MAX_HINTS = 8;
+import { generateCellMatrix } from '../utils/puzzler';
 
 export interface GridState {
-  levelData: LevelData | null,
   cellMatrix: CellMatrix,
-  hints: HintDef[],
-  activeHintIdx: number,
-  solution: AnswerSet | null,
+  hintGivers: number[],
   gameStatus: GameStatus,
   levelIdx: number,
+  hintIdx: number,
   gameReady: boolean
 }
 
 const initialState: GridState = {
-  levelData: null,
   cellMatrix: [],
-  hints: [],
-  activeHintIdx: -1,
-  solution: null,
+  hintGivers: [],
   gameStatus: 'start',
   levelIdx: -1,
+  hintIdx: -1,
   gameReady: false
 };
 
@@ -43,29 +36,12 @@ export const boardSlice = createSlice({
           console.error('invalid data, must use between 2 and 5 attributes');
         }
 
-        const solutionSet = levelData.hardcoded?.answers ? 
-          levelData.hardcoded?.answers
-          : calcSolution(numValues, numAttributes);
-
-        state.solution = solutionSet;
-        state.cellMatrix = generateCellMatrix(solutionSet, numValues, numAttributes);
-
-        let textHints: string[] = [];
-        if(levelData.hardcoded?.hints){
-          textHints = levelData.hardcoded?.hints;
-        } else if(levelData.attributesMeta){
-          textHints = generateHints(solutionSet, levelData.attributesMeta, MAX_HINTS);
-        } else{
-          console.error('invalid data, must have attributesMeta or hardcoded hints');
-        }
+        state.cellMatrix = generateCellMatrix(levelData.hardcoded.answers, numValues, numAttributes);
 
         let hgIdx = Math.floor(Math.random() * HINT_GIVERS.length);
-        state.hints = textHints.map((hT, i) => ({
-          hintGiverIdx: (hgIdx + i) % HINT_GIVERS.length,
-          text: hT
-        }));
+        state.hintGivers = levelData.hardcoded.hints.map((hT, i) => (hgIdx + i) % HINT_GIVERS.length);
 
-        state.activeHintIdx = -1;
+        state.hintIdx = -1;
         state.gameStatus = 'playing';
         state.gameReady = true;
 
@@ -80,8 +56,7 @@ export const boardSlice = createSlice({
       }
     },
     setActiveHint: (state, action: PayloadAction<number>) => {
-      if(action.payload > -1 && !state.hints[action.payload]) console.error(`cannot set invalid hint ${action.payload}`);
-      state.activeHintIdx = action.payload;
+      state.hintIdx = action.payload;
     },
     submitAnswer: (state, action: PayloadAction<boolean>) => {
       console.log('submitAnswer', action.payload);
@@ -146,16 +121,15 @@ const getNextStatus = (cellObj: CellObj) => {
 }
 
 export const getCellMatrix = (state: RootState) => state.board.cellMatrix;
-export const getSolution = (state: RootState) => state.board.solution;
-export const getHints = (state: RootState) => state.board.hints;
-export const getActiveHintIdx = (state: RootState) => state.board.activeHintIdx;
+export const getHintGivers = (state: RootState) => state.board.hintGivers;
+export const getActiveHintIdx = (state: RootState) => state.board.hintIdx;
 export const getGameStatus = (state: RootState) => state.board.gameStatus;
 export const getLevelIdx = (state: RootState) => state.board.levelIdx;
 export const getGameReady = (state: RootState) => state.board.gameReady;
 
-export const renderHint = (hintDef: HintDef) => ({
-  hintGiver: HINT_GIVERS[hintDef.hintGiverIdx],
-  text: hintDef.text
+export const renderHint = (hintGiverIdx: number, text: string) => ({
+  hintGiver: HINT_GIVERS[hintGiverIdx],
+  text: text
 });
 
 export const getNextLevelIdx = (curIdx: number) => {
@@ -172,6 +146,11 @@ export const selectLevelData = createSelector(
   (levelIdx): LevelData => {
     return LEVELDATA[levelIdx]
   }
+);
+
+export const selectHardcodedHints = createSelector(
+  [selectLevelData],
+  (levelData): string[] => levelData.hardcoded.hints
 );
 
 export const selectLevelInfo = createSelector(
@@ -211,18 +190,21 @@ export const selectAllLevelInfo = createSelector(
 );
 
 export const selectHints = createSelector(
-  [getHints],
-  (hints): RenderedHint[] => hints.map(h => renderHint(h))
+  [getHintGivers, selectLevelData],
+  (hintGivers, levelData): RenderedHint[] => {
+    if(!levelData) return [];
+    return hintGivers.map(hIdx => renderHint(hIdx, levelData.hardcoded.hints[hIdx]))
+  }
 );
 
 export const selectActiveHint = createSelector(
-  [getHints, getActiveHintIdx],
-  (hints, activeHintIdx): RenderedHint | null => {
-    if(activeHintIdx === -1){
+  [getActiveHintIdx, selectLevelData, getHintGivers],
+  (activeHintIdx, levelData, hintGivers): RenderedHint | null => {
+    if(!levelData || activeHintIdx === -1){
       return null;
     }
 
-    return renderHint(hints[activeHintIdx]);
+    return renderHint(hintGivers[activeHintIdx], levelData.hardcoded.hints[activeHintIdx]);
   }
 );
 
@@ -285,7 +267,12 @@ export const selectGridBox = createSelector(
 );
 
 export const selectSolution = createSelector(
-  [getSolution, selectAttributes],
+  [selectLevelData],
+  (levelData) => levelData?.hardcoded.answers || null
+)
+
+export const selectRenderedSolution = createSelector(
+  [selectSolution, selectAttributes],
   (solution, attributes) => solution?.map(solution => {
     console.log(solution, attributes);
 

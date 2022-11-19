@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AnswerData, HintGiver, RawCell, RenderedAnswer, LevelData } from '../../types';
 
 /**

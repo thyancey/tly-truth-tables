@@ -1,4 +1,5 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import { loadState } from '../utils/localstorage';
 import boardReducer from './board-slice';
 import uiReducer from './ui-slice';
 
@@ -7,6 +8,7 @@ export const store = configureStore({
     board: boardReducer,
     ui: uiReducer
   },
+  preloadedState: loadState()
 });
 
 export type AppDispatch = typeof store.dispatch;

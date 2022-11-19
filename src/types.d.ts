@@ -80,7 +80,7 @@ export type LevelData = {
   title: string;
   description?: string;
   layout?: string;
-  hardcoded?:HardcodedDef;
+  hardcoded:HardcodedDef;
   attributes: SimpleAttributeDef[];
   attributesMeta?: AttributeMetaDef[];
 };
@@ -147,11 +147,6 @@ export type HintGiver = {
   ssData?: {
     [key: string]: SpritesheetOverride;
   }
-};
-
-export type HintDef = {
-  hintGiverIdx: number;
-  text: string;
 };
 
 export type RenderedHint = {
