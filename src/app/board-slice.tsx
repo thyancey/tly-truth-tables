@@ -3,8 +3,10 @@ import { RootState } from './store';
 import { SolutionSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintGiver, RawCell, RenderedHint, LevelData, LevelInfo, SimpleAttributeDef, RenderedMenuGroup } from '../types';
 import { getGridShape, LEVELDATA, HINT_GIVERS, LEVELMENU } from './data/data';
 import { generateCellMatrix } from '../utils/puzzler';
+import { STORE_SCHEMA } from '../utils/localstorage';
 
 export interface GridState {
+  storeSchema: number,
   cellMatrix: CellMatrix,
   hintGivers: number[],
   gameStatus: GameStatus,
@@ -14,6 +16,7 @@ export interface GridState {
 }
 
 const initialState: GridState = {
+  storeSchema: STORE_SCHEMA,
   cellMatrix: [],
   hintGivers: [],
   gameStatus: 'start',

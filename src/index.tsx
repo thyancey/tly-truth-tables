@@ -10,7 +10,7 @@ import { throttle } from 'throttle-debounce';
 import { saveSate } from './utils/localstorage';
 
 //pattern from https://dev.to/igorovic/simplest-way-to-persist-redux-state-to-localstorage-e67
-/*
+
 store.subscribe(
   throttle(1000, () => {
     // saveSate({
@@ -22,7 +22,7 @@ store.subscribe(
     saveSate(store.getState())
   })
 );
-*/
+
 
 ReactDOM.render(
   <React.StrictMode>
