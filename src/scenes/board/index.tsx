@@ -27,6 +27,8 @@ const StyledBoard = styled.div`
   row-gap: 2rem;
   color: ${getColor('brown_light')};
 
+  /* transform-origin:left; */
+
   >div{
     display:grid;
     column-gap: 2rem;
