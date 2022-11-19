@@ -1,5 +1,5 @@
 import { RandFromArray, RandIdx, RandIdxFromArray } from '.';
-import { AnswerSet, AttributeMetaDef, AttributeDetail, CalculatedHint, InfluenceRatio, InfluenceType, OrderDescription, SortComparison } from '../types';
+import { SolutionSet, AttributeMetaDef, AttributeDetail, CalculatedHint, InfluenceRatio, InfluenceType, OrderDescription, SortComparison } from '../types';
 
 // what % of the time the same/different hint ratio is checked and attempted to be balanced;
 const INFLUENCE_CALC = .75; // desired that 75% of the hints are for "this IS that" comparisons
@@ -17,7 +17,7 @@ export const filterFromWorkingAttrs = (solutionDetails: AttributeDetail[][], use
   ).filter(solution => solution.length > 0);
 }
 
-export const convertSolutionsToAttributeDetails = (solutions: AnswerSet, attributes: AttributeMetaDef[]) => {
+export const convertSolutionsToAttributeDetails = (solutions: SolutionSet, attributes: AttributeMetaDef[]) => {
   const rawSortComparisons = getSortComparisons(attributes);
 
   return solutions.map((solution, sIdx) => {
@@ -296,7 +296,7 @@ export const getInfluenceType = (curRatio: InfluenceRatio, influenceCalc: number
   return influenceCalc >= calcRatio ? 'same' : 'different';
 }
 
-export const generateHints = (solutions: AnswerSet, attributes: AttributeMetaDef[], maxHints: number = 0) => {
+export const generateHints = (solutions: SolutionSet, attributes: AttributeMetaDef[], maxHints: number = 0) => {
   const attrDetails = convertSolutionsToAttributeDetails(solutions, attributes);
   const textHints = [];
 

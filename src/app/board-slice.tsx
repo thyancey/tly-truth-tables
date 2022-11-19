@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { AnswerSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintGiver, RawCell, RenderedHint, LevelData, LevelInfo, SimpleAttributeDef, RenderedMenuGroup } from '../types';
+import { SolutionSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintGiver, RawCell, RenderedHint, LevelData, LevelInfo, SimpleAttributeDef, RenderedMenuGroup } from '../types';
 import { getGridShape, LEVELDATA, HINT_GIVERS, LEVELMENU } from './data/data';
 import { generateCellMatrix } from '../utils/puzzler';
 
@@ -30,16 +30,11 @@ export const boardSlice = createSlice({
     resetMatrix: (state: GridState, action: PayloadAction<LevelData>) => {
       const levelData = action.payload;
       if(levelData.attributes?.length > 0){
-        const numAttributes = levelData.attributes.length || 0;
-        const numValues = levelData.attributes[0].length;
-        if(numAttributes < 2 || numAttributes > 5){
-          console.error('invalid data, must use between 2 and 5 attributes');
-        }
+        state.cellMatrix = generateCellMatrix(levelData.solution, levelData.attributes);
 
-        state.cellMatrix = generateCellMatrix(levelData.hardcoded.answers, numValues, numAttributes);
-
+        // randomize the hintgivers a bit by starting from a random idx
         let hgIdx = Math.floor(Math.random() * HINT_GIVERS.length);
-        state.hintGivers = levelData.hardcoded.hints.map((hT, i) => (hgIdx + i) % HINT_GIVERS.length);
+        state.hintGivers = levelData.hints.map((hT, i) => (hgIdx + i) % HINT_GIVERS.length);
 
         state.hintIdx = -1;
         state.gameStatus = 'playing';
@@ -95,7 +90,7 @@ export const { resetMatrix, rotateCell, setActiveHint, submitAnswer, startLevel,
 /// [1, 1, 1] would mean a valueIdx of 1 for attributes 0, 1, and 2
 
 // attrMatrix is a 2d array of attrIdx and numberIdx, so [[0,0],[2,0]] compares the 1st val of attr[0] with the 1st value of attr[2]
-export const isCellSolution = (answerSet: AnswerSet, attrMatrix: AttributeMatrix) => {
+export const isCellSolution = (answerSet: SolutionSet, attrMatrix: AttributeMatrix) => {
   for(let a = 0; a < answerSet.length; a++){
     if(attrMatrix.filter(attrPair => answerSet[a][attrPair[0]] === attrPair[1]).length === 2) return true;
   }
@@ -148,11 +143,6 @@ export const selectLevelData = createSelector(
   }
 );
 
-export const selectHardcodedHints = createSelector(
-  [selectLevelData],
-  (levelData): string[] => levelData.hardcoded.hints
-);
-
 export const selectLevelInfo = createSelector(
   [selectLevelData, getLevelIdx],
   (levelData, levelIdx): LevelInfo | null => {
@@ -193,7 +183,7 @@ export const selectHints = createSelector(
   [getHintGivers, selectLevelData],
   (hintGivers, levelData): RenderedHint[] => {
     if(!levelData) return [];
-    return hintGivers.map(hIdx => renderHint(hIdx, levelData.hardcoded.hints[hIdx]))
+    return hintGivers.map(hIdx => renderHint(hIdx, levelData.hints[hIdx]))
   }
 );
 
@@ -204,7 +194,7 @@ export const selectActiveHint = createSelector(
       return null;
     }
 
-    return renderHint(hintGivers[activeHintIdx], levelData.hardcoded.hints[activeHintIdx]);
+    return renderHint(hintGivers[activeHintIdx], levelData.hints[activeHintIdx]);
   }
 );
 
@@ -268,7 +258,7 @@ export const selectGridBox = createSelector(
 
 export const selectSolution = createSelector(
   [selectLevelData],
-  (levelData) => levelData?.hardcoded.answers || null
+  (levelData) => levelData?.solution || null
 )
 
 export const selectRenderedSolution = createSelector(

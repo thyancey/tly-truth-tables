@@ -1,5 +1,5 @@
 import { getGridShape } from '../app/data/data';
-import { AnswerSet, AttributeMatrix, CellObj, ComparisonHash } from '../types';
+import { SolutionSet, AttributeMatrix, CellObj, ComparisonHash, SimpleAttributeDef } from '../types';
 
 // make a hash of all unique attribute:attribute combinations
 export const createComparisonHash = (numAttributes: number, numValues: number): ComparisonHash => {
@@ -32,7 +32,7 @@ export const createComparisonHash = (numAttributes: number, numValues: number): 
 /// [1, 1, 1] would mean a valueIdx of 1 for attributes 0, 1, and 2
 
 // attrMatrix is a 2d array of attrIdx and numberIdx, so [[0,0],[2,0]] compares the 1st val of attr[0] with the 1st value of attr[2]
-export const isCellSolution = (answerSet: AnswerSet, attrMatrix: AttributeMatrix) => {
+export const isCellSolution = (answerSet: SolutionSet, attrMatrix: AttributeMatrix) => {
   for(let a = 0; a < answerSet.length; a++){
     if(attrMatrix.filter(attrPair => answerSet[a][attrPair[0]] === attrPair[1]).length === 2) return true;
   }
@@ -42,7 +42,7 @@ export const isCellSolution = (answerSet: AnswerSet, attrMatrix: AttributeMatrix
 
 // make a unique combination of each attribute/value, with no overlaps.
 // This is the solution to the current truth table.
-export const calcSolution = (numAnswers: number, numAttributes:number): AnswerSet => {
+export const calcSolution = (numAnswers: number, numAttributes:number): SolutionSet => {
   const availableAttributes = [];
   for(let i = 0; i < numAttributes; i++){
     availableAttributes.push(Array.from(Array(numAnswers).keys()))
@@ -62,7 +62,14 @@ export const calcSolution = (numAnswers: number, numAttributes:number): AnswerSe
   return generatedAnswer;
 }
 
-export const generateCellMatrix = (solutionSet: AnswerSet, numValues:number, numAttributes:number) => {
+export const generateCellMatrix = (solutionSet: SolutionSet, attributes:SimpleAttributeDef[]) => {
+  const numAttributes = attributes.length || 0;
+  const numValues = attributes[0].length;
+
+  if(numAttributes < 2 || numAttributes > 5){
+    console.error('invalid data, must use between 2 and 5 attributes');
+  }
+  
   const boxSize = Math.pow(numValues, 2);
   const gridShape = getGridShape(numAttributes);
   const newMatrix = [];

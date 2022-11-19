@@ -71,16 +71,12 @@ export type AttributeDetail = {
   sortComparisons: SortComparison[];
 };
 
-export type HardcodedDef = {
-  answers: AnswerSet;
-  hints: string[];
-}
-
 export type LevelData = {
   title: string;
   description?: string;
   layout?: string;
-  hardcoded:HardcodedDef;
+  solution: SolutionSet;
+  hints: string[];
   attributes: SimpleAttributeDef[];
   attributesMeta?: AttributeMetaDef[];
 };
@@ -115,7 +111,7 @@ export type RenderedAnswer = {
   attributes: AttributePair[];
 }
 
-export type AnswerSet = number[][];
+export type SolutionSet = number[][];
 
 export type AttributeMatrix = RawCell[];
 
