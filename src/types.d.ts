@@ -70,19 +70,30 @@ export type AttributeDetail = {
   descriptors: string[];
   sortComparisons: SortComparison[];
 };
+export type HintTouple = [
+  hintText: string,
+  hintGiverId?: string // allows for explicit hinters for hints
+];
 
-export type HardcodedDef = {
-  answers: AnswerSet;
-  hints: string[];
-}
-
-export type RoundData = {
+export type LevelData = {
   title: string;
   description?: string;
-  hardcoded?:HardcodedDef;
+  layout?: string;
+  solution: SolutionSet;
+  hints: HintTouple[];
   attributes: SimpleAttributeDef[];
   attributesMeta?: AttributeMetaDef[];
 };
+
+// TODO partial from or combine with LevelData
+export type LevelInfo = {
+  title: string;
+  level: number;
+  description?: string;
+  layout?: string;
+  completed?: boolean;
+  current?: boolean;
+}
 
 export type AttributeIdxPair = [ attributeIdx: number, valueIdx: number ]; 
 export type AttributePair = [ attribute: string, value: string ]; 
@@ -96,7 +107,7 @@ export type RenderedBoard = {
  */
 export type AnswerIdx = number;
 /**
- * Index of attribute, based on provided roundData
+ * Index of attribute, based on provided levelData
  */
 export type AnswerAttributes = AnswerIdx[];
 export type AnswerData = AnswerAttributes[];
@@ -105,7 +116,7 @@ export type RenderedAnswer = {
   attributes: AttributePair[];
 }
 
-export type AnswerSet = number[][];
+export type SolutionSet = number[][];
 
 export type AttributeMatrix = RawCell[];
 
@@ -139,11 +150,6 @@ export type HintGiver = {
   }
 };
 
-export type HintDef = {
-  hintGiverIdx: number;
-  text: string;
-};
-
 export type RenderedHint = {
   hintGiver: HintGiver;
   text: string;
@@ -154,21 +160,25 @@ export type CalculatedHint = {
   used: AttributeDetail[];
 };
 
-export type GameStatus = 'start' | 'roundWin' | 'roundPrompt' | 'invalidAnswer' | 'playing' | 'help' | 'loading' | 'debug';
-export type RoundStatus = 'idle' | 'incorrect' | 'correct';
+export type GameStatus = 'start' | 'roundWin' | 'roundPrompt' | 'invalidAnswer' | 'playing' | 'help' | 'loading' | 'loadingResume' | 'debug' | 'progress';
+export type LevelStatus = 'idle' | 'incorrect' | 'correct';
 export type InfluenceType = null | 'same' | 'different';
 export type InfluenceRatio = [
   yesCount: number,
   noCount: number
 ];
 
-export type RoundInfo = {
-  title: string;
-  description?: string;
-  level: number;
-}
-
 export type Coordinate = [
   x: number,
   y: number
-]
+];
+
+export type LevelMenuGroup = {
+  title: string,
+  levels: number[]
+}
+
+export type RenderedMenuGroup = {
+  title: string,
+  levels: LevelInfo[]
+}

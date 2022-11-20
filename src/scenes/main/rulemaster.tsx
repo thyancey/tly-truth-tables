@@ -1,19 +1,23 @@
 import { useAppDispatch } from '../../app/hooks';
-import { getGameStatus, resetMatrix, selectRoundData } from '../../app/slice';
+import { getGameStatus, resetMatrix, selectLevelData } from '../../app/board-slice';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 export function RuleMaster() {
   const dispatch = useAppDispatch();
-  const roundData = useSelector(selectRoundData);
+  const levelData = useSelector(selectLevelData);
   const gameStatus = useSelector(getGameStatus);
 
   // eventually, should move this logic into the slice somehow
   useEffect(() => {
-    if(roundData && gameStatus === 'loading') {
-      dispatch(resetMatrix(roundData));
+    if(levelData){
+      if(gameStatus === 'loading'){
+        dispatch(resetMatrix({ levelData }));
+      } else if(gameStatus === 'loadingResume'){
+        dispatch(resetMatrix({ levelData, resume: true }));
+      }
     }
-  }, [dispatch, roundData, gameStatus]);
+  }, [dispatch, levelData, gameStatus]);
 
   return null;
 }

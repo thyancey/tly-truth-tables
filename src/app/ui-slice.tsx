@@ -9,7 +9,7 @@ export interface UiState {
 
 const initialState: UiState = {
   zoom: 0.4,
-  position: [0, -50]
+  position: [0, -25]
 };
 
 export const uiSlice = createSlice({

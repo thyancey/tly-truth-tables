@@ -75,11 +75,11 @@ export function PositionControls() {
   }, [ dispatch ]);
   
   const onChangePositionX = useCallback((e) => {
-    dispatch(setPosition([e.target.value, position[1]]));
+    dispatch(setPosition([+e.target.value, position[1]]));
   }, [ dispatch, position ]);
   
   const onChangePositionY = useCallback((e) => {
-    dispatch(setPosition([position[0], e.target.value]));
+    dispatch(setPosition([position[0], +e.target.value]));
   }, [ dispatch, position ]);
 
   const onResetZoom = useCallback(() => {

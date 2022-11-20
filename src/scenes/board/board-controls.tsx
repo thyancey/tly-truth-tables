@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
-import { checkIfSolved, setGameStatus, submitAnswer } from '../../app/slice';
+import { checkIfSolved, setGameStatus, submitAnswer } from '../../app/board-slice';
 
 const StyledButton = styled.div`
   border-radius: 1rem;
@@ -48,6 +48,25 @@ const StyledHelpButton = styled(StyledButton)`
   }
 `;
 
+const StyledProgressButton = styled(StyledButton)`
+  padding: 0.25rem .5rem;
+  color: ${getColor('purple')};
+  background-color:${getColor('brown_dark')};
+  border-color: ${getColor('purple')};
+  box-shadow: 0.4rem 0.4rem 0 0.1rem ${getColor('purple')};
+  
+  &:hover{
+    color: ${getColor('pink')};
+    border-color: ${getColor('pink')};
+  }
+  &:active{
+    color: ${getColor('purple')};
+    background-color: ${getColor('brown_dark')};
+    border-color: ${getColor('purple')};
+    box-shadow: 0.1rem 0.1rem 0 0.3rem ${getColor('purple')};
+  }
+`;
+
 const StyledContainer = styled.div`
   ${StyledButton}{
     margin:1rem;
@@ -66,6 +85,7 @@ export function BoardControls() {
     <StyledContainer>
       <StyledHelpButton onClick={() => dispatch(setGameStatus('debug'))}>{'debug'}</StyledHelpButton>
       <StyledHelpButton onClick={() => dispatch(setGameStatus('help'))}>{'HELP!'}</StyledHelpButton>
+      <StyledProgressButton onClick={() => dispatch(setGameStatus('progress'))}>{'progress'}</StyledProgressButton>
       <StyledSolvedButton onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedButton>
     </StyledContainer>
   );

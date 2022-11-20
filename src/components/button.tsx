@@ -2,12 +2,13 @@ import styled from 'styled-components';
 import { MouseEventHandler } from 'hoist-non-react-statics/node_modules/@types/react';
 import { getColor } from '../themes';
 
-const StyledButton = styled.div`
+export const StyledButton = styled.div`
   border-radius: 1rem;
   cursor: pointer;
   transition: background-color .1s, border-color .2s, box-shadow .15s, transform .15s;
   text-align:center;
-  padding: 1.0rem .25rem;
+  padding: 1.5rem .5rem;
+
   span{
     font-size:2.5rem;
   }
@@ -64,8 +65,6 @@ const StyledSpecialButton = styled(StyledButton)`
 
 
 const StyledNeutralButton = styled(StyledButton)`
-  padding: 1.5rem .5rem;
-
   color: ${getColor('white')};
   background-color:${getColor('brown_dark')};
   box-shadow: 0.4rem 0.5rem 0 0.4rem ${getColor('brown')};
@@ -82,8 +81,8 @@ const StyledNeutralButton = styled(StyledButton)`
 type ButtonType = 'positive' | 'negative' | 'special' | 'neutral';
 
 interface LBType {
-  onClick: MouseEventHandler,
   text: string,
+  onClick?: MouseEventHandler,
   buttonType?: ButtonType
 }
 

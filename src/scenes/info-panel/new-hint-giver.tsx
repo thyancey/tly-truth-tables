@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { useAppSelector } from '../../app/hooks';
 import { LilFace } from '../../components/lil-face';
-import { selectActiveHintGiver } from '../../app/slice';
+import { selectActiveHintGiver } from '../../app/board-slice';
 import { getColor } from '../../themes';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
