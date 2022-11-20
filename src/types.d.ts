@@ -70,13 +70,17 @@ export type AttributeDetail = {
   descriptors: string[];
   sortComparisons: SortComparison[];
 };
+export type HintTouple = [
+  hintText: string,
+  hintGiverId?: string // allows for explicit hinters for hints
+];
 
 export type LevelData = {
   title: string;
   description?: string;
   layout?: string;
   solution: SolutionSet;
-  hints: string[];
+  hints: HintTouple[];
   attributes: SimpleAttributeDef[];
   attributesMeta?: AttributeMetaDef[];
 };

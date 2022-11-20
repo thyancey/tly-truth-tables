@@ -35,9 +35,9 @@ export const LEVELDATA: LevelData[] = [
       [ 1, 0 ], // fish firefighter
       [ 2, 1 ]  // frog dentist
     ],
-    hints:[ 
-      `The fish hopes they get to use that trampoline at least once.`,
-      `Everyone knows that clowns disintegrate when they touch water.`
+    hints:[
+      ['The fish hopes they get to use that trampoline at least once.', 'skull'],
+      ['Everyone knows that clowns disintegrate when they touch water.', 'cactoid']
     ],
   },
   {
@@ -55,10 +55,10 @@ export const LEVELDATA: LevelData[] = [
       [ 2, 1, 1 ]  // birder second tiger
     ],
     hints:[ 
-      `The camper loved cats, well.. used to love cats.`,
-      `The mountain lion ate before the tiger.`,
-      `The hiker walked past a tiger with a huge belly.`,
-      `The bird lover was eaten right after the camper.`
+      ['The camper loved cats, well.. used to love cats.'],
+      ['The mountain lion ate before the tiger.'],
+      ['The hiker walked past a tiger with a huge belly.'],
+      ['The bird lover was eaten right after the camper.']
     ],
   },
   {
@@ -77,11 +77,11 @@ export const LEVELDATA: LevelData[] = [
       [ 3, 0, 2 ]
     ],
     hints:[ 
-      `Blue Beard will not be happy with his treasure`,
-      `The message in a bottle reads "yarrrr read me treasure and ye skin will melt off. just speakin' from experience"`,
-      `The valuable treasures were not written down`,
-      `Gravy bones is always drunk, it finally did something good for him`,
-      `Stank tooths treasure has to do with uh, teeth.`
+      ['Blue Beard will not be happy with his treasure'],
+      [`The message in a bottle reads "yarrrr read me treasure and ye skin will melt off. just speakin' from experience"`],
+      ['The valuable treasures were not written down'],
+      ['Gravy bones is always drunk, it finally did something good for him'],
+      ['Stank tooths treasure has to do with uh, teeth.']
     ],
   },
   {
@@ -101,10 +101,10 @@ export const LEVELDATA: LevelData[] = [
       [ 3, 3, 3 ]
     ],
     hints:[ 
-      `A hint needs to be created here`,
-      `A hint needs to be created here`,
-      `A hint needs to be created here`,
-      `A hint needs to be created here`
+      ['A hint needs to be created here'],
+      ['A hint needs to be created here'],
+      ['A hint needs to be created here'],
+      ['A hint needs to be created here']
     ],
   },
   {
@@ -124,10 +124,10 @@ export const LEVELDATA: LevelData[] = [
       [ 3, 3, 3, 3 ]
     ],
     hints:[ 
-      `A hint needs to be created here`,
-      `A hint needs to be created here`,
-      `A hint needs to be created here`,
-      `A hint needs to be created here`
+      ['A hint needs to be created here'],
+      ['A hint needs to be created here'],
+      ['A hint needs to be created here'],
+      ['A hint needs to be created here']
     ],
   }
 ]
@@ -139,15 +139,13 @@ export const HINT_GIVERS: HintGiver[] = [
     bodyType: 'body1',
     idleImage: 'assets/hinters/faces/skull-static.gif',
     talkingImage: 'assets/hinters/faces/skull.gif',
-  }
-  ,{
+  },{
     id: 'cactoid',
     name: 'Cactoid',
     bodyType: 'body2',
     idleImage: 'assets/hinters/faces/cactus-static.gif',
     talkingImage: 'assets/hinters/faces/cactus.gif',
-  }
-  ,{
+  },{
     id: 'face1',
     name: 'Face 1',
     bodyType: 'body3',
@@ -190,38 +188,3 @@ export const getGridShape = (size:number) => {
   }
   return generatedGrids[size];
 }
-
-// TODO, generate this
-export const sampleAnswerData: AnswerData = [
-  [ 0, 0, 1, 0 ],
-  [ 2, 1, 2, 1 ],
-  [ 1, 2, 0, 2 ]
-]
-
-// TODO, generate this
-export const RenderedAnswers: RenderedAnswer[] = [
-  {
-    attributes:[
-      ['animal', 'monkey'],
-      ['queue', 'first'],
-      ['emotion', 'angry'],
-      ['occupation', 'firefighter']
-    ]
-  },
-  {
-    attributes:[
-      ['animal', 'frog'],
-      ['queue', 'last'],
-      ['emotion', 'happy'],
-      ['occupation', 'clown']
-    ]
-  },
-  {
-    attributes:[
-      ['animal', 'fish'],
-      ['queue', 'second'],
-      ['emotion', 'sad'],
-      ['occupation', 'dentist']
-    ]
-  }
-]

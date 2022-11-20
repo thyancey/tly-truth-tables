@@ -31,6 +31,12 @@ type ResetType = {
   levelData: LevelData,
   resume?: boolean
 }
+export const getHintIdxById = (id:string) => {
+  const foundIdx = HINT_GIVERS.findIndex(hg => hg.id === id);
+  if(foundIdx === -1) console.error(`could not find hintgiver with id "${id}"`);
+  return foundIdx;
+};
+
 export const boardSlice = createSlice({
   name: 'board',
   initialState,
@@ -45,10 +51,18 @@ export const boardSlice = createSlice({
         if(levelData.attributes?.length > 0){
           state.cellMatrix = generateCellMatrix(levelData.solution, levelData.attributes);
   
-          // randomize the hintgivers a bit by starting from a random idx
-          let hgIdx = Math.floor(Math.random() * HINT_GIVERS.length);
-          state.hintGivers = levelData.hints.map((hT, i) => (hgIdx + i) % HINT_GIVERS.length);
-  
+          let hintGivers: number[] = [];
+          levelData.hints.forEach((hint, hIdx) => {
+            if(hint[1]){
+              const foundIdx = getHintIdxById(hint[1]);
+              if(foundIdx !== -1) hintGivers.push(foundIdx);
+            }else{
+              hintGivers.push(Math.floor(Math.random() * HINT_GIVERS.length));
+            }
+          });
+
+          console.log('hintGivers', hintGivers)
+          state.hintGivers = hintGivers;
           state.hintIdx = -1;
           state.gameStatus = 'playing';
           state.gameReady = true;
@@ -208,7 +222,7 @@ export const selectHints = createSelector(
   [getHintGivers, selectLevelData],
   (hintGivers, levelData): RenderedHint[] => {
     if(!levelData) return [];
-    return hintGivers.map(hIdx => renderHint(hIdx, levelData.hints[hIdx]))
+    return hintGivers.map(hIdx => renderHint(hIdx, levelData.hints[hIdx][0]))
   }
 );
 
@@ -219,7 +233,7 @@ export const selectActiveHint = createSelector(
       return null;
     }
 
-    return renderHint(hintGivers[activeHintIdx], levelData.hints[activeHintIdx]);
+    return renderHint(hintGivers[activeHintIdx], levelData.hints[activeHintIdx][0]);
   }
 );
 
