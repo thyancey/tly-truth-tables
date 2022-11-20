@@ -61,7 +61,6 @@ export const boardSlice = createSlice({
             }
           });
 
-          console.log('hintGivers', hintGivers)
           state.hintGivers = hintGivers;
           state.hintIdx = -1;
           state.gameStatus = 'playing';
@@ -222,7 +221,7 @@ export const selectHints = createSelector(
   [getHintGivers, selectLevelData],
   (hintGivers, levelData): RenderedHint[] => {
     if(!levelData) return [];
-    return hintGivers.map(hIdx => renderHint(hIdx, levelData.hints[hIdx][0]))
+    return levelData.hints.map((h, hIdx) => renderHint(hintGivers[hIdx], h[0]));
   }
 );
 
@@ -230,6 +229,10 @@ export const selectActiveHint = createSelector(
   [getActiveHintIdx, selectLevelData, getHintGivers],
   (activeHintIdx, levelData, hintGivers): RenderedHint | null => {
     if(!levelData || activeHintIdx === -1){
+      return null;
+    }
+    // hack, otherwise when clue 3 is active, and switching to a level with 2 hints, errors out
+    if(activeHintIdx > levelData.hints.length){
       return null;
     }
 

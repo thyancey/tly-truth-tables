@@ -1,4 +1,4 @@
-import { AnswerData, HintGiver, RawCell, RenderedAnswer, LevelData, LevelMenuGroup } from '../../types';
+import { HintGiver, RawCell, LevelData, LevelMenuGroup } from '../../types';
 
 export const LEVELMENU: LevelMenuGroup[] = [
   {
@@ -77,11 +77,11 @@ export const LEVELDATA: LevelData[] = [
       [ 3, 0, 2 ]
     ],
     hints:[ 
-      ['Blue Beard will not be happy with his treasure'],
-      [`The message in a bottle reads "yarrrr read me treasure and ye skin will melt off. just speakin' from experience"`],
-      ['The valuable treasures were not written down'],
-      ['Gravy bones is always drunk, it finally did something good for him'],
-      ['Stank tooths treasure has to do with uh, teeth.']
+      ['Blue Beard will not be happy with his treasure', 'face1_pirate'],
+      [`The message in a bottle reads "yarrrr read me treasure and ye skin will melt off. just speakin' from experience"`, 'skull_pirate'],
+      ['The valuable treasures were not written down', 'skull_pirate'],
+      ['Gravy bones is always drunk, it finally did something good for him', 'face1_pirate'],
+      ['Stank tooths treasure has to do with uh, teeth.', 'face1_pirate']
     ],
   },
   {
@@ -137,20 +137,32 @@ export const HINT_GIVERS: HintGiver[] = [
     id: 'skull',
     name: 'Skull Guy',
     bodyType: 'body1',
-    idleImage: 'assets/hinters/faces/skull-static.gif',
-    talkingImage: 'assets/hinters/faces/skull.gif',
+    idleImage: 'assets/hinters/faces/skull-s.gif',
+    talkingImage: 'assets/hinters/faces/skull-t.gif',
+  },{
+    id: 'skull_pirate',
+    name: 'Skull Guy Pirate',
+    bodyType: 'body1',
+    idleImage: 'assets/hinters/faces/skull-pirate-s.gif',
+    talkingImage: 'assets/hinters/faces/skull-pirate-t.gif',
   },{
     id: 'cactoid',
     name: 'Cactoid',
     bodyType: 'body2',
-    idleImage: 'assets/hinters/faces/cactus-static.gif',
-    talkingImage: 'assets/hinters/faces/cactus.gif',
+    idleImage: 'assets/hinters/faces/cactus-s.gif',
+    talkingImage: 'assets/hinters/faces/cactus-t.gif',
   },{
     id: 'face1',
     name: 'Face 1',
     bodyType: 'body3',
-    idleImage: 'assets/hinters/faces/face1-static.gif',
-    talkingImage: 'assets/hinters/faces/face1.gif',
+    idleImage: 'assets/hinters/faces/face1-s.gif',
+    talkingImage: 'assets/hinters/faces/face1-t.gif',
+  },{
+    id: 'face1_pirate',
+    name: 'Face 1 Pirate',
+    bodyType: 'body3',
+    idleImage: 'assets/hinters/faces/face1-pirate-s.gif',
+    talkingImage: 'assets/hinters/faces/face1-pirate-t.gif',
   }
 ]
 

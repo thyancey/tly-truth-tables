@@ -15,7 +15,12 @@ export function SplashModal() {
       </StyledModalHeader>
       
       <StyledModalBody style={{ textAlign:'center' }}>
-      {levelIdx > -1 && (<p>{'welcome back!'}</p>) }
+      {levelIdx > -1 && (
+        <>
+          <p>{'welcome back!'}</p>
+          <p>{'saves are work in progress and will be reset often.'}</p>
+        </>
+      ) }
       </StyledModalBody>
 
       <StyledModalFooter>
