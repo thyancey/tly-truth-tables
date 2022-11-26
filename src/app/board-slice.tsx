@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { SolutionSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintGiver, RawCell, RenderedHint, LevelData, LevelInfo, SimpleAttributeDef, RenderedMenuGroup } from '../types';
+import { SolutionSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintGiver, RawCell, RenderedHint, LevelData, LevelInfo, SimpleAttributeDef, RenderedMenuGroup, SolvedType } from '../types';
 import { getGridShape, LEVELDATA, HINT_GIVERS, LEVELMENU } from './data/data';
 import { generateCellMatrix } from '../utils/puzzler';
 import { STORE_SCHEMA } from '../utils/localstorage';
@@ -312,21 +312,32 @@ export const selectRenderedSolution = createSelector(
   })
 );
 
+export const selectAnsweredCells = createSelector(
+  [getCellMatrix],
+  (cellMatrix): CellObj[] => cellMatrix.filter(cell => cell.status === 1)
+);
+export const selectSolutionCells = createSelector(
+  [getCellMatrix],
+  (cellMatrix): CellObj[] => cellMatrix.filter(cell => cell.isSolution)
+);
+
 // if every "solution" cell has a 1 status, and there are not extra answers
 export const checkIfSolved = createSelector(
-  [getCellMatrix],
-  (cellMatrix) => {
-    const numExpected = cellMatrix.filter(cell => cell.isSolution).length;
-    const answeredCells = cellMatrix.filter(cell => cell.status === 1);
-    if(answeredCells.length !== numExpected) return false;
+  [selectAnsweredCells, selectSolutionCells],
+  (answeredCells, solutionCells): SolvedType => {
+    const numExpected = solutionCells.length;
+    if(answeredCells.length > numExpected) {
+      return 'incorrect';
+    } else if(answeredCells.length < numExpected) {
+      return 'incomplete';
+    }
 
-    const expectedCells = cellMatrix.filter(cell => cell.isSolution);
-    for(let i = 0; i < expectedCells.length; i++){
-      if(!answeredCells.find(aC => aC.idx === expectedCells[i].idx)){
-        return false;
+    for(let i = 0; i < solutionCells.length; i++){
+      if(!answeredCells.find(aC => aC.idx === solutionCells[i].idx)){
+        return 'incorrect';
       }
     }
-    return true;
+    return 'correct';
   }
 );
 

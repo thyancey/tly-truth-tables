@@ -74,19 +74,19 @@ const StyledContainer = styled.div`
 `;
 
 export function BoardControls() {
-  const solved = useAppSelector(checkIfSolved);
+  const solvedType = useAppSelector(checkIfSolved);
 
   const dispatch = useAppDispatch();
-  const onSubmitGame = useCallback((solved:boolean, forceWin?: boolean) => {
-    dispatch(submitAnswer(forceWin || solved));
-  }, [ dispatch ]);
+  const onSubmitGame = useCallback((forceWin?: boolean) => {
+    dispatch(submitAnswer(forceWin || solvedType === 'correct'));
+  }, [ dispatch, solvedType ]);
 
   return (
     <StyledContainer>
       <StyledHelpButton onClick={() => dispatch(setGameStatus('debug'))}>{'debug'}</StyledHelpButton>
       <StyledHelpButton onClick={() => dispatch(setGameStatus('help'))}>{'HELP!'}</StyledHelpButton>
       <StyledProgressButton onClick={() => dispatch(setGameStatus('progress'))}>{'progress'}</StyledProgressButton>
-      <StyledSolvedButton onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedButton>
+      <StyledSolvedButton onClick={() => onSubmitGame()}>{'SUBMIT'}</StyledSolvedButton>
     </StyledContainer>
   );
 }

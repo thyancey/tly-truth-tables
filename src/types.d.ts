@@ -182,3 +182,5 @@ export type RenderedMenuGroup = {
   title: string,
   levels: LevelInfo[]
 }
+
+export type SolvedType = 'correct' | 'incorrect' | 'incomplete';
