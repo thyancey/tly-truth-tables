@@ -60,17 +60,17 @@ const StyledContainer = styled.div`
 `;
 
 export function SubmitControls() {
-  const solved = useAppSelector(checkIfSolved);
+  const solvedType = useAppSelector(checkIfSolved);
 
   const dispatch = useAppDispatch();
-  const onSubmitGame = useCallback((solved:boolean, forceWin?: boolean) => {
-    dispatch(submitAnswer(forceWin || solved));
-  }, [ dispatch ]);
+  const onSubmitGame = useCallback((forceWin?: boolean) => {
+    dispatch(submitAnswer(forceWin || solvedType === 'correct'));
+  }, [ dispatch, solvedType ]);
 
   return (
     <StyledContainer>
       <StyledHelpButton onClick={() => dispatch(setGameStatus('help'))}>{'?'}</StyledHelpButton>
-      <StyledSolvedButton onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedButton>
+      <StyledSolvedButton onClick={() => onSubmitGame()}>{'SUBMIT'}</StyledSolvedButton>
     </StyledContainer>
   );
 }

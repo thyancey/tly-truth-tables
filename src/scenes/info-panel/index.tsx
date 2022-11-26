@@ -4,9 +4,11 @@ import styled, { css } from 'styled-components';
 import { useAppSelector } from '../../app/hooks';
 import { getColor, mixinFontFamily } from '../../themes';
 import { SpeechText } from '../../components/speech-text';
-import { selectActiveHint, selectLevelInfo } from '../../app/board-slice';
+import { checkIfSolved, selectActiveHint, selectLevelInfo } from '../../app/board-slice';
 import { HintPicker } from './hint-picker';
 import { NewHintGiver } from './new-hint-giver';
+import { SolvedType } from '../../types';
+import { SolvedNotice } from './solved-notice';
 
 const StyledHintGiver = styled.div`
   grid-column: 1 / span 1;
@@ -15,7 +17,8 @@ const StyledHintGiver = styled.div`
   z-index:1;
 `;
 interface StyledBannerProps {
-  completed?: boolean
+  solvedType: SolvedType;
+  completed?: boolean;
 }
 const StyledBanner = styled.div<StyledBannerProps>`
   grid-column: 1 / span 2;
@@ -34,6 +37,12 @@ const StyledBanner = styled.div<StyledBannerProps>`
     border-top: .75rem solid ${getColor('green_dark')};
     color: ${getColor('green_dark')};
   `} */
+  ${p => p.solvedType === 'correct' && css`
+    background-color: ${getColor('green')};
+  `}
+  ${p => p.solvedType === 'incorrect' && css`
+    background-color: ${getColor('red')};
+  `}
 `;
 
 
@@ -85,7 +94,9 @@ const StyledControls = styled.div`
 export function InfoPanel() {
   const [ isTalking, setIsTalking ] = useState(true);
   const hint = useAppSelector(selectActiveHint);
+  const solvedType = useAppSelector(checkIfSolved);
   const levelInfo = useAppSelector(selectLevelInfo);
+
 
   const titleText = useMemo(() => {
     return `${levelInfo?.completed ? '(solved) ' : ''}Level ${(levelInfo?.level || 0) + 1}: ${levelInfo?.title}`
@@ -112,7 +123,8 @@ export function InfoPanel() {
 
   return (
     <>
-      <StyledBanner completed={levelInfo?.completed}>
+      <SolvedNotice />
+      <StyledBanner completed={levelInfo?.completed} solvedType={solvedType}>
         <StyledControls>
           <HintPicker />
         </StyledControls>

@@ -75,13 +75,13 @@ const StyledPuzzlePrompt = styled.div`
 `;
 
 export function Status() {
-  const solved = useAppSelector(checkIfSolved);
+  const solvedType = useAppSelector(checkIfSolved);
   const levelInfo = useAppSelector(selectLevelInfo);
 
   const dispatch = useAppDispatch();
-  const onSubmitGame = useCallback((solved:boolean, forceWin?: boolean) => {
-    dispatch(submitAnswer(forceWin || solved));
-  }, [ dispatch ]);
+  const onSubmitGame = useCallback((forceWin?: boolean) => {
+    dispatch(submitAnswer(forceWin || solvedType === 'correct'));
+  }, [ dispatch, solvedType ]);
 
   return (
     <StyledContainer>
@@ -94,8 +94,8 @@ export function Status() {
         </StyledPuzzlePrompt>
       )}
       <StyledStatusContainer>
-        <StyledSolvedButton onClick={() => onSubmitGame(solved)}>{'SUBMIT'}</StyledSolvedButton>
-        <StyledResetButton onClick={() => onSubmitGame(solved, true)}>{'CHEAT!'}</StyledResetButton>
+        <StyledSolvedButton onClick={() => onSubmitGame()}>{'SUBMIT'}</StyledSolvedButton>
+        <StyledResetButton onClick={() => onSubmitGame(true)}>{'CHEAT!'}</StyledResetButton>
         <StyledHelpButton onClick={() => dispatch(setGameStatus('help'))}>{'HELP?'}</StyledHelpButton>
       </StyledStatusContainer>
     </StyledContainer>
