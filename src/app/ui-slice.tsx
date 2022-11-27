@@ -27,7 +27,7 @@ export const uiSlice = createSlice({
     },
     resetPosition: (state: UiState) => {
       state.position = initialState.position;
-    },
+    }
   } 
 });
 

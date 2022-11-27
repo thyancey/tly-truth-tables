@@ -174,13 +174,18 @@ export type Coordinate = [
 ];
 
 export type LevelMenuGroup = {
-  title: string,
-  levels: number[]
+  title: string;
+  levels: number[];
 }
 
 export type RenderedMenuGroup = {
-  title: string,
-  levels: LevelInfo[]
+  title: string;
+  levels: LevelInfo[];
 }
 
 export type SolvedType = 'correct' | 'incorrect' | 'incomplete';
+
+export type TutorialData = {
+  text: string;
+  image: string;
+}

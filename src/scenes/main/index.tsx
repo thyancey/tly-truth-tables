@@ -27,6 +27,19 @@ const StyledBody = styled.div`
   grid-row: 1 / span 2;
 `;
 
+const StyledWebsiteLink = styled.a`
+  font-size: 2rem;
+  color: ${getColor('brown_dark')};
+  position:absolute;
+  left:1rem;;
+  top:0;
+
+  &:hover{
+    color: ${getColor('brown_light')};
+  }
+  z-index:0;
+`;
+
 export function Main() {
   const gameReady = useSelector(getGameReady);
 
@@ -38,6 +51,7 @@ export function Main() {
         {gameReady && <Board />}
       </StyledBody>
       <InfoPanel />
+      <StyledWebsiteLink href="https://www.thomasyancey.com" target="_blank" title="see some of my other stuff">{'thomasyancey.com'}</StyledWebsiteLink>
     </StyledContainer>
   );
 }

@@ -9,6 +9,7 @@ export interface GridState {
   storeSchema: number,
   cellMatrix: CellMatrix,
   hintGivers: number[],
+  prevGameStatus: GameStatus,
   gameStatus: GameStatus,
   levelIdx: number,
   hintIdx: number,
@@ -20,6 +21,7 @@ const initialState: GridState = {
   storeSchema: STORE_SCHEMA,
   cellMatrix: [],
   hintGivers: [],
+  prevGameStatus: 'start',
   gameStatus: 'start',
   levelIdx: -1,
   hintIdx: -1,
@@ -91,6 +93,9 @@ export const boardSlice = createSlice({
       }
     },
     setGameStatus: (state, action: PayloadAction<GameStatus>) => {
+      if(action.payload !== state.prevGameStatus && state.gameStatus !== state.prevGameStatus){
+        state.prevGameStatus = state.gameStatus;
+      }
       state.gameStatus = action.payload;
     },
     resumeLevel: (state, action: PayloadAction<number>) => {
@@ -153,6 +158,7 @@ export const getCellMatrix = (state: RootState) => state.board.cellMatrix;
 export const getHintGivers = (state: RootState) => state.board.hintGivers;
 export const getActiveHintIdx = (state: RootState) => state.board.hintIdx;
 export const getGameStatus = (state: RootState) => state.board.gameStatus;
+export const getPrevGameStatus = (state: RootState) => state.board.prevGameStatus;
 export const getLevelIdx = (state: RootState) => state.board.levelIdx;
 export const getGameReady = (state: RootState) => state.board.gameReady;
 export const getProgression = (state: RootState) => state.board.progression;
