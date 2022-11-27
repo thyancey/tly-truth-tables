@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import { useAppSelector } from '../../app/hooks';
 import { getColor, mixinFontFamily } from '../../themes';
@@ -32,16 +32,11 @@ const StyledBanner = styled.div<StyledBannerProps>`
   grid-template-rows: min-content auto;
 
   z-index:1;
-  /* ${p => p.completed && css`
-    background-color: ${getColor('green_light')};
-    border-top: .75rem solid ${getColor('green_dark')};
-    color: ${getColor('green_dark')};
-  `} */
   ${p => p.solvedType === 'correct' && css`
-    background-color: ${getColor('green')};
+    /* background-color: ${getColor('green')}; */
   `}
   ${p => p.solvedType === 'incorrect' && css`
-    background-color: ${getColor('red')};
+    /* background-color: ${getColor('red_light')}; */
   `}
 `;
 
@@ -59,7 +54,14 @@ const StyledTitleBox = styled.div`
   }
 
 `
-
+const animateMarkdown = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
 const StyledHintBox = styled.div`
   display: flex;
   justify-content: center;
@@ -73,6 +75,21 @@ const StyledHintBox = styled.div`
     ${mixinFontFamily('speech')};
     font-size: min(4vw, 5rem);
     line-height: 75%;
+
+    em,strong{
+      animation: ${animateMarkdown} .3s ease-in;
+      animation-fill-mode: backwards;
+    }
+
+    /* markdown *emphasis* text, these are clues */
+    em{
+      margin-left:-.5rem;
+    }
+    /* markdown **strong** text, these match an attribute name */
+    strong{
+      margin-left:-.5rem;
+      margin-right:-.5rem;
+    }
   }
 `;
 
@@ -130,9 +147,9 @@ export function InfoPanel() {
         </StyledControls>
         <StyledHintBox>
           {hint ? (
-            <SpeechText text={hintText} onTextComplete={onTextComplete} delay={750} />
+            <SpeechText mdText={hintText} onTextComplete={onTextComplete} delay={750} />
           ) : (
-            <SpeechText text={description} onTextComplete={onTextComplete} delay={500} />
+            <SpeechText mdText={description} onTextComplete={onTextComplete} delay={500} />
           )}
         </StyledHintBox>
         <StyledTitleBox>

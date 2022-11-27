@@ -36,8 +36,8 @@ export const LEVELDATA: LevelData[] = [
       [ 2, 1 ]  // frog dentist
     ],
     hints:[
-      ['The fish hopes they get to use that trampoline at least once.', 'skull'],
-      ['Everyone knows that clowns disintegrate when they touch water.', 'cactoid']
+      ['The **fish** hopes they get to use that *trampoline* at least once.', 'skull'],
+      ['Everyone knows that **clown**s disintegrate when they touch *water*.', 'cactoid']
     ],
   },
   {

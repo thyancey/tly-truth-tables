@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 type SpeechTextProps = {
-  text: string,
+  mdText: string,
   onTextComplete: Function,
   delay?: number
 }
@@ -9,16 +10,20 @@ type SpeechTextProps = {
 let innerTimer: NodeJS.Timeout;
 let innerText = '';
 
-export function SpeechText({ text, onTextComplete, delay }: SpeechTextProps) {
+export function SpeechText({ mdText, onTextComplete, delay }: SpeechTextProps) {
   const [ curText, setCurText ] = useState('');
   const [ isComplete, setIsComplete ] = useState(false);
   const getNextText = (partial: string, full: string) => {
     return full.slice(0, partial.length + 1);
   }
 
+  const cleanText = useMemo(() => {
+    return mdText.replaceAll('*', '');
+  }, [ mdText ])
+
   const nextTextPlease = useCallback((fullText: string, reset?: boolean, delay?: number) => {
     if(reset) innerText = '';
-    const startDelay = delay ? delay : 50;
+    const startDelay = delay ? delay : 40;
     innerTimer = setTimeout(() => {
       innerText = getNextText(innerText, fullText);
       setCurText(innerText);
@@ -34,18 +39,22 @@ export function SpeechText({ text, onTextComplete, delay }: SpeechTextProps) {
   useEffect(() => {
     setCurText('');
     setIsComplete(false);
-    nextTextPlease(text, true, delay);
+    nextTextPlease(cleanText, true, delay);
 
     return () => {
       clearTimeout(innerTimer);
     }
-  }, [ text, nextTextPlease, delay ]);
+  }, [ cleanText, nextTextPlease, delay ]);
 
   useEffect(() => {
     if(isComplete) onTextComplete();
   }, [ isComplete, onTextComplete ]);
-  
+
+  const displayText = useMemo(() => {
+    if(isComplete) return mdText;
+    return curText;
+  }, [ isComplete, curText, mdText ])
   return (
-    <p>{curText}</p>
+    <ReactMarkdown>{displayText}</ReactMarkdown>
   );
 }

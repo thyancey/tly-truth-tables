@@ -71,7 +71,7 @@ export type AttributeDetail = {
   sortComparisons: SortComparison[];
 };
 export type HintTouple = [
-  hintText: string,
+  hintText: string, // supports *markdown*
   hintGiverId?: string // allows for explicit hinters for hints
 ];
 
