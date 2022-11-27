@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { Button } from '../../../components/button';
 import { selectAllLevelInfo, setGameStatus, startLevel } from '../../../app/board-slice';
 import { getColor } from '../../../themes';
+import { resetData } from '../../../utils/localstorage';
 import { LevelInfo, RenderedMenuGroup } from '../../../types';
 import { useCallback } from 'react';
 
@@ -84,12 +85,10 @@ export const StyledCompleted = styled.div<StyledCompletedProps>`
     margin-top:-1rem;
   }
 
-  ${p => p.completed ? css`
+  ${p => p.completed && css`
     >svg{
       opacity:1;
     }
-  }
-  `: css`
   `}
 `;
 
@@ -165,6 +164,7 @@ export function ProgressModal() {
         ))}
       </StyledBody>
       <StyledModalFooter>
+        <Button text={'CLEAR SAVE'} buttonType="negative" onClick={() => resetData()} />
         <Button text={'OK'} onClick={() => dispatch(setGameStatus('playing'))} />
       </StyledModalFooter>
     </StyledModalContainer>

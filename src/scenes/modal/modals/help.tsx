@@ -1,26 +1,117 @@
-import styled from 'styled-components';
-import { useAppDispatch } from '../../../app/hooks';
-import { setGameStatus } from '../../../app/board-slice';
+import styled, { css } from 'styled-components';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { getPrevGameStatus, setGameStatus } from '../../../app/board-slice';
 import { Button } from '../../../components/button';
 import { getColor } from '../../../themes';
-import { resetData } from '../../../utils/localstorage';
-import { StyledModalBody, StyledModalContainer, StyledModalFooter, StyledModalHeader } from './basic';
+import { StyledModalContainer, StyledModalFooter, StyledModalHeader } from './basic';
+import { useMemo, useState } from 'react';
+import { TUTORIAL } from '../../../app/data/data';
+import NavigateNext from '@material-ui/icons/NavigateNext';
+import NavigateBefore from '@material-ui/icons/NavigateBefore';
 
-const StyledInstructions = styled.ul`
-  text-align:left;
+const StyledInstructions = styled.div`
+  grid-column: 1 / span 3;
+  grid-row: 2 / span 1;
+  width: 100%;
+  height: 100%;
+  padding: 0 3rem;
+  overflow-y: auto;
+
+  border: .25rem solid ${getColor('brown')};
+  border-left: 0;
+  border-right:0;
+  padding: 1rem;
+
+  display:grid;
+  grid-template-columns: 5rem auto 5rem;
+  grid-template-rows: auto min-content min-content;
 `;
 
-const StyledWebsiteLink = styled.a`
+
+
+
+interface StyledTutIdxProps {
+  isCurrent?: boolean;
+}
+const StyledTutIdx = styled.li<StyledTutIdxProps>`
+  list-style:none;
   font-size: 3rem;
-  color: ${getColor('black')};
+  display:inline-block;
+  vertical-align:middle;
+  margin: 1rem;
+  color: ${getColor('brown_dark')};
+  cursor: pointer;
+
+  ${p => p.isCurrent && css`
+    text-decoration: underline;
+  `}
 
   &:hover{
     color: ${getColor('white')};
+    text-decoration: underline;
   }
+`
+
+const StyledTutArrow = styled.div`
+  grid-row: 1 / span 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  svg{
+    font-size: 5rem;
+  }
+
+  &:hover{
+    color: white;
+  }
+`;
+
+const StyledPrevTut = styled(StyledTutArrow)`
+  grid-column: 1 / span 1;  
+`
+const StyledNextTut = styled(StyledTutArrow)`
+  grid-column: 3 / span 1;
+`
+
+const StyledTutText = styled.p`
+  grid-row: 2 / span 1;
+  grid-column: 2 / span 1;
+`;
+
+const StyledTutSelector = styled.ul`
+  grid-row: 3 / span 1;
+  grid-column: 1 / span 3;
+  text-align:center;
+`;
+
+interface StyledTutorialImageProps {
+  imageUrl: string;
+}
+const StyledTutorialImage = styled.div<StyledTutorialImageProps>`
+  grid-column: 2 / span 1;
+  grid-row: 1 / span 1; 
+  background: url(${p => p.imageUrl}) no-repeat center;
+  background-position:center;
+  background-size:contain;
+
+  border: .5rem solid ${getColor('brown_dark')};
+  margin-bottom: 1rem;
 `;
 
 export function HelpModal() {
   const dispatch = useAppDispatch();
+  const prevGameStatus = useAppSelector(getPrevGameStatus);
+  const [tutIdx, setTutIdx] = useState(0);
+
+  const tutData = useMemo(() => {
+    return TUTORIAL[tutIdx];
+  }, [tutIdx]);
+  
+  const tutIdxs = useMemo(() => {
+    return Array.from({length: TUTORIAL.length}, (x, i) => i)
+  }, []);
 
   return (
     <StyledModalContainer>
@@ -28,21 +119,27 @@ export function HelpModal() {
         <h1>{'HELP'}</h1>
       </StyledModalHeader>
       
-      <StyledModalBody>
-        <StyledInstructions>
-          <li><p>{'Click the characters at the bottom of the screen to reveal clues about the puzzle'}</p></li>
-          <li><p>{'Click the grid cells to cycle between RED (no) and GREEN (yes)'}</p></li>
-          <li><p>{'After selecting all of the correct GREEN tiles, click SUBMIT to see if you have the answer correct'}</p></li>
-          <li><p>{'The RED tiles do not need to be filled in to solve the puzzle, but they can be used to help you rule out information!'}</p></li>
-          <li><p>{'Each attribute combination can only be used once'}</p></li>
-          <li><p>{'You may have to iterate through the clues multiple times to arrive at an answer'}</p></li>
-        </StyledInstructions>
-        
-      </StyledModalBody>
+      <StyledInstructions>
+        <StyledTutorialImage imageUrl={tutData.image} />
+        <StyledTutText>{tutData.text}</StyledTutText>
+        {tutIdx > 0 && (
+          <StyledPrevTut onClick={() => setTutIdx(tutIdx - 1)}>
+            <NavigateBefore/>
+          </StyledPrevTut>
+        )}
+        {(tutIdx + 1) < tutIdxs.length && (
+          <StyledNextTut onClick={() => setTutIdx(tutIdx + 1)}>
+            <NavigateNext/>
+          </StyledNextTut>
+        )}
+        <StyledTutSelector>
+          {tutIdxs.map(idx => (
+            <StyledTutIdx isCurrent={idx === tutIdx} key={idx} onClick={() => setTutIdx(idx)}>{idx + 1}</StyledTutIdx>
+          ))}
+        </StyledTutSelector>
+      </StyledInstructions>
       <StyledModalFooter>
-        <Button text={'CLEAR SAVE'} buttonType="negative" onClick={() => resetData()} />
-        <Button text={'OK'} onClick={() => dispatch(setGameStatus('playing'))} />
-        <StyledWebsiteLink href="https://www.thomasyancey.com" target="_blank" title="see some of my other stuff">{'thomasyancey.com'}</StyledWebsiteLink>
+        <Button text={'OK'} onClick={() => dispatch(setGameStatus(prevGameStatus))} />
       </StyledModalFooter>
     </StyledModalContainer>
   );

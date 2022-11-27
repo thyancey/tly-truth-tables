@@ -1,4 +1,4 @@
-import { HintGiver, RawCell, LevelData, LevelMenuGroup } from '../../types';
+import { HintGiver, RawCell, LevelData, LevelMenuGroup, TutorialData } from '../../types';
 
 export const LEVELMENU: LevelMenuGroup[] = [
   {
@@ -11,7 +11,7 @@ export const LEVELMENU: LevelMenuGroup[] = [
   },
   {
     title: 'medium',
-    levels: [ 2 ]
+    levels: [ 2, 3 ]
   },
   {
     title: 'hard',
@@ -22,6 +22,24 @@ export const LEVELMENU: LevelMenuGroup[] = [
  * The attributes that defined the thingies this level
  */
 export const LEVELDATA: LevelData[] = [
+  {
+    title: 'Basic Tutorial',
+    description: 'Goldilocks did some breaking and entering, now it\'s time for soup.',
+    layout: '2x3',
+    attributes: [
+      [ 'papa bear', 'mama bear', 'baby bear' ],
+      [ 'too hot', 'too cold', 'just right' ]
+    ],
+    solution:[
+      [ 0, 0 ],
+      [ 1, 1 ],
+      [ 2, 2 ]
+    ],
+    hints:[
+      ['The parent\'s porridge wasn\'t good enough for golidlocks.', 'face1'],
+      ['Mama bear eats her food straight from the fridge.', 'skull']
+    ],
+  },
   {
     title: 'Animals Doing People Jobs',
     description: 'Three animals are looking for jobs.',
@@ -36,8 +54,9 @@ export const LEVELDATA: LevelData[] = [
       [ 2, 1 ]  // frog dentist
     ],
     hints:[
-      ['The **fish** hopes they get to use that *trampoline* at least once.', 'skull'],
-      ['Everyone knows that **clown**s disintegrate when they touch *water*.', 'cactoid']
+      // ['The **fish** hopes they get to use that *trampoline* at least once.', 'skull'],
+      ['The fish hopes they get to use that trampoline at least once.', 'skull'],
+      ['Everyone knows that clowns disintegrate when they touch water.', 'cactoid']
     ],
   },
   {
@@ -200,3 +219,54 @@ export const getGridShape = (size:number) => {
   }
   return generatedGrids[size];
 }
+
+export const TUTORIAL:TutorialData[] = [
+  {
+    text: 'Your goal is to use deductive logic to solve each puzzle.',
+    image: 'assets/hinters/faces/face1-t.gif'
+  },
+  {
+    text: 'If the board doesn\'t fit in your screen, use the zoom and pan controls to move it around. Click the labels to reset.',
+    image: 'assets/tutorials/zoom-pan.gif'
+  },
+  {
+    text: 'Click the clues at the bottom of the screen to reveal information about the puzzle.',
+    image: 'assets/tutorials/clues-1.gif'
+  },
+  {
+    text: 'Using the information in the clue, click the grid cells to cycle between FALSE (red) and TRUE (green).',
+    image: 'assets/tutorials/buttons.gif'
+  },
+  {
+    text: 'Based on the provided clue, we can infer that mama and papa bear did not have porridge that was "just right" for goldilocks.',
+    image: 'assets/tutorials/clues-2.gif'
+  },
+  {
+    text: 'Only one attribute per row can be TRUE (green), so when all of the other items are FALSE (red), you can fill in the remaining pieces.',
+    image: 'assets/tutorials/deduction.gif'
+  },
+  {
+    text: 'Some clues won\'t give you a direct answer, you\'ll have to understand the subtext in the hint.',
+    image: 'assets/tutorials/clues-3.gif'
+  },
+  {
+    text: 'Using deductive logic, you can solve the rest of the puzzle.',
+    image: 'assets/tutorials/deduction-2.gif'
+  },
+  {
+    text: 'After selecting all of the correct TRUE (green) tiles, click SUBMIT to see if you have the answer correct. FALSE (red) tiles are optional.',
+    image: 'assets/tutorials/solve-01.gif'
+  },
+  {
+    text: 'The puzzles will get bigger and more difficult. When using multiple rows and columns, use the grid to help figure it out!',
+    image: 'assets/tutorials/grid-deduction-1.gif'
+  },
+  {
+    text: 'Since "HIKER" is "FIRST MEAL" and not "MOUNTAIN LION", you can also mark false where "MOUNTAIN LION" intersects the "FIRST MEAL" column.',
+    image: 'assets/tutorials/grid-deduction-1.gif'
+  },
+  {
+    text: 'You can change levels and reset your progress using the "PROGRESS" button.',
+    image: 'assets/tutorials/progress.gif'
+  }
+];

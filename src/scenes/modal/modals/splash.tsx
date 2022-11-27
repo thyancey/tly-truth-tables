@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { getLevelIdx, resumeLevel, startLevel } from '../../../app/board-slice';
+import { getLevelIdx, resumeLevel, setGameStatus, startLevel } from '../../../app/board-slice';
 import { Button } from '../../../components/button';
 import { StyledModalBody, StyledModalContainer, StyledModalFooter, StyledModalHeader } from './basic';
 import { resetData } from '../../../utils/localstorage';
@@ -15,22 +15,29 @@ export function SplashModal() {
       </StyledModalHeader>
       
       <StyledModalBody style={{ textAlign:'center' }}>
-      {levelIdx > -1 && (
+      {levelIdx > -1 ? (
         <>
           <p>{'welcome back!'}</p>
           <p>{'saves are work in progress and will be reset often.'}</p>
         </>
-      ) }
+      ) : (
+        <>
+          <p>{'click HOW TO PLAY to get started.'}</p>
+          <p>{'this game is a work in progress and will change often.'}</p>
+        </>
+      )}
       </StyledModalBody>
 
       <StyledModalFooter>
         {levelIdx > -1 ? (
           <>
+            <Button buttonType="special" text={'HOW TO PLAY'} onClick={() => dispatch(setGameStatus('help'))} />
             <Button buttonType="negative" text={'CLEAR SAVE'} onClick={() => resetData()} />
             <Button text={'CONTINUE SAVED'} onClick={() => dispatch(resumeLevel(levelIdx))} />
           </>
         ):(
           <>
+            <Button buttonType="special" text={'HOW TO PLAY'} onClick={() => dispatch(setGameStatus('help'))} />
             <Button text={'NEW GAME'} onClick={() => dispatch(startLevel(0))} />
           </>
         )}
