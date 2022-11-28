@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
@@ -202,6 +202,21 @@ const StyledControls = styled.div`
   right:0;
 `;
 
+const StyledDebugThing = styled.div`
+  position: absolute;
+  top:0;
+  left:50%;
+  transform: translateX(-50%);
+
+  font-size: 4rem;
+  text-align:center;
+  color:white;
+  pointer-events: none;
+`;
+
+const evCache: any[] = [];
+let prevDiff: number = 0;
+
 export function Board() {
   const dispatch = useAppDispatch();
   const grid = useAppSelector(selectGridBox);
@@ -209,6 +224,7 @@ export function Board() {
   const gridInfo = useAppSelector(selectGridInfo);
   const zoom = useAppSelector(getZoom);
   const position = useAppSelector(getPosition);
+  const [ debugMessage, setDebugMessage ] = useState('');
 
   const onClickCell = useCallback((cellIdx) => {
     dispatch(rotateCell(cellIdx));
@@ -222,6 +238,45 @@ export function Board() {
     }
     return `${Math.round(100 / gridInfo.numValues)}%`;
   }, [ gridInfo.numValues ])
+
+  const onPointerMove = useCallback((ev) => {
+    // example from https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events/Pinch_zoom_gestures
+    // This function implements a 2-pointer horizontal pinch/zoom gesture.
+    //
+    // If the distance between the two pointers has increased (zoom in),
+    // the target element's background is changed to "pink" and if the
+    // distance is decreasing (zoom out), the color is changed to "lightblue".
+    //
+    // This function sets the target element's border to "dashed" to visually
+    // indicate the pointer's target received a move event.
+    // console.log('onPointerMove', ev.pointerId);
+
+    // Find this event in the cache and update its record with this event
+    const index = evCache.findIndex((cachedEv) => cachedEv.pointerId === ev.pointerId);
+    evCache[index] = ev;
+
+    // If two pointers are down, check for pinch gestures
+    if (evCache.length === 2) {
+      // Calculate the distance between the two pointers
+      const curDiff = Math.abs(evCache[0].clientX - evCache[1].clientX);
+
+      if (prevDiff > 0) {
+        if (curDiff > prevDiff) {
+          // The distance between the two pointers has increased
+          console.log('Pinch moving OUT -> Zoom in', ev);
+          setDebugMessage(`OUT (${curDiff})`);
+        }
+        if (curDiff < prevDiff) {
+          // The distance between the two pointers has decreased
+          console.log('Pinch moving IN -> Zoom out',ev);
+          setDebugMessage(`IN (${curDiff})`);
+        }
+      }
+
+      // Cache the distance for the next move event
+      prevDiff = curDiff;
+    }
+  }, [ setDebugMessage ]);
 
   const renderCellGroup = (cellGroup: CellObj[], cgKey: string, gridSize: number, cellRatio: string, boardCell: RawCell) => {
     // [0] check here cause this is all janky and the individual cells are undefined on load
@@ -258,8 +313,11 @@ export function Board() {
   };
 
   return (
-    <StyledBoardContainer>
+    <StyledBoardContainer onPointerMove={onPointerMove}>
       <PositionControls />
+      <StyledDebugThing>
+        {`DEBUG: ${debugMessage}`}
+      </StyledDebugThing>
       <StyledBoard style={tStyles}>
         <StyledControls>
           <BoardControls />
