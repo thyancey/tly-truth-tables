@@ -1,11 +1,11 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getColor } from '../../themes';
 import { CellObj, CellStatus, RawCell } from '../../types';
 import { rotateCell, selectGridBox, selectGridLabels, selectGridInfo } from '../../app/board-slice';
 import { BoardControls } from '../board/board-controls';
-import { getPosition, getZoom } from '../../app/ui-slice';
+import { selectPosition, selectZoom } from '../../app/ui-slice';
 import { PositionControls } from './position-controls';
 
 
@@ -207,8 +207,8 @@ export function Board() {
   const grid = useAppSelector(selectGridBox);
   const gridLabels = useAppSelector(selectGridLabels);
   const gridInfo = useAppSelector(selectGridInfo);
-  const zoom = useAppSelector(getZoom);
-  const position = useAppSelector(getPosition);
+  const zoom = useAppSelector(selectZoom);
+  const position = useAppSelector(selectPosition);
 
   const onClickCell = useCallback((cellIdx) => {
     dispatch(rotateCell(cellIdx));

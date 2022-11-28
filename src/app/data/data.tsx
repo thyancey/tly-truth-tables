@@ -227,10 +227,6 @@ export const TUTORIAL:TutorialData[] = [
     image: 'assets/hinters/faces/face1-t.gif'
   },
   {
-    text: 'If the board doesn\'t fit in your screen, use the zoom and pan controls to move it around. Click the labels to reset.',
-    image: 'assets/tutorials/zoom-pan.gif'
-  },
-  {
     text: 'Click the clues at the bottom of the screen to reveal information about the puzzle.',
     image: 'assets/tutorials/clues-1.gif'
   },
@@ -269,5 +265,9 @@ export const TUTORIAL:TutorialData[] = [
   {
     text: 'You can change levels and reset your progress using the "PROGRESS" button.',
     image: 'assets/tutorials/progress.gif'
+  },
+  {
+    text: 'If the board doesn\'t fit in your screen, use the zoom and pan controls to move it around. Click the labels to reset. If you\'re using a mobile device, you can pan and zoom using two fingers.',
+    image: 'assets/tutorials/zoom-pan.gif'
   }
 ];
