@@ -204,12 +204,11 @@ const StyledControls = styled.div`
 
 const StyledDebugThing = styled.div`
   position: absolute;
-  top:0;
-  left:50%;
-  transform: translateX(-50%);
+  top:2rem;
+  left:1rem;
 
-  font-size: 4rem;
-  text-align:center;
+  font-size: 3rem;
+  text-align:left;
   color:white;
   pointer-events: none;
 `;
