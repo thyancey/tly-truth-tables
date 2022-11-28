@@ -6,7 +6,7 @@ import { Modal } from '../modal';
 import { useSelector } from 'react-redux';
 import { RuleMaster } from './rulemaster';
 import { InfoPanel } from '../info-panel';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const StyledContainer = styled.div`
   position:absolute;
@@ -62,81 +62,38 @@ const StyledDebugThing = styled.div`
 export function Main() {
   const gameReady = useSelector(getGameReady);
   const [ debugMessage, setDebugMessage ] = useState('');
-  const onPointerCancel = useCallback((ev, type: string) => {
-    // Remove this pointer from the cache
-    const foundIdx = evCache.findIndex(evC => ev.pointerId === evC.pointerId);
-    if(foundIdx > -1) {
-      console.log('cancelling ', evCache[foundIdx].pointerId, foundIdx, type);
-      console.log('evCache', evCache);
-      evCache.splice(foundIdx, 1);
-      console.log('evCache', evCache);
-    }
   
-    // If the number of pointers down is less than two then reset diff tracker
-    if (evCache.length < 2) {
-      prevDiff = -1;
-      debugMessage !== 'CANCELLED' && setDebugMessage('CANCELLED');
-    }
-  }, [debugMessage, setDebugMessage, ]);
+  useEffect(() => {
+    // document.addEventListener('mouseup', onDocumentMouseUp);
+    document.addEventListener('touchstart', onDocumentTouchStart);
+    document.addEventListener('touchmove', onDocumentTouchMove);
+    document.addEventListener('touchend', onDocumentTouchEnd);    
+  }, [])
+
+  const onDocumentTouchMove = (e:any) => {
+    console.log('onDocumentTouchMove!');
+    // console.log(e);
+    console.log(e.touches.length);
+    setDebugMessage(`move: ${e.touches.length}`);
+    // attemptKeyUnderTouchPosition(e);
+  }
+
+  const onDocumentTouchStart = (e:any) => {
+    console.log('onDocumentTouchStart');
+    setDebugMessage(`start: ${e.touches.length}`);
+    // attemptKeyUnderTouchPosition(e, true);
+  }
+
+  const onDocumentTouchEnd = (e:any) => {
+    console.log('onDocumentTouchEnd');
+    setDebugMessage(`end: ${e.touches.length}`);
+    // setAllTouchedKeys([]);
+    // e.preventDefault(); // prevent mouse click from triggering even on a touch device
+  }
+
   
-  const onPointerDown = useCallback((ev) => {
-    // The pointerdown event signals the start of a touch interaction.
-    // This event is cached to support 2-finger gestures
-    console.log('pushing', ev.pointerId);
-    evCache.push(ev);
-    // log("pointerDown", ev);
-  }, []);
-  
-  const onPointerMove = useCallback((ev) => {
-    // example from https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events/Pinch_zoom_gestures
-    // This function implements a 2-pointer horizontal pinch/zoom gesture.
-    //
-    // If the distance between the two pointers has increased (zoom in),
-    // the target element's background is changed to "pink" and if the
-    // distance is decreasing (zoom out), the color is changed to "lightblue".
-    //
-    // This function sets the target element's border to "dashed" to visually
-    // indicate the pointer's target received a move event.
-    // console.log('onPointerMove', ev.pointerId);
-    // console.log(evCache);
-  
-    // Find this event in the cache and update its record with this event
-    const index = evCache.findIndex((cachedEv) => cachedEv.pointerId === ev.pointerId);
-    if(index > -1){
-      evCache[index] = ev;
-    }
-  
-    // If two pointers are down, check for pinch gestures
-    if (evCache.length === 2) {
-      // Calculate the distance between the two pointers
-      const curDiff = Math.abs(evCache[0].clientX - evCache[1].clientX);
-  
-      if (prevDiff > 0) {
-        if (curDiff > prevDiff) {
-          // The distance between the two pointers has increased
-          console.log('Pinch moving OUT -> Zoom in', ev);
-          setDebugMessage(`OUT (${curDiff})`);
-        }
-        if (curDiff < prevDiff) {
-          // The distance between the two pointers has decreased
-          console.log('Pinch moving IN -> Zoom out',ev);
-          setDebugMessage(`IN (${curDiff})`);
-        }
-      }
-  
-      // Cache the distance for the next move event
-      prevDiff = curDiff;
-    }
-  }, [ setDebugMessage ]);
   return (
-    <StyledContainer 
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={e => onPointerCancel(e, 'up')}
-      onPointerCancel={e => onPointerCancel(e, 'cancel')}
-      onPointerOut={e => onPointerCancel(e, 'out')}
-      onPointerLeave={e => onPointerCancel(e, 'leave')}
-    >
+    <StyledContainer>
       <StyledDebugThing>
         {`DEBUG: ${debugMessage}`}
       </StyledDebugThing>
