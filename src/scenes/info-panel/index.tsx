@@ -15,6 +15,7 @@ const StyledHintGiver = styled.div`
   grid-row: 2 / span 2;
   position:relative;
   z-index:1;
+  pointer-events:none;
 `;
 interface StyledBannerProps {
   solvedType: SolvedType;

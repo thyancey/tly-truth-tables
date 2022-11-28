@@ -31,7 +31,7 @@ const StyledWebsiteLink = styled.a`
   font-size: 2rem;
   color: ${getColor('brown_dark')};
   position:absolute;
-  left:1rem;;
+  left:1rem;
   top:0;
 
   &:hover{
@@ -42,7 +42,7 @@ const StyledWebsiteLink = styled.a`
 
 export function Main() {
   const gameReady = useSelector(getGameReady);
-
+  
   return (
     <StyledContainer>
       <RuleMaster />

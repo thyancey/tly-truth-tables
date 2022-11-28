@@ -85,7 +85,7 @@ export const LEVELDATA: LevelData[] = [
     description: 'A crew of pirates are trying to find the treasure they buried, they don\'t even remember how they did it!',
     layout: '3x4',
     attributes: [
-      [ 'Blue Beard', 'Carl the Skinless', 'Stank Tooth', 'Gravy Bones' ],
+      [ 'Bluebeard', 'Carl the Skinless', 'Stank Tooth', 'Gravy Bones' ],
       [ 'Gold Doubloons', 'Skull with Gold Teeth', 'Just an Old Boot', 'A Book of Curses' ],
       [ 'Message in a Bottle', 'Treasure Map', 'Grog-induced Dream', 'A Sea Shanty' ]
     ],
@@ -96,8 +96,9 @@ export const LEVELDATA: LevelData[] = [
       [ 3, 0, 2 ]
     ],
     hints:[ 
-      ['Blue Beard will not be happy with his treasure', 'face1_pirate'],
+      ['Bluebeard will not be happy with his treasure', 'face1_pirate'],
       [`The message in a bottle reads "yarrrr read me treasure and ye skin will melt off. just speakin' from experience"`, 'skull_pirate'],
+      ['Carl can\'t read, fortunately for him.', 'face1_pirate'],
       ['The valuable treasures were not written down', 'skull_pirate'],
       ['Gravy bones is always drunk, it finally did something good for him', 'face1_pirate'],
       ['Stank tooths treasure has to do with uh, teeth.', 'face1_pirate']
@@ -226,10 +227,6 @@ export const TUTORIAL:TutorialData[] = [
     image: 'assets/hinters/faces/face1-t.gif'
   },
   {
-    text: 'If the board doesn\'t fit in your screen, use the zoom and pan controls to move it around. Click the labels to reset.',
-    image: 'assets/tutorials/zoom-pan.gif'
-  },
-  {
     text: 'Click the clues at the bottom of the screen to reveal information about the puzzle.',
     image: 'assets/tutorials/clues-1.gif'
   },
@@ -268,5 +265,9 @@ export const TUTORIAL:TutorialData[] = [
   {
     text: 'You can change levels and reset your progress using the "PROGRESS" button.',
     image: 'assets/tutorials/progress.gif'
+  },
+  {
+    text: 'If the board doesn\'t fit in your screen, use the zoom and pan controls to move it around. Click the labels to reset. If you\'re using a mobile device, you can pan and zoom using two fingers.',
+    image: 'assets/tutorials/zoom-pan.gif'
   }
 ];

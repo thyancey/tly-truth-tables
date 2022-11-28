@@ -15,3 +15,8 @@ export const RandIdxFromArray = (array: any[]): number => {
   if(array.length === 0) return -1;
   return Math.floor(Math.random() * array.length)
 }
+export const roundTo = (num:number, decimals:number = 2) => {
+  // @ts-ignore
+  return +(Math.round(num + `e+${decimals}`) + `e-${decimals}`);
+}
+export const clamp = (num:number, min:number, max:number) => Math.min(Math.max(num, min), max);
