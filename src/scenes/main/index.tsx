@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { RuleMaster } from './rulemaster';
 import { InfoPanel } from '../info-panel';
 import { useCallback, useEffect, useState } from 'react';
+import { Coordinate } from '../../types';
 
 const StyledContainer = styled.div`
   position:absolute;
@@ -41,10 +42,6 @@ const StyledWebsiteLink = styled.a`
   z-index:0;
 `;
 
-const evCache: any[] = [];
-let prevDiff: number = -1;
-
-
 const StyledDebugThing = styled.div`
   position: absolute;
   top:2rem;
@@ -56,12 +53,13 @@ const StyledDebugThing = styled.div`
   pointer-events: none;
 `;
 
-
-
+let startAvgCoords: Coordinate = [0,0];
+let startPinchDistance: number = 0;
 
 export function Main() {
   const gameReady = useSelector(getGameReady);
   const [ debugMessage, setDebugMessage ] = useState('');
+  const [ debugDiffMessage, setDebugDiffMessage ] = useState('');
   
   useEffect(() => {
     // document.addEventListener('mouseup', onDocumentMouseUp);
@@ -71,26 +69,32 @@ export function Main() {
   }, [])
 
   const onDocumentTouchMove = (e:TouchEvent) => {
-    // console.log('onDocumentTouchMove!');
-    // console.log(e);
-    // console.log(e.touches.length);
-    // console.log(e);
-    setDebugMessage(`move: ${e.touches.length}`);
 
-    let diff = 0;
     if(e.touches.length > 1){
       // pinchy checks
-      diff = Math.sqrt(Math.pow((e.touches[1].clientX - e.touches[0].clientX), 2) + Math.pow((e.touches[1].clientY - e.touches[0].clientY), 2));
-      // console.log('diff:', diff);
-      setDebugMessage(`diff: ${diff}`);
-    } else{
-      
+      const pinchDistance = Math.sqrt(Math.pow((e.touches[1].clientX - e.touches[0].clientX), 2) + Math.pow((e.touches[1].clientY - e.touches[0].clientY), 2));
+
+      const avgCoords: Coordinate = [
+        ((e.touches[0].clientX + e.touches[1].clientX) / 2) - startAvgCoords[0],
+        ((e.touches[0].clientY + e.touches[1].clientY) / 2) - startAvgCoords[1]
+      ];
+
+      setDebugDiffMessage(`delta: ${startPinchDistance - pinchDistance}, dX:${avgCoords[0]}, dY:${avgCoords[1]}`);
     }
   }
 
   const onDocumentTouchStart = (e:TouchEvent) => {
     // console.log('onDocumentTouchStart');
     setDebugMessage(`start: ${e.touches.length}`);
+    if(e.touches.length > 1){
+      // pinchy checks
+      startAvgCoords = [
+        (e.touches[0].clientX + e.touches[1].clientX) / 2,
+        (e.touches[0].clientY + e.touches[1].clientY) / 2
+      ];
+      startPinchDistance = Math.sqrt(Math.pow((e.touches[1].clientX - e.touches[0].clientX), 2) + Math.pow((e.touches[1].clientY - e.touches[0].clientY), 2));
+      setDebugDiffMessage(`s: ${startPinchDistance}`);
+    }
   }
 
   const onDocumentTouchEnd = (e:TouchEvent) => {
@@ -104,7 +108,8 @@ export function Main() {
   return (
     <StyledContainer>
       <StyledDebugThing>
-        {`DEBUG: ${debugMessage}`}
+        <p>{`DEBUG: ${debugMessage}`}</p>
+        <p>{`DIFF: ${debugDiffMessage}`}</p>
       </StyledDebugThing>
       <RuleMaster />
       <Modal />
