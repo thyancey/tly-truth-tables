@@ -214,7 +214,7 @@ const StyledDebugThing = styled.div`
 `;
 
 const evCache: any[] = [];
-let prevDiff: number = 0;
+let prevDiff: number = -1;
 
 export function Board() {
   const dispatch = useAppDispatch();
@@ -237,6 +237,25 @@ export function Board() {
     }
     return `${Math.round(100 / gridInfo.numValues)}%`;
   }, [ gridInfo.numValues ])
+
+  const onPointerCancel = useCallback((ev) => {
+    // Remove this pointer from the cache
+    const foundIdx = evCache.indexOf(ev);
+    if(foundIdx > -1) evCache.splice(foundIdx, 1);
+  
+    // If the number of pointers down is less than two then reset diff tracker
+    if (evCache.length < 2) {
+      prevDiff = -1;
+      setDebugMessage('CANCELLED');
+    }
+  }, [setDebugMessage]);
+
+  const onPointerDown = useCallback((ev) => {
+    // The pointerdown event signals the start of a touch interaction.
+    // This event is cached to support 2-finger gestures
+    evCache.push(ev);
+    // log("pointerDown", ev);
+  }, []);
 
   const onPointerMove = useCallback((ev) => {
     // example from https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events/Pinch_zoom_gestures
@@ -312,7 +331,14 @@ export function Board() {
   };
 
   return (
-    <StyledBoardContainer onPointerMove={onPointerMove}>
+    <StyledBoardContainer 
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerCancel}
+      onPointerCancel={onPointerCancel}
+      onPointerOut={onPointerCancel}
+      onPointerLeave={onPointerCancel}
+      >
       <PositionControls />
       <StyledDebugThing>
         {`DEBUG: ${debugMessage}`}
