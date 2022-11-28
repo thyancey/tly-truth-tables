@@ -62,12 +62,14 @@ const StyledDebugThing = styled.div`
 export function Main() {
   const gameReady = useSelector(getGameReady);
   const [ debugMessage, setDebugMessage ] = useState('');
-  const onPointerCancel = useCallback((ev) => {
+  const onPointerCancel = useCallback((ev, type: string) => {
     // Remove this pointer from the cache
     const foundIdx = evCache.findIndex(evC => ev.pointerId === evC.pointerId);
     if(foundIdx > -1) {
-      console.log('cancelling ', evCache[foundIdx].pointerId);
+      console.log('cancelling ', evCache[foundIdx].pointerId, foundIdx, type);
+      console.log('evCache', evCache);
       evCache.splice(foundIdx, 1);
+      console.log('evCache', evCache);
     }
   
     // If the number of pointers down is less than two then reset diff tracker
@@ -75,11 +77,12 @@ export function Main() {
       prevDiff = -1;
       debugMessage !== 'CANCELLED' && setDebugMessage('CANCELLED');
     }
-  }, [debugMessage, setDebugMessage]);
+  }, [debugMessage, setDebugMessage, ]);
   
   const onPointerDown = useCallback((ev) => {
     // The pointerdown event signals the start of a touch interaction.
     // This event is cached to support 2-finger gestures
+    console.log('pushing', ev.pointerId);
     evCache.push(ev);
     // log("pointerDown", ev);
   }, []);
@@ -94,15 +97,13 @@ export function Main() {
     //
     // This function sets the target element's border to "dashed" to visually
     // indicate the pointer's target received a move event.
-    console.log('onPointerMove', ev.pointerId);
-    console.log(evCache);
+    // console.log('onPointerMove', ev.pointerId);
+    // console.log(evCache);
   
     // Find this event in the cache and update its record with this event
     const index = evCache.findIndex((cachedEv) => cachedEv.pointerId === ev.pointerId);
     if(index > -1){
       evCache[index] = ev;
-    } else{
-      evCache.push(ev);
     }
   
     // If two pointers are down, check for pinch gestures
@@ -129,16 +130,16 @@ export function Main() {
   }, [ setDebugMessage ]);
   return (
     <StyledContainer 
-    onPointerDown={onPointerDown}
-    onPointerMove={onPointerMove}
-    onPointerUp={onPointerCancel}
-    onPointerCancel={onPointerCancel}
-    onPointerOut={onPointerCancel}
-    onPointerLeave={onPointerCancel}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={e => onPointerCancel(e, 'up')}
+      onPointerCancel={e => onPointerCancel(e, 'cancel')}
+      onPointerOut={e => onPointerCancel(e, 'out')}
+      onPointerLeave={e => onPointerCancel(e, 'leave')}
     >
-    <StyledDebugThing>
-      {`DEBUG: ${debugMessage}`}
-    </StyledDebugThing>
+      <StyledDebugThing>
+        {`DEBUG: ${debugMessage}`}
+      </StyledDebugThing>
       <RuleMaster />
       <Modal />
       <StyledBody>
