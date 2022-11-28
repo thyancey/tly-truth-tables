@@ -70,22 +70,31 @@ export function Main() {
     document.addEventListener('touchend', onDocumentTouchEnd);    
   }, [])
 
-  const onDocumentTouchMove = (e:any) => {
-    console.log('onDocumentTouchMove!');
+  const onDocumentTouchMove = (e:TouchEvent) => {
+    // console.log('onDocumentTouchMove!');
     // console.log(e);
-    console.log(e.touches.length);
+    // console.log(e.touches.length);
+    // console.log(e);
     setDebugMessage(`move: ${e.touches.length}`);
-    // attemptKeyUnderTouchPosition(e);
+
+    let diff = 0;
+    if(e.touches.length > 1){
+      // pinchy checks
+      diff = Math.sqrt(Math.pow((e.touches[1].clientX - e.touches[0].clientX), 2) + Math.pow((e.touches[1].clientY - e.touches[0].clientY), 2));
+      // console.log('diff:', diff);
+      setDebugMessage(`diff: ${diff}`);
+    } else{
+      
+    }
   }
 
-  const onDocumentTouchStart = (e:any) => {
-    console.log('onDocumentTouchStart');
+  const onDocumentTouchStart = (e:TouchEvent) => {
+    // console.log('onDocumentTouchStart');
     setDebugMessage(`start: ${e.touches.length}`);
-    // attemptKeyUnderTouchPosition(e, true);
   }
 
-  const onDocumentTouchEnd = (e:any) => {
-    console.log('onDocumentTouchEnd');
+  const onDocumentTouchEnd = (e:TouchEvent) => {
+    // console.log('onDocumentTouchEnd');
     setDebugMessage(`end: ${e.touches.length}`);
     // setAllTouchedKeys([]);
     // e.preventDefault(); // prevent mouse click from triggering even on a touch device
