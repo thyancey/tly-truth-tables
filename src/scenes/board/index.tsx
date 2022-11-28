@@ -240,8 +240,11 @@ export function Board() {
 
   const onPointerCancel = useCallback((ev) => {
     // Remove this pointer from the cache
-    const foundIdx = evCache.indexOf(ev);
-    if(foundIdx > -1) evCache.splice(foundIdx, 1);
+    const foundIdx = evCache.findIndex(evC => ev.pointerId === evC.pointerId);
+    if(foundIdx > -1) {
+      console.log('cancelling ', evCache[foundIdx].pointerId);
+      evCache.splice(foundIdx, 1);
+    }
   
     // If the number of pointers down is less than two then reset diff tracker
     if (evCache.length < 2) {
@@ -267,7 +270,8 @@ export function Board() {
     //
     // This function sets the target element's border to "dashed" to visually
     // indicate the pointer's target received a move event.
-    // console.log('onPointerMove', ev.pointerId);
+    console.log('onPointerMove', ev.pointerId);
+    console.log(evCache);
 
     // Find this event in the cache and update its record with this event
     const index = evCache.findIndex((cachedEv) => cachedEv.pointerId === ev.pointerId);
