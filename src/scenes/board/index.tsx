@@ -35,7 +35,6 @@ const StyledBoard = styled.div`
     row-gap: 2rem;
   }
 `
-
 const StyledLeftLabels = styled.div`
   grid-row: 2 / span 3;
   grid-column: 1 / span 1;
@@ -53,7 +52,7 @@ const StyledLeftLabel = styled.div<StyledLabelProps>`
     padding-top:0rem;
     height: 25%;
   `: css`
-    padding-top:1rem;
+    padding-top:0rem;
     height: 33%;
   `}
 
@@ -69,13 +68,17 @@ const StyledLeftLabel = styled.div<StyledLabelProps>`
   }
 `
 
+
+
 const StyledHeaderText = styled.span`
   position: absolute;
   font-size: 2rem;
   font-weight: 600;
   white-space:nowrap;
+  color: ${getColor('white')};
 `
-
+const StyledLeftContainer = styled.div`
+`
 const StyledLeftHeaders = styled.div`
   grid-row: 2 / span 3;
   grid-column: 1 / span 1;
@@ -85,16 +88,15 @@ const StyledLeftHeaders = styled.div`
 `
 const StyledLeftHeader = styled.div`
   text-align:right;
-  padding-right:1rem;
   position:relative;
-  color: ${getColor('brown_dark')};
 
   ${StyledHeaderText}{
     right:-.5rem;
-    top: -.5rem;
+    top: -1.5rem;
   }
 `
-
+const StyledTopContainer = styled.div`
+`
 const StyledTopHeaders = styled.div`
   grid-column: 2 / span 3;
   grid-row: 1 / span 1;
@@ -103,17 +105,25 @@ const StyledTopHeaders = styled.div`
   grid-template-rows: 15rem;
   
 `
-const StyledTopHeader = styled.div`
+const StyledTopHeader = styled.div<StyledLabelProps>`
   display:inline-block;
   position:relative;
-  color: ${getColor('brown_dark')};
 
   ${StyledHeaderText}{
     bottom: -1.5rem;
-    left: -.5rem;
     transform-origin: left;
     transform: rotate(-90deg);
   }
+
+  ${p => p.gridSize === 4 ? css`
+    ${StyledHeaderText}{
+      left: -1rem;
+    }
+  `: css`
+    ${StyledHeaderText}{
+      left: -.5rem;
+    }
+  `}
 `
 
 
@@ -146,7 +156,7 @@ const StyledTopLabel = styled.div<StyledLabelProps>`
     `: css`
       left: 2rem;
     `}
-    bottom: -1.5rem;
+    bottom: -2rem;
     display: block;
     white-space: nowrap;
     transform-origin: left;
@@ -321,39 +331,39 @@ export function Board() {
         </StyledCells>
         <StyledTopHeaders>
           {gridLabels.cols.labels.map((label, glIdx) => (
-            <StyledTopHeader key={`lh${glIdx}`}>
-              <StyledHeaderText>{label}</StyledHeaderText>
+            <StyledTopHeader key={`lh${glIdx}`} gridSize={gridInfo.numValues}>
+              <StyledHeaderText>{`(${label.toUpperCase()})`}</StyledHeaderText>
             </StyledTopHeader>
           ))}
         </StyledTopHeaders>
         <StyledTopLabels>
           {gridLabels.cols.attributes.map((gl, glIdx) => (
-            <div key={`tl${glIdx}`}>
+            <StyledTopContainer key={`tl${glIdx}`}>
               {gl.map((v,vIdx) => (
                 <StyledTopLabel key={`tv${vIdx}`} gridSize={gridInfo.numValues}>
                   <span>{v.toUpperCase()}</span>
                 </StyledTopLabel>
               ))}
-            </div>
+            </StyledTopContainer>
           ))}
         </StyledTopLabels>
         
         <StyledLeftHeaders>
           {gridLabels.rows.labels.map((label, glIdx) => (
             <StyledLeftHeader key={`th${glIdx}`}>
-              <StyledHeaderText>{label}</StyledHeaderText>
+              <StyledHeaderText>{`(${label.toUpperCase()})`}</StyledHeaderText>
             </StyledLeftHeader>
           ))}
         </StyledLeftHeaders>
         <StyledLeftLabels>
           {gridLabels.rows.attributes.map((gl, glIdx) => (
-            <div key={`ll${glIdx}`}>
+            <StyledLeftContainer key={`ll${glIdx}`}>
               {gl.map((v,vIdx) => (
                 <StyledLeftLabel key={`lv${vIdx}`} gridSize={gridInfo.numValues}>
                   <span>{v.toUpperCase()}</span>
                 </StyledLeftLabel>
               ))}
-            </div>
+            </StyledLeftContainer>
           ))}
         </StyledLeftLabels>
 
