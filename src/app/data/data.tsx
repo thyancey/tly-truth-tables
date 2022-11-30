@@ -26,6 +26,10 @@ export const LEVELDATA: LevelData[] = [
     title: 'Basic Tutorial',
     description: 'Goldilocks did some breaking and entering, now it\'s time for soup.',
     layout: '2x3',
+    attributeLabels: [
+      'bear',
+      'temperature'
+    ],
     attributes: [
       [ 'papa bear', 'mama bear', 'baby bear' ],
       [ 'too hot', 'too cold', 'just right' ]
@@ -44,6 +48,10 @@ export const LEVELDATA: LevelData[] = [
     title: 'Animals Doing People Jobs',
     description: 'Three animals are looking for jobs.',
     layout: '2x3',
+    attributeLabels: [
+      'animal',
+      'occupation'
+    ],
     attributes: [
       [ 'monkey', 'fish', 'frog' ],
       [ 'firefighter', 'dentist', 'clown' ]
@@ -62,6 +70,11 @@ export const LEVELDATA: LevelData[] = [
     title: 'Food Chain',
     description: 'A hiker, a camper, and a birder wandered in the woods. So did some apex predators. Who got eaten by what?',
     layout: '3x3',
+    attributeLabels: [
+      'person',
+      'eaten order',
+      'predator'
+    ],
     attributes: [
       [ 'hiker', 'camper', 'birder' ],
       [ 'first meal', 'second feast', 'last dessert' ],
@@ -83,6 +96,11 @@ export const LEVELDATA: LevelData[] = [
     title: 'Pirate Predicament',
     description: 'A crew of pirates are trying to find the treasure they buried, they don\'t even remember how they did it!',
     layout: '3x4',
+    attributeLabels: [
+      'pirate',
+      'treasure',
+      'clue'
+    ],
     attributes: [
       [ 'Bluebeard', 'Carl the Skinless', 'Stank Tooth', 'Gravy Bones' ],
       [ 'Gold Doubloons', 'Skull with Gold Teeth', 'Just an Old Boot', 'A Book of Curses' ],
@@ -107,6 +125,12 @@ export const LEVELDATA: LevelData[] = [
     title: 'What the Elf?',
     description: 'Three elves made three toys for three different boys... last spring. These colorfully wrapped gifts don\'t have labels, help santa figure this mess out',
     layout: '4x3',
+    attributeLabels: [
+      'elf',
+      'toy',
+      'wrapping paper',
+      'kid'
+    ],
     attributes: [
       [ 'hermey', 'marcus', 'buddy' ],
       [ 'train', 'fire engine', 'teddy bear' ],
@@ -131,6 +155,12 @@ export const LEVELDATA: LevelData[] = [
     title: '4 attributes, 4 values',
     description: 'this puzzle has 4 attributes with 4 values. It doesnt work yet.',
     layout: '4x4',
+    attributeLabels: [
+      'animal',
+      'order',
+      'emotion',
+      'occupation'
+    ],
     attributes: [
       [ 'monkey', 'frog', 'fish', 'crab' ],
       [ 'first', 'second', 'third', 'last' ],

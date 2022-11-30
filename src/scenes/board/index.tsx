@@ -319,15 +319,15 @@ export function Board() {
             gridRow.map((cellGroup, cgIdx) => renderCellGroup(cellGroup, `cg${cgIdx}`, gridInfo.numValues, cellRatio, [grIdx, cgIdx])
           )))}
         </StyledCells>
-        <StyledLeftHeaders>
-          {gridLabels[1].map((gl, glIdx) => (
-            <StyledLeftHeader key={`th${glIdx}`}>
-              <StyledHeaderText>{'ELFS'}</StyledHeaderText>
-            </StyledLeftHeader>
+        <StyledTopHeaders>
+          {gridLabels.cols.labels.map((label, glIdx) => (
+            <StyledTopHeader key={`lh${glIdx}`}>
+              <StyledHeaderText>{label}</StyledHeaderText>
+            </StyledTopHeader>
           ))}
-        </StyledLeftHeaders>
+        </StyledTopHeaders>
         <StyledTopLabels>
-          {gridLabels[1].map((gl, glIdx) => (
+          {gridLabels.cols.attributes.map((gl, glIdx) => (
             <div key={`tl${glIdx}`}>
               {gl.map((v,vIdx) => (
                 <StyledTopLabel key={`tv${vIdx}`} gridSize={gridInfo.numValues}>
@@ -338,15 +338,15 @@ export function Board() {
           ))}
         </StyledTopLabels>
         
-        <StyledTopHeaders>
-          {gridLabels[1].map((gl, glIdx) => (
-            <StyledTopHeader key={`lh${glIdx}`}>
-              <StyledHeaderText>{'ELFS'}</StyledHeaderText>
-            </StyledTopHeader>
+        <StyledLeftHeaders>
+          {gridLabels.rows.labels.map((label, glIdx) => (
+            <StyledLeftHeader key={`th${glIdx}`}>
+              <StyledHeaderText>{label}</StyledHeaderText>
+            </StyledLeftHeader>
           ))}
-        </StyledTopHeaders>
+        </StyledLeftHeaders>
         <StyledLeftLabels>
-          {gridLabels[0].map((gl, glIdx) => (
+          {gridLabels.rows.attributes.map((gl, glIdx) => (
             <div key={`ll${glIdx}`}>
               {gl.map((v,vIdx) => (
                 <StyledLeftLabel key={`lv${vIdx}`} gridSize={gridInfo.numValues}>

@@ -81,6 +81,7 @@ export type LevelData = {
   layout?: string;
   solution: SolutionSet;
   hints: HintTouple[];
+  attributeLabels: string[];
   attributes: SimpleAttributeDef[];
   attributesMeta?: AttributeMetaDef[];
 };
@@ -188,4 +189,15 @@ export type SolvedType = 'correct' | 'incorrect' | 'incomplete';
 export type TutorialData = {
   text: string;
   image: string;
+}
+
+export type GridLabels = {
+  rows:{
+    attributes:SimpleAttributeDef[];
+    labels: string[];
+  };
+  cols:{
+    attributes:SimpleAttributeDef[];
+    labels: string[];
+  };
 }
