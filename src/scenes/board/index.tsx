@@ -37,8 +37,8 @@ const StyledBoard = styled.div`
 `
 
 const StyledLeftLabels = styled.div`
-  grid-column: 15rem;
   grid-row: 2 / span 3;
+  grid-column: 1 / span 1;
   
   grid-template-columns: 15rem; 
   grid-template-rows: 13rem 13rem 13rem;
@@ -68,9 +68,58 @@ const StyledLeftLabel = styled.div<StyledLabelProps>`
     white-space:nowrap;
   }
 `
+
+const StyledHeaderText = styled.span`
+  position: absolute;
+  font-size: 2rem;
+  font-weight: 600;
+  white-space:nowrap;
+`
+
+const StyledLeftHeaders = styled.div`
+  grid-row: 2 / span 3;
+  grid-column: 1 / span 1;
+  
+  grid-template-columns: 15rem; 
+  grid-template-rows: 13rem 13rem 13rem;
+`
+const StyledLeftHeader = styled.div`
+  text-align:right;
+  padding-right:1rem;
+  position:relative;
+  color: ${getColor('brown_dark')};
+
+  ${StyledHeaderText}{
+    right:-.5rem;
+    top: -.5rem;
+  }
+`
+
+const StyledTopHeaders = styled.div`
+  grid-column: 2 / span 3;
+  grid-row: 1 / span 1;
+
+  grid-template-columns: 13rem 13rem 13rem;
+  grid-template-rows: 15rem;
+  
+`
+const StyledTopHeader = styled.div`
+  display:inline-block;
+  position:relative;
+  color: ${getColor('brown_dark')};
+
+  ${StyledHeaderText}{
+    bottom: -1.5rem;
+    left: -.5rem;
+    transform-origin: left;
+    transform: rotate(-90deg);
+  }
+`
+
+
 const StyledTopLabels = styled.div`
   grid-column: 2 / span 3;
-  grid-row: 15rem;
+  grid-row: 1 / span 1;
   
   grid-template-columns: 13rem 13rem 13rem;
   grid-template-rows: 15rem;
@@ -270,6 +319,13 @@ export function Board() {
             gridRow.map((cellGroup, cgIdx) => renderCellGroup(cellGroup, `cg${cgIdx}`, gridInfo.numValues, cellRatio, [grIdx, cgIdx])
           )))}
         </StyledCells>
+        <StyledLeftHeaders>
+          {gridLabels[1].map((gl, glIdx) => (
+            <StyledLeftHeader key={`th${glIdx}`}>
+              <StyledHeaderText>{'ELFS'}</StyledHeaderText>
+            </StyledLeftHeader>
+          ))}
+        </StyledLeftHeaders>
         <StyledTopLabels>
           {gridLabels[1].map((gl, glIdx) => (
             <div key={`tl${glIdx}`}>
@@ -281,6 +337,14 @@ export function Board() {
             </div>
           ))}
         </StyledTopLabels>
+        
+        <StyledTopHeaders>
+          {gridLabels[1].map((gl, glIdx) => (
+            <StyledTopHeader key={`lh${glIdx}`}>
+              <StyledHeaderText>{'ELFS'}</StyledHeaderText>
+            </StyledTopHeader>
+          ))}
+        </StyledTopHeaders>
         <StyledLeftLabels>
           {gridLabels[0].map((gl, glIdx) => (
             <div key={`ll${glIdx}`}>
