@@ -1,6 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { SolutionSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintGiver, RawCell, RenderedHint, LevelData, LevelInfo, SimpleAttributeDef, RenderedMenuGroup, SolvedType } from '../types';
+import { SolutionSet, AttributeMatrix, CellMatrix, CellObj, GameStatus, HintGiver, RawCell, RenderedHint, LevelData, LevelInfo, RenderedMenuGroup, SolvedType, GridLabels } from '../types';
 import { getGridShape, LEVELDATA, HINT_GIVERS, LEVELMENU } from './data/data';
 import { generateCellMatrix } from '../utils/puzzler';
 import { STORE_SCHEMA } from '../utils/localstorage';
@@ -255,6 +255,10 @@ export const selectAttributes = createSelector(
   [selectLevelData],
   (levelData) => levelData.attributes
 );
+export const selectAttributeLabels = createSelector(
+  [selectLevelData],
+  (levelData) => levelData.attributeLabels
+);
 
 export const selectGridInfo = createSelector(
   [selectLevelData],
@@ -265,16 +269,22 @@ export const selectGridInfo = createSelector(
 );
 
 export const selectGridLabels = createSelector(
-  [selectAttributes],
-  (attributes): [ rows: SimpleAttributeDef[], cols: SimpleAttributeDef[] ] => {
+  [selectAttributes, selectAttributeLabels],
+  (attributes, attributeLabels): GridLabels => {
     const gridShape:RawCell[][] = getGridShape(attributes.length);
     const rowAttributes = gridShape.map(r => r[0][0]);
     const colAttributes = gridShape[0].map(rc => rc[1]);
 
-    return [
-      rowAttributes.map(idx => attributes[idx]),
-      colAttributes.map(idx => attributes[idx])
-    ];
+    return {
+      rows:{
+        attributes:rowAttributes.map(idx => attributes[idx]),
+        labels:rowAttributes.map(idx => attributeLabels[idx])
+      },
+      cols:{
+        attributes:colAttributes.map(idx => attributes[idx]),
+        labels:colAttributes.map(idx => attributeLabels[idx])
+      }
+    }
   }
 );
 

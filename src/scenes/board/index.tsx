@@ -35,10 +35,9 @@ const StyledBoard = styled.div`
     row-gap: 2rem;
   }
 `
-
 const StyledLeftLabels = styled.div`
-  grid-column: 15rem;
   grid-row: 2 / span 3;
+  grid-column: 1 / span 1;
   
   grid-template-columns: 15rem; 
   grid-template-rows: 13rem 13rem 13rem;
@@ -53,7 +52,7 @@ const StyledLeftLabel = styled.div<StyledLabelProps>`
     padding-top:0rem;
     height: 25%;
   `: css`
-    padding-top:1rem;
+    padding-top:0rem;
     height: 33%;
   `}
 
@@ -68,9 +67,69 @@ const StyledLeftLabel = styled.div<StyledLabelProps>`
     white-space:nowrap;
   }
 `
+
+
+
+const StyledHeaderText = styled.span`
+  position: absolute;
+  font-size: 2rem;
+  font-weight: 600;
+  white-space:nowrap;
+  color: ${getColor('white')};
+`
+const StyledLeftContainer = styled.div`
+`
+const StyledLeftHeaders = styled.div`
+  grid-row: 2 / span 3;
+  grid-column: 1 / span 1;
+  
+  grid-template-columns: 15rem; 
+  grid-template-rows: 13rem 13rem 13rem;
+`
+const StyledLeftHeader = styled.div`
+  text-align:right;
+  position:relative;
+
+  ${StyledHeaderText}{
+    right:-.5rem;
+    top: -1.5rem;
+  }
+`
+const StyledTopContainer = styled.div`
+`
+const StyledTopHeaders = styled.div`
+  grid-column: 2 / span 3;
+  grid-row: 1 / span 1;
+
+  grid-template-columns: 13rem 13rem 13rem;
+  grid-template-rows: 15rem;
+  
+`
+const StyledTopHeader = styled.div<StyledLabelProps>`
+  display:inline-block;
+  position:relative;
+
+  ${StyledHeaderText}{
+    bottom: -1.5rem;
+    transform-origin: left;
+    transform: rotate(-90deg);
+  }
+
+  ${p => p.gridSize === 4 ? css`
+    ${StyledHeaderText}{
+      left: -1rem;
+    }
+  `: css`
+    ${StyledHeaderText}{
+      left: -.5rem;
+    }
+  `}
+`
+
+
 const StyledTopLabels = styled.div`
   grid-column: 2 / span 3;
-  grid-row: 15rem;
+  grid-row: 1 / span 1;
   
   grid-template-columns: 13rem 13rem 13rem;
   grid-template-rows: 15rem;
@@ -97,7 +156,7 @@ const StyledTopLabel = styled.div<StyledLabelProps>`
     `: css`
       left: 2rem;
     `}
-    bottom: -1.5rem;
+    bottom: -2rem;
     display: block;
     white-space: nowrap;
     transform-origin: left;
@@ -270,26 +329,41 @@ export function Board() {
             gridRow.map((cellGroup, cgIdx) => renderCellGroup(cellGroup, `cg${cgIdx}`, gridInfo.numValues, cellRatio, [grIdx, cgIdx])
           )))}
         </StyledCells>
+        <StyledTopHeaders>
+          {gridLabels.cols.labels.map((label, glIdx) => (
+            <StyledTopHeader key={`lh${glIdx}`} gridSize={gridInfo.numValues}>
+              <StyledHeaderText>{`(${label.toUpperCase()})`}</StyledHeaderText>
+            </StyledTopHeader>
+          ))}
+        </StyledTopHeaders>
         <StyledTopLabels>
-          {gridLabels[1].map((gl, glIdx) => (
-            <div key={`tl${glIdx}`}>
+          {gridLabels.cols.attributes.map((gl, glIdx) => (
+            <StyledTopContainer key={`tl${glIdx}`}>
               {gl.map((v,vIdx) => (
                 <StyledTopLabel key={`tv${vIdx}`} gridSize={gridInfo.numValues}>
                   <span>{v.toUpperCase()}</span>
                 </StyledTopLabel>
               ))}
-            </div>
+            </StyledTopContainer>
           ))}
         </StyledTopLabels>
+        
+        <StyledLeftHeaders>
+          {gridLabels.rows.labels.map((label, glIdx) => (
+            <StyledLeftHeader key={`th${glIdx}`}>
+              <StyledHeaderText>{`(${label.toUpperCase()})`}</StyledHeaderText>
+            </StyledLeftHeader>
+          ))}
+        </StyledLeftHeaders>
         <StyledLeftLabels>
-          {gridLabels[0].map((gl, glIdx) => (
-            <div key={`ll${glIdx}`}>
+          {gridLabels.rows.attributes.map((gl, glIdx) => (
+            <StyledLeftContainer key={`ll${glIdx}`}>
               {gl.map((v,vIdx) => (
                 <StyledLeftLabel key={`lv${vIdx}`} gridSize={gridInfo.numValues}>
                   <span>{v.toUpperCase()}</span>
                 </StyledLeftLabel>
               ))}
-            </div>
+            </StyledLeftContainer>
           ))}
         </StyledLeftLabels>
 

@@ -66,16 +66,18 @@ const animateMarkdown = keyframes`
 const StyledHintBox = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: start;
+  overflow-y:auto;
+  padding-top: .5rem;
 
   grid-column: 2 / span 1;
   grid-row: 2 / span 1;
-  padding: 0 2rem;
+  padding: 1rem 2rem;
 
   p {
     ${mixinFontFamily('speech')};
-    font-size: min(4vw, 5rem);
-    line-height: 75%;
+    font-size: min(3vw, 5rem);
+    line-height: 80%;
 
     em,strong{
       animation: ${animateMarkdown} .3s ease-in;

@@ -15,7 +15,7 @@ export const LEVELMENU: LevelMenuGroup[] = [
   },
   {
     title: 'hard',
-    levels: []
+    levels: [4]
   }
 ]
 /**
@@ -26,6 +26,10 @@ export const LEVELDATA: LevelData[] = [
     title: 'Basic Tutorial',
     description: 'Goldilocks did some breaking and entering, now it\'s time for soup.',
     layout: '2x3',
+    attributeLabels: [
+      'bear',
+      'temperature'
+    ],
     attributes: [
       [ 'papa bear', 'mama bear', 'baby bear' ],
       [ 'too hot', 'too cold', 'just right' ]
@@ -44,6 +48,10 @@ export const LEVELDATA: LevelData[] = [
     title: 'Animals Doing People Jobs',
     description: 'Three animals are looking for jobs.',
     layout: '2x3',
+    attributeLabels: [
+      'animal',
+      'occupation'
+    ],
     attributes: [
       [ 'monkey', 'fish', 'frog' ],
       [ 'firefighter', 'dentist', 'clown' ]
@@ -54,7 +62,6 @@ export const LEVELDATA: LevelData[] = [
       [ 2, 1 ]  // frog dentist
     ],
     hints:[
-      // ['The **fish** hopes they get to use that *trampoline* at least once.', 'skull'],
       ['The fish hopes they get to use that trampoline at least once.', 'skull'],
       ['Everyone knows that clowns disintegrate when they touch water.', 'cactoid']
     ],
@@ -63,6 +70,11 @@ export const LEVELDATA: LevelData[] = [
     title: 'Food Chain',
     description: 'A hiker, a camper, and a birder wandered in the woods. So did some apex predators. Who got eaten by what?',
     layout: '3x3',
+    attributeLabels: [
+      'person',
+      'eaten order',
+      'predator'
+    ],
     attributes: [
       [ 'hiker', 'camper', 'birder' ],
       [ 'first meal', 'second feast', 'last dessert' ],
@@ -84,6 +96,11 @@ export const LEVELDATA: LevelData[] = [
     title: 'Pirate Predicament',
     description: 'A crew of pirates are trying to find the treasure they buried, they don\'t even remember how they did it!',
     layout: '3x4',
+    attributeLabels: [
+      'pirate',
+      'treasure',
+      'clue'
+    ],
     attributes: [
       [ 'Bluebeard', 'Carl the Skinless', 'Stank Tooth', 'Gravy Bones' ],
       [ 'Gold Doubloons', 'Skull with Gold Teeth', 'Just an Old Boot', 'A Book of Curses' ],
@@ -96,41 +113,54 @@ export const LEVELDATA: LevelData[] = [
       [ 3, 0, 2 ]
     ],
     hints:[ 
-      ['Bluebeard will not be happy with his treasure', 'face1_pirate'],
-      [`The message in a bottle reads "yarrrr read me treasure and ye skin will melt off. just speakin' from experience"`, 'skull_pirate'],
+      ['Bluebeard will not be happy with his treasure.', 'face1_pirate'],
+      [`The message in a bottle reads "yarrrr read me treasure and ye skin will melt off. just speakin' from experience".`, 'skull_pirate'],
       ['Carl can\'t read, fortunately for him.', 'face1_pirate'],
-      ['The valuable treasures were not written down', 'skull_pirate'],
-      ['Gravy bones is always drunk, it finally did something good for him', 'face1_pirate'],
+      ['The valuable treasures were not written down.', 'skull_pirate'],
+      ['Gravy bones is always drunk, it finally did something good for him.', 'face1_pirate'],
       ['Stank tooths treasure has to do with uh, teeth.', 'face1_pirate']
     ],
   },
   {
-    title: '4 attributes, 3 values',
-    description: 'this puzzle has 4 attributes with 3 values. It doesnt work yet.',
+    title: 'What the Elf?',
+    description: 'Three elves made three toys for three different boys... last spring. These colorfully wrapped gifts don\'t have labels, help santa figure this mess out',
     layout: '4x3',
+    attributeLabels: [
+      'elf',
+      'toy',
+      'wrapping paper',
+      'kid'
+    ],
     attributes: [
-      [ 'monkey', 'frog', 'fish' ],
-      [ 'first', 'second', 'last' ],
-      [ 'happy', 'angry', 'sad' ],
-      [ 'firefighter', 'dentist', 'clown' ]
+      [ 'hermey', 'marcus', 'buddy' ],
+      [ 'train', 'fire engine', 'teddy bear' ],
+      [ 'red', 'silver', 'gold' ],
+      [ 'ralphie', 'charlie', 'kevin' ]
     ],
     solution:[
-      [ 0, 0, 0 ],
-      [ 1, 1, 1 ],
-      [ 2, 2, 2 ],
-      [ 3, 3, 3 ]
+      [ 2, 0, 1, 1 ],
+      [ 1, 2, 2, 0 ],
+      [ 0, 1, 0, 2 ]
     ],
     hints:[ 
-      ['A hint needs to be created here'],
-      ['A hint needs to be created here'],
-      ['A hint needs to be created here'],
-      ['A hint needs to be created here']
+      ['The train was wrapped in metallic wrapping paper.'],
+      ['Both Hermey and Buddy made toys with wheels.'],
+      ['Kevin wants to be a firefighter when he grows up.'],
+      ['Charlie asked for a train.'],
+      ['Marcus only uses gold wrapping paper.'],
+      ['Buddy made a gift for Charlie.'],
     ],
   },
   {
     title: '4 attributes, 4 values',
     description: 'this puzzle has 4 attributes with 4 values. It doesnt work yet.',
     layout: '4x4',
+    attributeLabels: [
+      'animal',
+      'order',
+      'emotion',
+      'occupation'
+    ],
     attributes: [
       [ 'monkey', 'frog', 'fish', 'crab' ],
       [ 'first', 'second', 'third', 'last' ],
