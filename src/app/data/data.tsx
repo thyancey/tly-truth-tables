@@ -15,7 +15,7 @@ export const LEVELMENU: LevelMenuGroup[] = [
   },
   {
     title: 'hard',
-    levels: []
+    levels: [4]
   }
 ]
 /**
@@ -105,26 +105,27 @@ export const LEVELDATA: LevelData[] = [
     ],
   },
   {
-    title: '4 attributes, 3 values',
-    description: 'this puzzle has 4 attributes with 3 values. It doesnt work yet.',
+    title: 'What the Elf?',
+    description: 'Three elves made three toys for three differnt boys. The elves forgot which color wrapping paper they used, and forgot to put names on them. Help them figure it out!',
     layout: '4x3',
     attributes: [
-      [ 'monkey', 'frog', 'fish' ],
-      [ 'first', 'second', 'last' ],
-      [ 'happy', 'angry', 'sad' ],
-      [ 'firefighter', 'dentist', 'clown' ]
+      [ 'hermey', 'marcus', 'buddy' ],
+      [ 'train', 'fire engine', 'teddy bear' ],
+      [ 'red', 'silver', 'gold' ],
+      [ 'ralphie', 'charlie', 'kevin' ]
     ],
     solution:[
-      [ 0, 0, 0 ],
-      [ 1, 1, 1 ],
-      [ 2, 2, 2 ],
-      [ 3, 3, 3 ]
+      [ 2, 0, 1, 1 ],
+      [ 1, 2, 2, 0 ],
+      [ 0, 1, 0, 2 ]
     ],
     hints:[ 
-      ['A hint needs to be created here'],
-      ['A hint needs to be created here'],
-      ['A hint needs to be created here'],
-      ['A hint needs to be created here']
+      ['The train was wrapped in metallic wrapping paper'],
+      ['Both Hermey and Buddy made toys with wheels'],
+      ['Kevin wants to be a firefighter when he grows up'],
+      ['Charlie asked for a train'],
+      ['Marcus only uses gold wrapping paper'],
+      ['Buddy made a gift for Charlie'],
     ],
   },
   {
