@@ -54,7 +54,6 @@ export const LEVELDATA: LevelData[] = [
       [ 2, 1 ]  // frog dentist
     ],
     hints:[
-      // ['The **fish** hopes they get to use that *trampoline* at least once.', 'skull'],
       ['The fish hopes they get to use that trampoline at least once.', 'skull'],
       ['Everyone knows that clowns disintegrate when they touch water.', 'cactoid']
     ],
@@ -96,17 +95,17 @@ export const LEVELDATA: LevelData[] = [
       [ 3, 0, 2 ]
     ],
     hints:[ 
-      ['Bluebeard will not be happy with his treasure', 'face1_pirate'],
-      [`The message in a bottle reads "yarrrr read me treasure and ye skin will melt off. just speakin' from experience"`, 'skull_pirate'],
+      ['Bluebeard will not be happy with his treasure.', 'face1_pirate'],
+      [`The message in a bottle reads "yarrrr read me treasure and ye skin will melt off. just speakin' from experience".`, 'skull_pirate'],
       ['Carl can\'t read, fortunately for him.', 'face1_pirate'],
-      ['The valuable treasures were not written down', 'skull_pirate'],
-      ['Gravy bones is always drunk, it finally did something good for him', 'face1_pirate'],
+      ['The valuable treasures were not written down.', 'skull_pirate'],
+      ['Gravy bones is always drunk, it finally did something good for him.', 'face1_pirate'],
       ['Stank tooths treasure has to do with uh, teeth.', 'face1_pirate']
     ],
   },
   {
     title: 'What the Elf?',
-    description: 'Three elves made three toys for three differnt boys. The elves forgot which color wrapping paper they used, and forgot to put names on them. Help them figure it out!',
+    description: 'Three elves made three toys for three different boys... last spring. These colorfully wrapped gifts don\'t have labels, help santa figure this mess out',
     layout: '4x3',
     attributes: [
       [ 'hermey', 'marcus', 'buddy' ],
@@ -120,12 +119,12 @@ export const LEVELDATA: LevelData[] = [
       [ 0, 1, 0, 2 ]
     ],
     hints:[ 
-      ['The train was wrapped in metallic wrapping paper'],
-      ['Both Hermey and Buddy made toys with wheels'],
-      ['Kevin wants to be a firefighter when he grows up'],
-      ['Charlie asked for a train'],
-      ['Marcus only uses gold wrapping paper'],
-      ['Buddy made a gift for Charlie'],
+      ['The train was wrapped in metallic wrapping paper.'],
+      ['Both Hermey and Buddy made toys with wheels.'],
+      ['Kevin wants to be a firefighter when he grows up.'],
+      ['Charlie asked for a train.'],
+      ['Marcus only uses gold wrapping paper.'],
+      ['Buddy made a gift for Charlie.'],
     ],
   },
   {
