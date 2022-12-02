@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { getColor } from '../../themes';
+import { getColor, mixinFontFamily } from '../../themes';
 import { CellObj, CellStatus, RawCell } from '../../types';
 import { rotateCell, selectGridBox, selectGridLabels, selectGridInfo } from '../../app/board-slice';
 import { BoardControls } from '../board/board-controls';
@@ -26,6 +26,7 @@ const StyledBoard = styled.div`
   column-gap: 2rem;
   row-gap: 2rem;
   color: ${getColor('brown_light')};
+  ${mixinFontFamily('gameboard')};
 
   /* transform-origin:left; */
 
@@ -75,7 +76,7 @@ const StyledHeaderText = styled.span`
   font-size: 2rem;
   font-weight: 600;
   white-space:nowrap;
-  color: ${getColor('white')};
+  color: ${getColor('brown_dark')};
 `
 const StyledLeftContainer = styled.div`
 `
@@ -317,6 +318,17 @@ export function Board() {
     transform: `translate(${position[0]}%, ${position[1]}%) matrix(2.5,1.25,-2.5,1.25,-300,-0) scale(${zoom})`
   };
 
+  const text = (v: string, isLabel?: boolean) => {
+    // const uppercase = true;
+    // return `${uppercase ? v.toUpperCase() : v}`;
+    
+    if(isLabel){
+      return `(${v})`;
+    }else{
+      return `${v.toUpperCase()}`;
+    }
+  }
+
   return (
     <StyledBoardContainer>
       <PositionControls />
@@ -332,7 +344,7 @@ export function Board() {
         <StyledTopHeaders>
           {gridLabels.cols.labels.map((label, glIdx) => (
             <StyledTopHeader key={`lh${glIdx}`} gridSize={gridInfo.numValues}>
-              <StyledHeaderText>{`(${label.toUpperCase()})`}</StyledHeaderText>
+              <StyledHeaderText>{text(label, true)}</StyledHeaderText>
             </StyledTopHeader>
           ))}
         </StyledTopHeaders>
@@ -341,7 +353,7 @@ export function Board() {
             <StyledTopContainer key={`tl${glIdx}`}>
               {gl.map((v,vIdx) => (
                 <StyledTopLabel key={`tv${vIdx}`} gridSize={gridInfo.numValues}>
-                  <span>{v.toUpperCase()}</span>
+                  <span>{text(v, false)}</span>
                 </StyledTopLabel>
               ))}
             </StyledTopContainer>
@@ -351,7 +363,7 @@ export function Board() {
         <StyledLeftHeaders>
           {gridLabels.rows.labels.map((label, glIdx) => (
             <StyledLeftHeader key={`th${glIdx}`}>
-              <StyledHeaderText>{`(${label.toUpperCase()})`}</StyledHeaderText>
+              <StyledHeaderText>{text(label, true)}</StyledHeaderText>
             </StyledLeftHeader>
           ))}
         </StyledLeftHeaders>
@@ -360,7 +372,7 @@ export function Board() {
             <StyledLeftContainer key={`ll${glIdx}`}>
               {gl.map((v,vIdx) => (
                 <StyledLeftLabel key={`lv${vIdx}`} gridSize={gridInfo.numValues}>
-                  <span>{v.toUpperCase()}</span>
+                  <span>{text(v, false)}</span>
                 </StyledLeftLabel>
               ))}
             </StyledLeftContainer>

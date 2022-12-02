@@ -76,8 +76,8 @@ const StyledHintBox = styled.div`
 
   p {
     ${mixinFontFamily('speech')};
-    font-size: min(3vw, 5rem);
-    line-height: 80%;
+    font-size:2.5rem;
+    line-height: 2.5rem;
 
     em,strong{
       animation: ${animateMarkdown} .3s ease-in;
