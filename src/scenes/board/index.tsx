@@ -48,25 +48,31 @@ type StyledLabelProps = {
   gridSize: number
 }
 const StyledLeftLabel = styled.div<StyledLabelProps>`
-  text-align:right;
-  ${p => p.gridSize === 4 ? css`
-    padding-top:0rem;
-    height: 25%;
-  `: css`
-    padding-top:0rem;
-    height: 33%;
-  `}
-
-  padding-right:1rem;
   position:relative;
-  >span{
-    font-size: 3.5rem;
-    font-weight: 600;
+  /* padding-right:1rem; */
+  padding-top:1rem;
+  margin-right: -.5rem;
 
+
+  text-align:right;
+  >span{
+    font-weight: 600;
     position:absolute;
     right:0;
     white-space:nowrap;
   }
+
+  ${p => p.gridSize === 4 ? css`
+    height: 25%;
+    >span{
+      font-size: 2.5rem;
+    }
+  `: css`
+    height: 33%;
+    >span{
+      font-size: 3.5rem;
+    }
+  `}
 `
 
 
@@ -74,9 +80,10 @@ const StyledLeftLabel = styled.div<StyledLabelProps>`
 const StyledHeaderText = styled.span`
   position: absolute;
   font-size: 2rem;
-  font-weight: 600;
   white-space:nowrap;
-  color: ${getColor('brown_dark')};
+  ${mixinFontFamily('special')};
+  color: ${getColor('white')};
+  opacity: .5;
 `
 const StyledLeftContainer = styled.div`
 `
@@ -92,7 +99,7 @@ const StyledLeftHeader = styled.div`
   position:relative;
 
   ${StyledHeaderText}{
-    right:-.5rem;
+    right:50%;
     top: -1.5rem;
   }
 `
@@ -111,7 +118,7 @@ const StyledTopHeader = styled.div<StyledLabelProps>`
   position:relative;
 
   ${StyledHeaderText}{
-    bottom: -1.5rem;
+    top:50%;
     transform-origin: left;
     transform: rotate(-90deg);
   }
@@ -323,7 +330,7 @@ export function Board() {
     // return `${uppercase ? v.toUpperCase() : v}`;
     
     if(isLabel){
-      return `(${v})`;
+      return `- ${v} -`;
     }else{
       return `${v.toUpperCase()}`;
     }

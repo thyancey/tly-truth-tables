@@ -24,33 +24,9 @@ const StyledInstructions = styled.div`
 
   display:grid;
   grid-template-columns: 5rem auto 5rem;
-  grid-template-rows: auto min-content min-content;
+  grid-template-rows: auto min-content;
+  row-gap:1rem;
 `;
-
-
-
-
-interface StyledTutIdxProps {
-  isCurrent?: boolean;
-}
-const StyledTutIdx = styled.li<StyledTutIdxProps>`
-  list-style:none;
-  font-size: 3rem;
-  display:inline-block;
-  vertical-align:middle;
-  margin: 1rem;
-  color: ${getColor('brown_dark')};
-  cursor: pointer;
-
-  ${p => p.isCurrent && css`
-    text-decoration: underline;
-  `}
-
-  &:hover{
-    color: ${getColor('white')};
-    text-decoration: underline;
-  }
-`
 
 const StyledTutArrow = styled.div`
   grid-row: 1 / span 1;
@@ -63,8 +39,10 @@ const StyledTutArrow = styled.div`
     font-size: 5rem;
   }
 
-  &:hover{
-    color: white;
+  @media (hover: hover) {
+    &:hover{
+      color: white;
+    }
   }
 `;
 
@@ -78,12 +56,10 @@ const StyledNextTut = styled(StyledTutArrow)`
 const StyledTutText = styled.p`
   grid-row: 2 / span 1;
   grid-column: 2 / span 1;
-`;
-
-const StyledTutSelector = styled.ul`
-  grid-row: 3 / span 1;
-  grid-column: 1 / span 3;
-  text-align:center;
+  
+  @media (max-width: 600px) {
+    grid-column: 1 / span 3;
+  }
 `;
 
 interface StyledTutorialImageProps {
@@ -97,7 +73,7 @@ const StyledTutorialImage = styled.div<StyledTutorialImageProps>`
   background-size:contain;
 
   border: .5rem solid ${getColor('brown_dark')};
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
 `;
 
 export function HelpModal() {
@@ -132,11 +108,6 @@ export function HelpModal() {
             <NavigateNext/>
           </StyledNextTut>
         )}
-        <StyledTutSelector>
-          {tutIdxs.map(idx => (
-            <StyledTutIdx isCurrent={idx === tutIdx} key={idx} onClick={() => setTutIdx(idx)}>{idx + 1}</StyledTutIdx>
-          ))}
-        </StyledTutSelector>
       </StyledInstructions>
       <StyledModalFooter>
         <Button text={'OK'} onClick={() => dispatch(setGameStatus(prevGameStatus))} />

@@ -1,23 +1,25 @@
 import { createGlobalStyle, css } from "styled-components"
 
-type FontStyle = 'button' | 'speech' | 'gameboard';
+type FontStyle = 'button' | 'speech' | 'gameboard' | 'special';
 export const mixinFontFamily = (style?: FontStyle) => {
   switch(style){
     case 'gameboard': return css`font-family: 'Overpass', sans-serif`;
     case 'speech': return css`font-family: 'Special Elite', cursive`;
     case 'button': return css`font-family: 'Chakra Petch', sans-serif`;
+    case 'special': return css`font-family: 'Special Elite', cursive`;
     default: return css`font-family: 'Chakra Petch', sans-serif`;
   }
 }
 /*
-font-family: 'Anybody', cursive;
 font-family: 'Chakra Petch', sans-serif;
+font-family: 'Overpass', sans-serif;
+font-family: 'Special Elite', cursive; // speech
+
+font-family: 'Anybody', cursive;
 font-family: 'Dosis', sans-serif;
 font-family: 'Jura', sans-serif;
 font-family: 'Orbitron', sans-serif;
-font-family: 'Overpass', sans-serif;
 font-family: 'Overpass Mono', monospace; // speech
-font-family: 'Special Elite', cursive; // speech
 */
 export default createGlobalStyle`
   *{
@@ -51,9 +53,11 @@ export default createGlobalStyle`
   }
   h5{
     font-size: 2rem;
+    line-height: 2rem;
   }
   p, span{
     font-size:2rem;
+    line-height: 2rem;
   }
 
   html{

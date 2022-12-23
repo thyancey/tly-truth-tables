@@ -24,6 +24,11 @@ export const StyledModalContainer = styled(StyledModalAbstract)`
   max-height:80%;
   border-radius:2rem;
 
+  @media (max-width: 600px) {
+    max-width:90%;
+    max-height:95%;
+  }
+
   background-color: ${getColor('brown_light')};
   color: ${getColor('brown_dark')};
   border: 0.75rem solid ${getColor('brown_dark')};
