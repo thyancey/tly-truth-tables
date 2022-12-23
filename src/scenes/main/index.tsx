@@ -17,8 +17,17 @@ const StyledContainer = styled.div`
   color: ${getColor('brown_dark')};
   overflow: hidden;
 
+  --leftcolsize: 27rem;
+  --roundedradius: 6rem;
+  --bordersize: .75rem;
+  @media (max-width: 600px) {
+    --leftcolsize: 17rem;
+    --roundedradius: 4rem;
+    --bordersize: .5rem;
+  }
+
   display:grid;
-  grid-template-columns: 27rem auto;
+  grid-template-columns: var(--leftcolsize) auto;
   grid-template-rows: auto 30% 15rem;
 `;
 

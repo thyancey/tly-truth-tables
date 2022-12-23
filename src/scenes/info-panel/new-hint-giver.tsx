@@ -32,16 +32,16 @@ const StyledHintGiver = styled.div`
   }
 
   &.hg-none{
-    background-color: ${getColor('brown_light')};
-    border: 1rem solid ${getColor('brown')};
-    height: 40%;
+    background-color: ${getColor('brown')};
+    border: var(--bordersize) solid ${getColor('brown_light')};
+    height: 5rem;
     width: 80%;
     left: 10%;
   }
 
   &.hg-body1 {
     background-color: ${getColor('brown_dark')};
-    border: 1rem solid ${getColor('brown')};
+    border: var(--bordersize) solid ${getColor('brown')};
     height: 60%;
     width: 90%;
     left: 5%;
@@ -49,17 +49,17 @@ const StyledHintGiver = styled.div`
 
   &.hg-body2 {
     background-color: ${getColor('green_dark')};
-    border: 1rem solid ${getColor('green')};
-    border-radius: 3rem 12rem 0 0;
+    border: var(--bordersize) solid ${getColor('green')};
+    border-radius: var(--bordersize) 12rem 0 0;
     height: 100%;
     width: 70%;
     left: 15%;
   }
 
   &.hg-body3 {
-    border-radius: 6rem 6rem 0 0;
+    border-radius: var(--roundedradius) var(--roundedradius) 0 0;
     background-color: ${getColor('brown')};
-    border: 1rem solid ${getColor('brown_light')};
+    border: var(--bordersize) solid ${getColor('brown_light')};
     height: 90%;
     width: 80%;
     left: 10%;
