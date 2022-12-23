@@ -38,7 +38,7 @@ const StyledHint = styled.div<StyledHintProps>`
   width: 5rem;
   height: 5rem;
   margin: .25rem;
-  border: .75rem solid ${getColor('brown')};
+  border: var(--bordersize) solid ${getColor('brown')};
   border-radius: 1.5rem;
   transition: all .3s;
 

@@ -1,14 +1,26 @@
 import { createGlobalStyle, css } from "styled-components"
 
-type FontStyle = 'display' | 'speech';
+type FontStyle = 'button' | 'speech' | 'gameboard' | 'special';
 export const mixinFontFamily = (style?: FontStyle) => {
   switch(style){
-    case 'display' : return css`font-family: 'Noto Sans', sans-serif`;
-    case 'speech': return css`font-family: 'VT323', monospace`;
-    default: return css`font-family: 'VT323', monospace`;
+    case 'gameboard': return css`font-family: 'Overpass', sans-serif`;
+    case 'speech': return css`font-family: 'Special Elite', cursive`;
+    case 'button': return css`font-family: 'Chakra Petch', sans-serif`;
+    case 'special': return css`font-family: 'Special Elite', cursive`;
+    default: return css`font-family: 'Chakra Petch', sans-serif`;
   }
 }
+/*
+font-family: 'Chakra Petch', sans-serif;
+font-family: 'Overpass', sans-serif;
+font-family: 'Special Elite', cursive; // speech
 
+font-family: 'Anybody', cursive;
+font-family: 'Dosis', sans-serif;
+font-family: 'Jura', sans-serif;
+font-family: 'Orbitron', sans-serif;
+font-family: 'Overpass Mono', monospace; // speech
+*/
 export default createGlobalStyle`
   *{
     margin: 0;
@@ -27,13 +39,6 @@ export default createGlobalStyle`
   #root{
     margin:0 auto;
   }
-  h1, h2, h3, h4{
-    /* font-family: 'Noto Sans', sans-serif; */
-    ${mixinFontFamily()};
-  }
-  a, p, button, span, h5, h6{
-    ${mixinFontFamily()};
-  }
   h1{
     font-size: 5rem;
   }
@@ -48,9 +53,11 @@ export default createGlobalStyle`
   }
   h5{
     font-size: 2rem;
+    line-height: 2rem;
   }
   p, span{
     font-size:2rem;
+    line-height: 2rem;
   }
 
   html{

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { getColor } from '../../themes';
+import { getColor, mixinFontFamily } from '../../themes';
 import { checkIfSolved, setGameStatus, submitAnswer } from '../../app/board-slice';
 
 const StyledButton = styled.div`
@@ -12,6 +12,9 @@ const StyledButton = styled.div`
   text-align:center;
   font-size:2.5rem;
   padding: .5rem .5rem;
+  
+  ${mixinFontFamily('button')};
+  font-weight:800;
   
   &:active{
     transform: translate(.35rem, .35rem);
@@ -83,9 +86,9 @@ export function BoardControls() {
 
   return (
     <StyledContainer>
-      <StyledHelpButton onClick={() => dispatch(setGameStatus('debug'))}>{'debug'}</StyledHelpButton>
+      <StyledHelpButton onClick={() => dispatch(setGameStatus('debug'))}>{'DEBUG'}</StyledHelpButton>
       <StyledHelpButton onClick={() => dispatch(setGameStatus('help'))}>{'HELP!'}</StyledHelpButton>
-      <StyledProgressButton onClick={() => dispatch(setGameStatus('progress'))}>{'progress'}</StyledProgressButton>
+      <StyledProgressButton onClick={() => dispatch(setGameStatus('progress'))}>{'PROGRESS'}</StyledProgressButton>
       <StyledSolvedButton onClick={() => onSubmitGame()}>{'SUBMIT'}</StyledSolvedButton>
     </StyledContainer>
   );

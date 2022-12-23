@@ -1,10 +1,27 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectPosition, releaseDeltas, resetPosition, resetZoom, selectZoom, setPosition, setZoom, setDeltaValues } from '../../app/ui-slice';
 import { getColor } from '../../themes';
 import { Coordinate } from '../../types';
 import {  roundTo } from '../../utils';
+
+const StyledTouchInstructions = styled.div`
+  position:absolute;
+  top:0;
+  text-align:center;
+  width:100%;
+  
+  background-color: ${getColor('brown')};
+  z-index:1;
+  margin-top:.50rem;
+
+  p{
+    font-size:1.5rem;
+    color: ${getColor('brown_light')};
+    font-style:italic;
+  }
+`
 
 const StyledContainer = styled.div`
   position:absolute;
@@ -67,12 +84,20 @@ const StyledButton = styled.div`
   }
 `;
 
+function isTouchDevice() {
+  return (('ontouchstart' in window) ||
+     (navigator.maxTouchPoints > 0) ||
+     (navigator.msMaxTouchPoints > 0));
+}
+
+
 let startAvgCoords: Coordinate = [0,0];
 let startPinchDistance: number = 0;
 
 export function PositionControls() {
   const zoom = useAppSelector(selectZoom);
   const position = useAppSelector(selectPosition);
+  const [ isTouch, setIsTouch ] = useState(false);
   const dispatch = useAppDispatch();
 
   const onChangeZoom = useCallback((e) => {
@@ -141,22 +166,39 @@ export function PositionControls() {
     document.addEventListener('touchstart', onDocumentTouchStart);
     document.addEventListener('touchmove', onDocumentTouchMove);
     document.addEventListener('touchend', onDocumentTouchEnd);    
-  }, [ onDocumentTouchStart, onDocumentTouchMove, onDocumentTouchEnd ])
+  }, [ onDocumentTouchStart, onDocumentTouchMove, onDocumentTouchEnd ]);
+
+  useEffect(() => {
+    setIsTouch(isTouchDevice());
+  }, [ setIsTouch ])
 
 
+  const showPositionControls = useMemo(() => {
+    return !isTouch;
+  }, [ isTouch ]);
 
-  return (
-    <StyledContainer>
-      <p>{'- reposition board -'}</p>
-      <StyledZoomContainer>
-        <StyledButton onClick={onResetZoom} title={'reset zoom'}>{'ZOOM'}</StyledButton>
-        <StyledSlider type="range" min={1} max={10} value={zoom * 10} onChange={onChangeZoom} id="zoomRange" />
-      </StyledZoomContainer>
-      <StyledPanContainer>
-        <StyledButton onClick={onResetPosition} title={'reset pan'}>{'PAN'}</StyledButton>
-        <StyledSlider type="range" min={-50} max={50} value={position[0]} onChange={onChangePositionX} id="xRange" />
-        <PanSliderY type="range" min={-50} max={50} value={position[1]} onChange={onChangePositionY} id="yRange" />
-      </StyledPanContainer>
-    </StyledContainer>
-  );
+  if(showPositionControls){
+    return (
+      <StyledContainer>
+        <p>{'- reposition board -'}</p>
+        <StyledZoomContainer>
+          <StyledButton onClick={onResetZoom} title={'reset zoom'}>{'ZOOM'}</StyledButton>
+          <StyledSlider type="range" min={1} max={10} value={zoom * 10} onChange={onChangeZoom} id="zoomRange" />
+        </StyledZoomContainer>
+        <StyledPanContainer>
+          <StyledButton onClick={onResetPosition} title={'reset pan'}>{'PAN'}</StyledButton>
+          <StyledSlider type="range" min={-50} max={50} value={position[0]} onChange={onChangePositionX} id="xRange" />
+          <PanSliderY type="range" min={-50} max={50} value={position[1]} onChange={onChangePositionY} id="yRange" />
+        </StyledPanContainer>
+      </StyledContainer>
+    );
+  } else{
+    return (
+      <StyledTouchInstructions>
+        <p>{'use two fingers to move around the board'}</p>
+      </StyledTouchInstructions>
+    );
+  }
+
+
 }

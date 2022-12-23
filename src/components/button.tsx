@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { MouseEventHandler } from 'hoist-non-react-statics/node_modules/@types/react';
-import { getColor } from '../themes';
+import { getColor, mixinFontFamily } from '../themes';
 
 export const StyledButton = styled.div`
   border-radius: 1rem;
@@ -12,6 +12,7 @@ export const StyledButton = styled.div`
   span{
     font-size:2.5rem;
   }
+  ${mixinFontFamily('button')};
   
   &:hover{
     transform: translate(-.15rem, -.15rem);
